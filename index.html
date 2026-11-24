@@ -2481,14 +2481,27 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
       if (soundEngine.dest) tracks.push(...soundEngine.dest.stream.getAudioTracks());
       const combinedStream = new MediaStream(tracks);
 
-      const mime = MediaRecorder.isTypeSupported('video/mp4;codecs=avc1,mp4a.40.2') ? 'video/mp4' :
-                   (MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus') ? 'video/webm' : 'video/webm');
+      // Prefer WebM + Opus on Android WebView: it is the most consistently
+      // supported MediaRecorder audio/video combination. MP4 is used only when
+      // WebM+Opus is unavailable. The exact MIME is retained through saving.
+      const isAndroidNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+      const mimeCandidates = isAndroidNative
+        ? ['video/webm;codecs=vp8,opus', 'video/webm;codecs=vp9,opus', 'video/mp4;codecs=avc1,mp4a.40.2']
+        : ['video/mp4;codecs=avc1,mp4a.40.2', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus'];
+      const mime = mimeCandidates.find(type => MediaRecorder.isTypeSupported(type)) || '';
+      const audioTrackCount = combinedStream.getAudioTracks().length;
+      if (!audioTrackCount) {
+        showToast('वीडियो रिकॉर्डर को Audio Track नहीं मिला। कृपया दोबारा एक्सपोर्ट करें।');
+        if (micStreamRef) micStreamRef.getTracks().forEach(t => t.stop());
+        return;
+      }
 
-      const recorder = new MediaRecorder(combinedStream, {
-        mimeType: mime,
+      const recorderOptions = {
         videoBitsPerSecond: isLand ? 4500000 : 3500000,
         audioBitsPerSecond: 128000
-      });
+      };
+      if (mime) recorderOptions.mimeType = mime;
+      const recorder = new MediaRecorder(combinedStream, recorderOptions);
 
       const chunks = [];
       recorder.ondataavailable = (e) => { if (e.data.size > 0) chunks.push(e.data); };
@@ -2691,8 +2704,14 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
         showToast('कोई वीडियो डेटा रिकॉर्ड नहीं हो सका।');
         return;
       }
-      const isActualMp4 = mime.includes('mp4');
-      const blob = new Blob(chunks, { type: isActualMp4 ? 'video/mp4' : 'video/webm' });
+      const isActualMp4 = (recorder.mimeType || mime).toLowerCase().includes('mp4');
+      const outputMime = recorder.mimeType || mime || (isActualMp4 ? 'video/mp4' : 'video/webm');
+      const blob = new Blob(chunks, { type: outputMime });
+      if (!blob.size) {
+        dom.exportProgressBarContainer.classList.add('hidden');
+        showToast('वीडियो फाइल खाली बनी है। कृपया फिर से एक्सपोर्ट करें।');
+        return;
+      }
       const videoUrl = URL.createObjectURL(blob);
       dom.outputVideoPlayer.src = videoUrl;
       dom.videoOutputBox.classList.remove('hidden');
