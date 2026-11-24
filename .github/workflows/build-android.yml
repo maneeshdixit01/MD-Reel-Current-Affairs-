@@ -1,5 +1,4 @@
-
-name: Build MD Reel Current Affair v20 MP4 Fix
+name: Build MD Reel Current Affair v21
 
 on:
   push:
@@ -39,7 +38,7 @@ jobs:
           test -f NativeTtsPlugin.java
           test -f VideoFixerPlugin.java
           test -f MainActivity.java
-          echo "All required files verified."
+          echo "Required source files found."
 
       - name: Add Android Platform
         run: |
@@ -56,42 +55,41 @@ jobs:
           cp -f VideoFixerPlugin.java "$JAVA_DIR/"
           cp -f MainActivity.java "$JAVA_DIR/"
 
-      - name: Add Compatible Media3 Dependencies
+      - name: Configure Media3 Dependencies
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import re
 
-          p = Path('android/app/build.gradle')
+          p = Path("android/app/build.gradle")
 
           if not p.exists():
-              raise SystemExit('android/app/build.gradle not found')
+              raise SystemExit("android/app/build.gradle not found")
 
           s = p.read_text()
 
-          # Remove previous versions of Media3 dependencies
-          for artifact in ['media3-transformer', 'media3-common']:
+          for artifact in ["media3-transformer", "media3-common"]:
               pattern = (
                   r'^\s*implementation\s+["\']androidx\.media3:'
                   + artifact +
                   r':[0-9.]+["\']\s*$\n?'
               )
-              s = re.sub(pattern, '', s, flags=re.MULTILINE)
+              s = re.sub(pattern, "", s, flags=re.MULTILINE)
 
-          marker = 'dependencies {'
+          marker = "dependencies {"
 
           if marker not in s:
-              raise SystemExit('Gradle dependencies block not found')
+              raise SystemExit("Gradle dependencies block not found")
 
-          dependencies = (
+          deps = (
               '    implementation "androidx.media3:media3-common:1.3.1"\n'
               '    implementation "androidx.media3:media3-transformer:1.3.1"\n'
           )
 
-          s = s.replace(marker, marker + '\n' + dependencies, 1)
+          s = s.replace(marker, marker + "\n" + deps, 1)
           p.write_text(s)
 
-          print('Media3 common and transformer 1.3.1 added.')
+          print("Media3 1.3.1 configured.")
           PY
 
       - name: Configure Android Manifest
@@ -99,25 +97,25 @@ jobs:
           python3 - <<'PY'
           import xml.etree.ElementTree as ET
 
-          path = 'android/app/src/main/AndroidManifest.xml'
-          android = '{http://schemas.android.com/apk/res/android}'
+          path = "android/app/src/main/AndroidManifest.xml"
+          android = "{http://schemas.android.com/apk/res/android}"
 
           ET.register_namespace(
-              'android',
-              'http://schemas.android.com/apk/res/android'
+              "android",
+              "http://schemas.android.com/apk/res/android"
           )
 
           tree = ET.parse(path)
           root = tree.getroot()
 
           permissions = [
-              'android.permission.RECORD_AUDIO',
-              'android.permission.MODIFY_AUDIO_SETTINGS'
+              "android.permission.RECORD_AUDIO",
+              "android.permission.MODIFY_AUDIO_SETTINGS"
           ]
 
           existing = {
-              e.get(android + 'name')
-              for e in root.findall('uses-permission')
+              e.get(android + "name")
+              for e in root.findall("uses-permission")
           }
 
           for permission in permissions:
@@ -125,18 +123,13 @@ jobs:
                   root.insert(
                       0,
                       ET.Element(
-                          'uses-permission',
-                          {android + 'name': permission}
+                          "uses-permission",
+                          {android + "name": permission}
                       )
                   )
 
-          tree.write(
-              path,
-              encoding='utf-8',
-              xml_declaration=True
-          )
-
-          print('Android Manifest configured.')
+          tree.write(path, encoding="utf-8", xml_declaration=True)
+          print("Manifest configured.")
           PY
 
       - name: Sync Capacitor
@@ -156,7 +149,7 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: MD-Reel-Current-Affair-v20-H264-AAC-MP4
+          name: MD-Reel-Current-Affair-v21-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           
