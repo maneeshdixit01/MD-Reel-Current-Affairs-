@@ -81,7 +81,11 @@ public class VideoFixerPlugin extends Plugin {
             ContentValues done = new ContentValues();
             done.put(MediaStore.Video.Media.IS_PENDING, 0);
             if (duration > 0) done.put(MediaStore.Video.Media.DURATION, duration);
-            resolver.update(uri, done, null, null);
+            int updated = resolver.update(uri, done, null, null);
+            if (updated <= 0) {
+                resolver.delete(uri, null, null);
+                throw new IOException("Gallery item could not be finalized (MediaStore update failed)");
+            }
             return "Movies/MD_Reel_Current_Affair/" + name;
         }
         File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES), "MD_Reel_Current_Affair");
@@ -130,6 +134,8 @@ public class VideoFixerPlugin extends Plugin {
                                     path = saveToGallery(context, output, fileName, duration);
                                     saved = true;
                                 }
+                                // The temporary recorder source is no longer needed after conversion.
+                                delete(input);
                                 JSObject response = new JSObject();
                                 response.put("remuxed", true);
                                 response.put("transcoded", true);
@@ -150,6 +156,7 @@ public class VideoFixerPlugin extends Plugin {
                     @Override
                     public void onError(Composition composition, ExportResult result, ExportException exception) {
                         delete(output);
+                        delete(input);
                         call.reject("WebM/MP4 to H.264/AAC conversion failed: " + exception.getMessage());
                     }
                 }).build();
@@ -157,6 +164,7 @@ public class VideoFixerPlugin extends Plugin {
             transformer.start(MediaItem.fromUri(Uri.fromFile(input)), output.getAbsolutePath());
         } catch (Exception e) {
             delete(output);
+            delete(input);
             call.reject("Could not start MP4 conversion: " + e.getMessage());
         }
     }

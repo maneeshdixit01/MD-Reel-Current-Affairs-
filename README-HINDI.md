@@ -32,3 +32,15 @@ The source has been statically checked and the workflow/configuration files have
 - ऐप का नाम: **MD Reel Current Affair**
 - Android application ID: `com.md.mdreelcurrentaffair`
 - यह पुराने MD Quiz Reel Maker ऐप से अलग पहचान रखेगा। नई रिपॉजिटरी में इसी पैकेज की सभी फाइलें अपलोड करें।
+
+
+## v21 में किए गए सुधार
+
+- Android Gallery सेव के लिए वीडियो को छोटे Base64 chunks में Cache में लिखा जाता है, जिससे बड़ी वीडियो सेव करते समय RAM पर अचानक अधिक दबाव नहीं पड़ता।
+- Gallery सेव विफल होने पर अब ऐप गलत सफलता संदेश नहीं दिखाता; वास्तविक त्रुटि स्क्रीन पर बताता है।
+- Gallery सेव बटन सेविंग के दौरान disable रहता है और पूरा होने पर फिर सक्रिय हो जाता है।
+- Stop दबाने पर सक्रिय MediaRecorder और वीडियो TTS ऑडियो रोके जाते हैं; पुराना export session साफ होने के बाद नया export शुरू किया जा सकता है।
+- Export के दौरान duplicate start को रोका गया है और cancel होने पर wait/animation loops जल्दी बाहर निकलते हैं।
+- Media3 common और transformer दोनों 1.3.1 पर pin किए गए हैं।
+
+ध्यान दें: यह सोर्स कोड में सुधार है। APK को GitHub Actions से build करके वास्तविक Android फोन पर Gallery save और Stop के बाद दोबारा Export का परीक्षण करना आवश्यक है।

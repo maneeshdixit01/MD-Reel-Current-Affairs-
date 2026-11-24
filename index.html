@@ -955,6 +955,8 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
       // Playback runtime flags
       isPlaying: false,
       isRecording: false,
+      exportBusy: false,
+      activeRecorder: null,
       abortExport: false,
       runSessionId: 0
     };
@@ -1201,6 +1203,7 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
       constructor() {
         this.ctx = null;
         this.dest = null;
+        this.activeBufferSources = new Set();
       }
       async init() {
         if (!this.ctx) {
@@ -1321,8 +1324,9 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
             src.buffer = decoded;
             src.playbackRate.value = playbackRate;
             this.connect(src);
-            src.onended = () => resolve(actualDuration);
-            src.onerror = (err) => reject(err || new Error('Audio playback failed'));
+            this.activeBufferSources.add(src);
+            src.onended = () => { this.activeBufferSources.delete(src); resolve(actualDuration); };
+            src.onerror = (err) => { this.activeBufferSources.delete(src); reject(err || new Error('Audio playback failed')); };
             src.start(this.ctx.currentTime + 0.015);
             // Duration is passed at the exact moment the captured audio begins.
             if (typeof onStart === 'function') onStart(actualDuration);
@@ -1330,6 +1334,12 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
             reject(err);
           }
         });
+      }
+      stopActiveAudio() {
+        for (const src of Array.from(this.activeBufferSources)) {
+          try { src.stop(); } catch (_) {}
+          this.activeBufferSources.delete(src);
+        }
       }
     }
     const soundEngine = new SoundFXStudio();
@@ -1342,6 +1352,7 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
         this.synth = window.speechSynthesis || null;
         this.voices = [];
         this.activeAudio = null;
+        this.videoSpeechToken = 0;
         if (this.synth) {
           this.loadVoices();
           this.synth.onvoiceschanged = () => this.loadVoices();
@@ -1489,6 +1500,7 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
       // Export path is intentionally OFFLINE ONLY. Android TTS is synthesized to WAV,
       // decoded by WebAudio, and routed to the MediaRecorder audio destination.
       async speakToVideoStream(text, onStart = null) {
+        const token = ++this.videoSpeechToken;
         const clean = cleanTtsText(text);
         if (!clean) return 0;
         this.setUI(true, clean);
@@ -1503,6 +1515,7 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
           const chunks = this.splitTextForTts(clean, 150);
           let totalDuration = 0;
           for (const chunk of chunks) {
+            if (token !== this.videoSpeechToken) throw new Error('EXPORT_CANCELLED');
             const res = await nativeTts.synthesizeToBase64({
               text: chunk,
               rate: Number(state.voiceSpeed) || 1.0,
@@ -1513,17 +1526,21 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
             if (!bytes || bytes.byteLength < 44) throw new Error('बनी हुई WAV फाइल खाली या खराब है।');
             // Native synthesis already applies speech rate; do not apply it a second time.
             const duration = await soundEngine.playAudioBuffer(bytes, 1.0, signalStart);
+            if (token !== this.videoSpeechToken) throw new Error('EXPORT_CANCELLED');
             totalDuration += Number(duration) || 0;
           }
           this.setUI(false);
           return totalDuration;
         } catch (err) {
           this.setUI(false);
+          if (err && err.message === 'EXPORT_CANCELLED') throw err;
           console.error('Offline export TTS error:', err);
           throw new Error(err && err.message ? err.message : 'ऑफलाइन हिंदी आवाज़ तैयार नहीं हो सकी।');
         }
       }
       stop() {
+        this.videoSpeechToken++;
+        soundEngine.stopActiveAudio();
         const nativeTts = this.getNativePlugin();
         if (nativeTts) {
           try { nativeTts.stop().catch(() => {}); } catch (_) {}
@@ -2440,18 +2457,23 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
     // ==========================================
     async function runVideoExportProcess() {
       if (!state.questions.length) return showToast('कृपया पहले प्रश्न जोड़ें!');
-      if (state.isRecording) return;
+      if (state.exportBusy || state.isRecording) return;
 
-      stopAllPlayback();
+      state.exportBusy = true;
       state.abortExport = false;
+      state.exportPaused = false;
+      if (dom.btnStopVideoExport) dom.btnStopVideoExport.disabled = false;
+      if (dom.btnStopVideoExport) dom.btnStopVideoExport.textContent = '⏹ रोकें (Stop)';
+      stopAllPlayback();
       try {
         dom.exportProgressTextMsg.textContent = 'ऑफलाइन हिंदी आवाज़ जाँची जा रही है...';
         await speechStudio.ensureOfflineHindiReady();
       } catch (ttsErr) {
         showToast(ttsErr && ttsErr.message ? ttsErr.message : 'ऑफलाइन हिंदी आवाज़ उपलब्ध नहीं है।');
+        state.exportBusy = false;
         return;
       }
-      await soundEngine.init();
+      try { await soundEngine.init(); } catch (audioInitErr) { state.exportBusy = false; showToast('Audio Engine शुरू नहीं हो सका: ' + (audioInitErr.message || audioInitErr)); return; }
 
       const canvas = dom.hiddenExportCanvas;
       const ctx = canvas.getContext('2d');
@@ -2493,6 +2515,7 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
       if (!audioTrackCount) {
         showToast('वीडियो रिकॉर्डर को Audio Track नहीं मिला। कृपया दोबारा एक्सपोर्ट करें।');
         if (micStreamRef) micStreamRef.getTracks().forEach(t => t.stop());
+        state.exportBusy = false;
         return;
       }
 
@@ -2501,12 +2524,21 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
         audioBitsPerSecond: 128000
       };
       if (mime) recorderOptions.mimeType = mime;
-      const recorder = new MediaRecorder(combinedStream, recorderOptions);
+      let recorder;
+      try {
+        recorder = new MediaRecorder(combinedStream, recorderOptions);
+      } catch (recorderErr) {
+        if (micStreamRef) micStreamRef.getTracks().forEach(t => { try { t.stop(); } catch (_) {} });
+        state.exportBusy = false;
+        showToast('वीडियो रिकॉर्डर शुरू नहीं हो सका: ' + (recorderErr.message || recorderErr));
+        return;
+      }
 
       const chunks = [];
       recorder.ondataavailable = (e) => { if (e.data.size > 0) chunks.push(e.data); };
 
       state.isRecording = true;
+      state.activeRecorder = recorder;
       dom.btnExportVideoNow.disabled = true;
       dom.exportProgressBarContainer.classList.remove('hidden');
       dom.videoOutputBox.classList.add('hidden');
@@ -2526,12 +2558,19 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
         drawReelCanvasFrame(ctx, currentFrameData);
       }, 40);
 
-      recorder.start(100);
+      recorder.start(250);
       drawReelCanvasFrame(ctx, currentFrameData);
       const recorderStopped = new Promise(resolve => {
         recorder.addEventListener('stop', resolve, { once: true });
       });
-      const wait = (ms) => new Promise(r => setTimeout(r, ms));
+      const wait = (ms) => new Promise(resolve => {
+        const started = Date.now();
+        const tick = () => {
+          if (state.abortExport || Date.now() - started >= ms) return resolve();
+          setTimeout(tick, Math.min(50, Math.max(10, ms - (Date.now() - started))));
+        };
+        tick();
+      });
       let exportFailed = false;
 
       try {
@@ -2541,7 +2580,7 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
           currentFrameData.isHook = true;
           currentFrameData.transitionProgress = 0;
           const introStart = performance.now();
-          const introAnimP = (async () => { while (performance.now() - introStart < 520) { currentFrameData.transitionProgress = Math.min(1, (performance.now() - introStart) / 520); await wait(25); } currentFrameData.transitionProgress = 1; })();
+          const introAnimP = (async () => { while (!state.abortExport && performance.now() - introStart < 520) { currentFrameData.transitionProgress = Math.min(1, (performance.now() - introStart) / 520); await wait(25); } currentFrameData.transitionProgress = 1; })();
           const speechP = speechStudio.speakToVideoStream('रुकिए! जवाब दीजिए!');
           const holdP = wait(2100);
           await Promise.all([speechP, holdP, introAnimP]);
@@ -2571,7 +2610,7 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
             reveal: false, revealProgress: 0, transitionProgress: 0
           };
           const sceneStart = performance.now();
-          const sceneAnimP = (async () => { while (performance.now() - sceneStart < 520) { currentFrameData.transitionProgress = Math.min(1, (performance.now() - sceneStart) / 520); await wait(25); } currentFrameData.transitionProgress = 1; })();
+          const sceneAnimP = (async () => { while (!state.abortExport && performance.now() - sceneStart < 520) { currentFrameData.transitionProgress = Math.min(1, (performance.now() - sceneStart) / 520); await wait(25); } currentFrameData.transitionProgress = 1; })();
 
           // Question speech (strictly ignores #tag)
           let signalExportSpeechStarted;
@@ -2597,7 +2636,7 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
               const played = [false, false, false, false];
               const totalMs = 120 + staggerMs * 3 + slideDurMs;
 
-              while (performance.now() - startT < totalMs) {
+              while (!state.abortExport && performance.now() - startT < totalMs) {
                 const elap = performance.now() - startT;
                 const prog = [0, 0, 0, 0];
                 for (let k = 0; k < 4; k++) {
@@ -2648,7 +2687,7 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
           const ansHoldMs = (Number(state.revealSec) || 2.5) * 1000;
           const ansHoldP = (async () => {
             const popStart = performance.now();
-            while (performance.now() - popStart < 520) {
+            while (!state.abortExport && performance.now() - popStart < 520) {
               currentFrameData.revealProgress = Math.min(1, (performance.now() - popStart) / 520);
               await wait(25);
             }
@@ -2663,16 +2702,18 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
           dom.exportProgressTextMsg.textContent = 'Recording Outro Slide...';
           currentFrameData = { isHook: false, isOutro: true, transitionProgress: 0 };
           const outroStart = performance.now();
-          const outroAnimP = (async () => { while (performance.now() - outroStart < 520) { currentFrameData.transitionProgress = Math.min(1, (performance.now() - outroStart) / 520); await wait(25); } currentFrameData.transitionProgress = 1; })();
+          const outroAnimP = (async () => { while (!state.abortExport && performance.now() - outroStart < 520) { currentFrameData.transitionProgress = Math.min(1, (performance.now() - outroStart) / 520); await wait(25); } currentFrameData.transitionProgress = 1; })();
           const outroSpeechP = speechStudio.speakToVideoStream(state.outroText);
           const outroHoldP = wait((Number(state.outroDuration) || 2) * 1000);
           await Promise.all([outroSpeechP, outroHoldP, outroAnimP]);
         }
       } catch (exportErr) {
-        exportFailed = true;
-        state.abortExport = true;
-        console.error('Video export failed:', exportErr);
-        showToast(exportErr && exportErr.message ? exportErr.message : 'वीडियो एक्सपोर्ट में त्रुटि आई।');
+        if (!state.abortExport && !(exportErr && exportErr.message === 'EXPORT_CANCELLED')) {
+          exportFailed = true;
+          state.abortExport = true;
+          console.error('Video export failed:', exportErr);
+          showToast(exportErr && exportErr.message ? exportErr.message : 'वीडियो एक्सपोर्ट में त्रुटि आई।');
+        }
       } finally {
         clearInterval(renderTimer);
         if (micStreamRef) {
@@ -2685,7 +2726,10 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
         }
         await recorderStopped;
         state.isRecording = false;
+        state.activeRecorder = null;
+        state.exportBusy = false;
         dom.btnExportVideoNow.disabled = false;
+        if (dom.btnStopVideoExport) dom.btnStopVideoExport.disabled = true;
       }
 
       // Final video blob
@@ -2696,7 +2740,8 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
       }
       if (state.abortExport) {
         dom.exportProgressBarContainer.classList.add('hidden');
-        showToast('वीडियो बनाना रोक दिया गया।');
+        dom.btnExportVideoNow.disabled = false;
+        showToast('वीडियो बनाना रोक दिया गया। अब आप नया Export शुरू कर सकते हैं।');
         return;
       }
       if (!chunks.length) {
@@ -2724,72 +2769,96 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
     }
 
     // Capacitor Native Gallery Saver or Browser Download
-    function blobToBase64Async(blob) {
+    function blobChunkToBase64(blobPart) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onloadend = () => {
-          const res = String(reader.result || '');
-          const idx = res.indexOf(',');
-          resolve(idx >= 0 ? res.slice(idx + 1) : res);
+        reader.onload = () => {
+          const value = String(reader.result || '');
+          const comma = value.indexOf(',');
+          resolve(comma >= 0 ? value.slice(comma + 1) : value);
         };
-        reader.onerror = () => reject(reader.error || new Error('FileReader error'));
-        reader.readAsDataURL(blob);
+        reader.onerror = () => reject(reader.error || new Error('वीडियो का हिस्सा पढ़ा नहीं जा सका।'));
+        reader.readAsDataURL(blobPart);
       });
     }
 
+    async function writeBlobToCacheInChunks(blob, fileName, fs) {
+      const chunkSize = 768 * 1024; // divisible by 3: Base64 chunks do not acquire interior padding
+      let offset = 0;
+      let first = true;
+      while (offset < blob.size) {
+        if (state.abortSaveVideo) throw new Error('सेव प्रक्रिया रद्द कर दी गई।');
+        const part = blob.slice(offset, Math.min(blob.size, offset + chunkSize));
+        const data = await blobChunkToBase64(part);
+        if (first) {
+          await fs.writeFile({ path: fileName, data, directory: 'CACHE' });
+          first = false;
+        } else {
+          if (typeof fs.appendFile !== 'function') throw new Error('Filesystem appendFile उपलब्ध नहीं है।');
+          await fs.appendFile({ path: fileName, data, directory: 'CACHE' });
+        }
+        offset += part.size;
+        const pct = Math.round((offset / blob.size) * 100);
+        if (dom.gallerySaveHint) dom.gallerySaveHint.textContent = `वीडियो तैयार की जा रही है… ${pct}%`;
+      }
+    }
+
     async function saveVideoToDevice(blob, isMp4) {
+      if (state.savingVideo) return;
+      state.savingVideo = true;
+      state.abortSaveVideo = false;
       const cap = window.Capacitor;
       const isNativeSave = !!(cap && cap.isNativePlatform && cap.isNativePlatform());
-      // Native Android save always transcodes the recorder source into H.264/AAC MP4.
       const ext = isNativeSave ? 'mp4' : (isMp4 ? 'mp4' : 'webm');
-      const fileName = `Quiz_Reel_${Date.now()}.${ext}`;
+      const fileName = `MD_Reel_${Date.now()}.${ext}`;
+      const saveButton = dom.btnSaveToGallery;
+      if (saveButton) { saveButton.disabled = true; saveButton.textContent = '⏳ सेव हो रहा है…'; }
+      if (dom.gallerySaveHint) dom.gallerySaveHint.textContent = 'वीडियो को गैलरी में सेव किया जा रहा है…';
       try {
         if (isNativeSave) {
-          const vf = cap.Plugins && cap.Plugins.VideoFixer;
-          const fs = cap.Plugins && cap.Plugins.Filesystem;
-          const b64 = await blobToBase64Async(blob);
-
-          if (vf && vf.remuxAndSaveToGallery && fs) {
-            const tempName = `temp_${fileName}`;
-            await fs.writeFile({ path: tempName, data: b64, directory: 'CACHE' });
-            const remuxRes = await vf.remuxAndSaveToGallery({
-              inputPath: tempName,
-              fileName,
-              mimeType: blob.type || (isMp4 ? 'video/mp4' : 'video/webm'),
-              saveToGallery: true
-            });
-            if (remuxRes && remuxRes.gallerySaved) {
-              showToast('✅ वीडियो साउंड सहित गैलरी में सेव हो गया!');
-              return;
-            }
+          const plugins = cap.Plugins || {};
+          const vf = plugins.VideoFixer;
+          const fs = plugins.Filesystem;
+          if (!vf || typeof vf.remuxAndSaveToGallery !== 'function' || !fs) {
+            throw new Error('इस APK में VideoFixer या Filesystem Plugin उपलब्ध नहीं है। नया APK बनाइए।');
           }
-
-          if (fs) {
-            await fs.writeFile({
-              path: `MD_Reel_Current_Affair/${fileName}`,
-              data: b64,
-              directory: 'DOCUMENTS',
-              recursive: true
-            });
-            showToast(`✅ वीडियो Documents/MD_Reel_Current_Affair में सेव हो गया!`);
-            return;
+          const tempName = `gallery_source_${Date.now()}.${(blob.type || '').includes('webm') ? 'webm' : 'mp4'}`;
+          await writeBlobToCacheInChunks(blob, tempName, fs);
+          const result = await vf.remuxAndSaveToGallery({
+            inputPath: tempName,
+            fileName,
+            mimeType: blob.type || (isMp4 ? 'video/mp4' : 'video/webm'),
+            saveToGallery: true
+          });
+          if (!result || result.gallerySaved !== true) {
+            throw new Error((result && result.galleryError) || 'Android ने वीडियो को गैलरी में सेव नहीं किया।');
           }
+          if (dom.gallerySaveHint) dom.gallerySaveHint.textContent = `✅ गैलरी में सेव: Movies/MD_Reel_Current_Affair/${fileName}`;
+          showToast('✅ वीडियो आवाज़ सहित फोन की गैलरी में सेव हो गया!');
+          return;
         }
-      } catch (err) {
-        console.warn('Capacitor native save fallback:', err);
-      }
 
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(() => {
-        try { document.body.removeChild(a); } catch (_) {}
-        try { URL.revokeObjectURL(url); } catch (_) {}
-      }, 5000);
-      showToast(`📥 डाउनलोड शुरू: ${fileName}`);
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          try { document.body.removeChild(a); } catch (_) {}
+          try { URL.revokeObjectURL(url); } catch (_) {}
+        }, 5000);
+        if (dom.gallerySaveHint) dom.gallerySaveHint.textContent = `डाउनलोड शुरू: ${fileName}`;
+        showToast(`📥 डाउनलोड शुरू: ${fileName}`);
+      } catch (err) {
+        console.error('Gallery save failed:', err);
+        const message = err && err.message ? err.message : String(err);
+        if (dom.gallerySaveHint) dom.gallerySaveHint.textContent = `❌ गैलरी में सेव नहीं हुआ: ${message}`;
+        showToast('❌ गैलरी में सेव नहीं हुआ: ' + message);
+      } finally {
+        state.savingVideo = false;
+        if (saveButton) { saveButton.disabled = false; saveButton.textContent = '💾 गैलरी में सेव करें (Save)'; }
+      }
     }
 
     async function shareVideoFileDirectly(blob, isMp4) {
@@ -3136,9 +3205,15 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
       dom.btnExportVideoNow.addEventListener('click', runVideoExportProcess);
       if (dom.btnStopVideoExport) {
         dom.btnStopVideoExport.addEventListener('click', () => {
+          if (!state.exportBusy) return;
           state.abortExport = true;
+          dom.btnStopVideoExport.disabled = true;
           speechStudio.stop();
-          showToast('वीडियो जनरेट करना रोका जा रहा है...');
+          try {
+            const active = state.activeRecorder;
+            if (active && active.state !== 'inactive') active.stop();
+          } catch (_) {}
+          showToast('वीडियो जनरेशन रोकी जा रही है… थोड़ी देर में Export दोबारा शुरू कर सकते हैं।');
         });
       }
 
