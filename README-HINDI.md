@@ -1,4 +1,4 @@
-# MD Reel Current Affair — Offline Hindi Voice build
+# MD Reel Current Affair — Scroll Stopper v18 build
 
 ## Included files
 - `index.html`: latest Hybrid reel-maker interface with offline-only native Hindi TTS for video export.
@@ -9,7 +9,7 @@
 - `.github/workflows/build-android.yml`: supplied GitHub Actions workflow.
 
 ## GitHub upload
-Replace the corresponding files in the repository with these files. Keep the workflow at `.github/workflows/build-android.yml`. The HTML must be named exactly `index.html` in the repository root because `npm run build` copies that file into `www/`.
+अपनी नई repository के root में इस ZIP के अंदर मौजूद `MD_Reel_Current_Affair_Complete` फोल्डर की सभी फाइलें अपलोड करें। `.github/workflows/build-android.yml` का पूरा path और नाम जस का तस रखें। HTML फाइल repository root में `index.html` नाम से होनी चाहिए। Workflow पहले `npm run build` से `www/` बनाता है, फिर दोनों Java plugins और custom `MainActivity.java` को Android source tree में कॉपी करता है, Manifest में TTS/audio permissions जोड़ता है और उसके बाद APK बनाता है।
 
 ## Before testing offline voice
 On the Android phone, open **Settings → Text-to-Speech output** (wording varies by phone) → preferred engine / language / voice data, and download Hindi voice data for the installed TTS engine. The app now deliberately does not call online TTS services during video export.
