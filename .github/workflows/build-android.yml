@@ -1,5 +1,5 @@
 
-name: Build MD Reel Current Affair APK
+name: Build MD Reel Current Affair v20 MP4 Fix
 
 on:
   push:
@@ -30,16 +30,16 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Prepare Web Assets
+      - name: Build Web Assets
         run: npm run build
 
       - name: Verify Required Files
         run: |
           test -f www/index.html
-          test -f MainActivity.java
           test -f NativeTtsPlugin.java
           test -f VideoFixerPlugin.java
-          echo "All required files found."
+          test -f MainActivity.java
+          echo "Required files verified."
 
       - name: Add Android Platform
         run: |
@@ -47,14 +47,37 @@ jobs:
             npx cap add android
           fi
 
-      - name: Install Native Plugins and MainActivity
+      - name: Install Native Plugins
         run: |
           JAVA_DIR="android/app/src/main/java/com/md/mdreelcurrentaffair"
           mkdir -p "$JAVA_DIR"
 
-          cp -f NativeTtsPlugin.java "$JAVA_DIR/"
-          cp -f VideoFixerPlugin.java "$JAVA_DIR/"
-          cp -f MainActivity.java "$JAVA_DIR/"
+          cp -f NativeTtsPlugin.java "$JAVA_DIR/NativeTtsPlugin.java"
+          cp -f VideoFixerPlugin.java "$JAVA_DIR/VideoFixerPlugin.java"
+          cp -f MainActivity.java "$JAVA_DIR/MainActivity.java"
+
+      - name: Add Media3 Transformer Dependency
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path('android/app/build.gradle')
+          s = p.read_text()
+
+          dep = '    implementation "androidx.media3:media3-transformer:1.5.1"\n'
+
+          if 'androidx.media3:media3-transformer' not in s:
+              marker = 'dependencies {'
+
+              if marker not in s:
+                  raise SystemExit(
+                      'Could not find dependencies block in android/app/build.gradle'
+                  )
+
+              s = s.replace(marker, marker + '\n' + dep, 1)
+              p.write_text(s)
+
+          PY
 
       - name: Configure Android Manifest
         run: |
@@ -62,7 +85,7 @@ jobs:
           import xml.etree.ElementTree as ET
 
           path = 'android/app/src/main/AndroidManifest.xml'
-          android = '{http://schemas.android.com/apk/res/android}'
+          a = '{http://schemas.android.com/apk/res/android}'
 
           ET.register_namespace(
               'android',
@@ -74,55 +97,23 @@ jobs:
 
           permissions = [
               'android.permission.RECORD_AUDIO',
-              'android.permission.MODIFY_AUDIO_SETTINGS',
-              'android.permission.WRITE_EXTERNAL_STORAGE',
-              'android.permission.READ_EXTERNAL_STORAGE',
+              'android.permission.MODIFY_AUDIO_SETTINGS'
           ]
 
           existing = {
-              e.get(android + 'name')
+              e.get(a + 'name')
               for e in root.findall('uses-permission')
           }
 
           for permission in permissions:
               if permission not in existing:
-                  node = ET.Element(
-                      'uses-permission',
-                      {android + 'name': permission}
+                  root.insert(
+                      0,
+                      ET.Element(
+                          'uses-permission',
+                          {a + 'name': permission}
+                      )
                   )
-
-                  if permission == 'android.permission.WRITE_EXTERNAL_STORAGE':
-                      node.set(android + 'maxSdkVersion', '29')
-
-                  elif permission == 'android.permission.READ_EXTERNAL_STORAGE':
-                      node.set(android + 'maxSdkVersion', '32')
-
-                  root.insert(0, node)
-
-          queries = root.find('queries')
-
-          if queries is None:
-              queries = ET.Element('queries')
-              root.insert(0, queries)
-
-          has_tts_query = any(
-              intent.find(
-                  "action[@" + android +
-                  "name='android.intent.action.TTS_SERVICE']"
-              ) is not None
-              for intent in queries.findall('intent')
-          )
-
-          if not has_tts_query:
-              intent = ET.SubElement(queries, 'intent')
-              ET.SubElement(
-                  intent,
-                  'action',
-                  {
-                      android + 'name':
-                      'android.intent.action.TTS_SERVICE'
-                  }
-              )
 
           tree.write(
               path,
@@ -143,7 +134,7 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: MD-Reel-Current-Affair-v19-Audio-Fix
+          name: MD-Reel-Current-Affair-v20-H264-AAC-MP4
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           
