@@ -2738,11 +2738,13 @@ Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE
     }
 
     async function saveVideoToDevice(blob, isMp4) {
-      const ext = isMp4 ? 'mp4' : 'webm';
+      const cap = window.Capacitor;
+      const isNativeSave = !!(cap && cap.isNativePlatform && cap.isNativePlatform());
+      // Native Android save always transcodes the recorder source into H.264/AAC MP4.
+      const ext = isNativeSave ? 'mp4' : (isMp4 ? 'mp4' : 'webm');
       const fileName = `Quiz_Reel_${Date.now()}.${ext}`;
       try {
-        const cap = window.Capacitor;
-        if (cap && cap.isNativePlatform && cap.isNativePlatform()) {
+        if (isNativeSave) {
           const vf = cap.Plugins && cap.Plugins.VideoFixer;
           const fs = cap.Plugins && cap.Plugins.Filesystem;
           const b64 = await blobToBase64Async(blob);
