@@ -39,7 +39,7 @@ jobs:
           test -f NativeTtsPlugin.java
           test -f VideoFixerPlugin.java
           test -f MainActivity.java
-          echo "Required files verified."
+          echo "All required files verified."
 
       - name: Add Android Platform
         run: |
@@ -52,31 +52,50 @@ jobs:
           JAVA_DIR="android/app/src/main/java/com/md/mdreelcurrentaffair"
           mkdir -p "$JAVA_DIR"
 
-          cp -f NativeTtsPlugin.java "$JAVA_DIR/NativeTtsPlugin.java"
-          cp -f VideoFixerPlugin.java "$JAVA_DIR/VideoFixerPlugin.java"
-          cp -f MainActivity.java "$JAVA_DIR/MainActivity.java"
+          cp -f NativeTtsPlugin.java "$JAVA_DIR/"
+          cp -f VideoFixerPlugin.java "$JAVA_DIR/"
+          cp -f MainActivity.java "$JAVA_DIR/"
 
-      - name: Add Media3 Transformer Dependency
+      - name: Add Compatible Media3 Transformer
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
 
           p = Path('android/app/build.gradle')
+
+          if not p.exists():
+              raise SystemExit('android/app/build.gradle not found')
+
           s = p.read_text()
 
-          dep = '    implementation "androidx.media3:media3-transformer:1.5.1"\n'
+          # Remove any previously added Transformer version
+          s = re.sub(
+              r'^\s*implementation\s+["\']androidx\.media3:media3-transformer:[^"\']+["\']\s*$',
+              '',
+              s,
+              flags=re.MULTILINE
+          )
 
-          if 'androidx.media3:media3-transformer' not in s:
-              marker = 'dependencies {'
+          # Add Media3 1.3.1 compatible with compileSdk 34
+          marker = 'dependencies {'
 
-              if marker not in s:
-                  raise SystemExit(
-                      'Could not find dependencies block in android/app/build.gradle'
-                  )
+          if marker not in s:
+              raise SystemExit('Gradle dependencies block not found')
 
-              s = s.replace(marker, marker + '\n' + dep, 1)
-              p.write_text(s)
+          dependency = (
+              '    implementation "androidx.media3:media3-transformer:1.3.1"\n'
+          )
 
+          s = s.replace(
+              marker,
+              marker + '\n' + dependency,
+              1
+          )
+
+          p.write_text(s)
+
+          print('Media3 Transformer 1.3.1 configured.')
           PY
 
       - name: Configure Android Manifest
@@ -85,7 +104,7 @@ jobs:
           import xml.etree.ElementTree as ET
 
           path = 'android/app/src/main/AndroidManifest.xml'
-          a = '{http://schemas.android.com/apk/res/android}'
+          android = '{http://schemas.android.com/apk/res/android}'
 
           ET.register_namespace(
               'android',
@@ -101,7 +120,7 @@ jobs:
           ]
 
           existing = {
-              e.get(a + 'name')
+              e.get(android + 'name')
               for e in root.findall('uses-permission')
           }
 
@@ -111,7 +130,7 @@ jobs:
                       0,
                       ET.Element(
                           'uses-permission',
-                          {a + 'name': permission}
+                          {android + 'name': permission}
                       )
                   )
 
@@ -120,10 +139,16 @@ jobs:
               encoding='utf-8',
               xml_declaration=True
           )
+
+          print('Android Manifest configured.')
           PY
 
       - name: Sync Capacitor
         run: npx cap sync android
+
+      - name: Verify Media3 Dependency
+        run: |
+          grep -n "media3-transformer:1.3.1" android/app/build.gradle
 
       - name: Build Android APK
         working-directory: android
