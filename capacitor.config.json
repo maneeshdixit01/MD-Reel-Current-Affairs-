@@ -1,0 +1,9 @@
+{
+  "appId": "com.md.mdreelcurrentaffair",
+  "appName": "MD Reel Current Affair",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "android": {
+    "allowMixedContent": true
+  }
+}

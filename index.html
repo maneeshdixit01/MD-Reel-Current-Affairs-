@@ -1,0 +1,3284 @@
+<!DOCTYPE html>
+<html lang="hi" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0B0F17" />
+  <title>MD Reel Current Affair v16 Ultimate Hybrid Pro</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Inter, Poppins & Noto Sans Devanagari -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- PDF.js for in-app PDF Auto-Converter -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    if (window.pdfjsLib) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+  </script>
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0B0F17;
+      --surface: #111827;
+      --border: #1E293B;
+      --primary: #6366F1;
+      --accent: #FACC15;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: #F8FAFC;
+      font-family: 'Inter', 'Noto Sans Devanagari', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #090D16; border-radius: 999px; }
+    ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+    input[type="range"] {
+      -webkit-appearance: none; appearance: none; height: 5px;
+      background: #1E293B; border-radius: 999px; outline: none; cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none; width: 15px; height: 15px;
+      border-radius: 50%; background: #22D3EE; border: 2px solid #0B0F17;
+      box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.25); cursor: pointer;
+    }
+
+    @keyframes voiceWave { 0%, 100% { height: 4px; } 50% { height: 16px; } }
+    .voice-bar { width: 3px; height: 4px; background-color: #22D3EE; border-radius: 999px; }
+    .voice-active .voice-bar:nth-child(1) { animation: voiceWave 0.55s ease-in-out infinite 0.0s; }
+    .voice-active .voice-bar:nth-child(2) { animation: voiceWave 0.55s ease-in-out infinite 0.15s; }
+    .voice-active .voice-bar:nth-child(3) { animation: voiceWave 0.55s ease-in-out infinite 0.3s; }
+    .voice-active .voice-bar:nth-child(4) { animation: voiceWave 0.55s ease-in-out infinite 0.1s; }
+
+    @keyframes heartbeatZoom {
+      0% { transform: scale(0.88); }
+      50% { transform: scale(1.18); }
+      100% { transform: scale(1); }
+    }
+    .heartbeat-active { animation: heartbeatZoom 0.45s ease-out; }
+
+    @keyframes hourglassSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(180deg); }
+    }
+    .hourglass-spin { animation: hourglassSpin 0.55s ease-in-out; }
+
+    /* Floating Option Slide-In Animation */
+    .opt-pre-float {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      transform: translateY(85px) scale(0.90) !important;
+      transition: none !important;
+    }
+    @keyframes floatSlideUp {
+      0% { opacity: 0; visibility: visible; transform: translateY(85px) scale(0.90); }
+      62% { opacity: 1; visibility: visible; transform: translateY(-6px) scale(1.02); }
+      84% { opacity: 1; visibility: visible; transform: translateY(2px) scale(0.995); }
+      100% { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    }
+    .opt-float-in {
+      visibility: visible !important;
+      transition: none !important;
+      animation: floatSlideUp 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* Subtle Dot Grid Pattern */
+    .reel-dot-bg {
+      background-image: radial-gradient(rgba(15, 23, 42, 0.075) 1.2px, transparent 1.2px);
+      background-size: 16px 16px;
+    }
+
+    /* 3D Elevated Question Card */
+    .question-card-3d {
+      box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.16), 0 4px 10px -2px rgba(15, 23, 42, 0.08);
+    }
+
+    /* Last 2-Second Red Alert Urgency Pulse */
+    @keyframes redAlertPulse {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0px rgba(239, 68, 68, 0.0)); }
+      50% { transform: scale(1.15); filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.75)); }
+    }
+    .timer-red-alert {
+      animation: redAlertPulse 0.55s ease-in-out infinite;
+    }
+
+    /* Correct Answer Green Glow + Zoom */
+    @keyframes correctGlowPop {
+      0% { transform: scale(1); }
+      45% { transform: scale(1.045); }
+      100% { transform: scale(1.025); }
+    }
+    .opt-correct-glow {
+      animation: correctGlowPop 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      box-shadow: 0 0 22px rgba(16, 185, 129, 0.50), 0 8px 18px -4px rgba(16, 185, 129, 0.25) !important;
+    }
+
+    /* Fullscreen Overlay for Phone Screen Recording */
+    .fs-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: #000000;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .fs-overlay.open { display: flex; }
+    #fsCanvas {
+      max-width: 100vw;
+      max-height: 100vh;
+      aspect-ratio: 9 / 16;
+      height: 100vh;
+      width: auto;
+      display: block;
+      background: #000;
+    }
+    @media (max-aspect-ratio: 9/16) {
+      #fsCanvas { width: 100vw; height: auto; }
+    }
+    #fsCanvas.landscape-mode {
+      aspect-ratio: 16 / 9;
+      width: 100vw;
+      height: auto;
+    }
+    @media (min-aspect-ratio: 16/9) {
+      #fsCanvas.landscape-mode { height: 100vh; width: auto; }
+    }
+    .fs-controls {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      z-index: 100001;
+      display: flex;
+      gap: 8px;
+      transition: opacity 0.35s ease;
+    }
+    .fs-controls.faded { opacity: 0.12; }
+    .fs-controls:hover { opacity: 1; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-yellow-400/20 selection:text-yellow-300">
+
+  <!-- TOP STICKY STUDIO HEADER -->
+  <header class="sticky top-0 z-40 bg-[#0B0F17]/95 backdrop-blur-md border-b border-[#1E293B]">
+    <div class="max-w-[1300px] mx-auto px-3 sm:px-6 py-2.5 min-h-16 flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2 min-w-0">
+        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-[#22D3EE] via-indigo-500 to-rose-500 flex items-center justify-center shadow-lg shadow-cyan-400/15 shrink-0">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <h1 class="text-xs sm:text-base font-extrabold tracking-tight text-white">MD Reel Current Affair</h1>
+            <span class="inline-flex px-1.5 py-0.5 rounded text-[10px] font-extrabold tracking-wide bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 text-cyan-300 border border-cyan-400/30 shrink-0">
+              v16 Hybrid
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-400 truncate hidden md:block">
+            v10 Smartphone Look + v13 Native Audio/Capacitor Engine + Full Customizable Controls
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1.5 flex-wrap shrink-0">
+        <button type="button" id="btnLoadDemoHeader" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] sm:text-xs font-bold transition cursor-pointer whitespace-nowrap">
+          💡 Demo
+        </button>
+        <button type="button" id="btnOpenBulkModal" class="px-2.5 py-1.5 rounded-lg bg-[#FACC15]/15 hover:bg-[#FACC15]/25 border border-[#FACC15]/40 text-[#FACC15] text-[11px] sm:text-xs font-bold flex items-center gap-1 transition cursor-pointer whitespace-nowrap">
+          ⚡ Bulk Paste
+        </button>
+        <button type="button" id="btnOpenPdfModal" class="px-2.5 py-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/40 text-rose-400 text-[11px] sm:text-xs font-bold flex items-center gap-1 transition cursor-pointer whitespace-nowrap">
+          📑 PDF
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="flex-1 max-w-[1300px] w-full mx-auto px-3 sm:px-6 py-5 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+    <!-- LEFT COLUMN: CONTROLS & SETTINGS (6 cols) -->
+    <div class="lg:col-span-6 space-y-4">
+
+      <!-- 1. QUESTION INPUT & EDIT FORM -->
+      <section class="bg-[#111827] border border-[#1E293B] rounded-2xl p-4 sm:p-5 shadow-xl space-y-3">
+        <div class="flex items-center justify-between border-b border-[#1E293B] pb-2.5">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#FACC15]"></span>
+            <h2 id="formHeaderTitle" class="text-xs sm:text-sm font-bold tracking-wider uppercase text-slate-100">Add / Edit Question</h2>
+          </div>
+          <span class="text-[11px] font-mono font-bold text-[#22D3EE]" id="questionsCounterBadge">Total: 0 Qs</span>
+        </div>
+
+        <form id="mainQuestionForm" class="space-y-3">
+          <div>
+            <label class="block text-[11px] text-slate-300 font-bold mb-1">
+              प्रश्न लिखें <span class="text-slate-400 font-normal">(परीक्षा/साल के लिए #tag लगाएं, जैसे #UPPSC2022 — स्क्रीन पर दिखेगा, आवाज़ नहीं पढ़ेगी)</span>
+            </label>
+            <textarea id="inputQuestionText" rows="2" placeholder="जैसे: भारत का राष्ट्रीय आदर्श वाक्य 'सत्यमेव जयते' किस उपनिषद से लिया गया है? #UPPSC2022" required class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE] rounded-xl p-2.5 text-xs sm:text-sm text-white outline-none leading-snug"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-[11px] text-slate-300 font-bold mb-1.5">
+              चार विकल्प लिखें और सही उत्तर के रेडियो बटन (A/B/C/D) पर टैप करके हरा (✓) चुनें:
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div class="opt-row-box flex items-center gap-2 p-1.5 rounded-xl bg-[#0E1420] border border-[#1E293B]" data-opt-idx="0">
+                <button type="button" class="opt-radio-pick w-7 h-7 rounded-lg bg-blue-600 text-white font-extrabold text-xs flex items-center justify-center shrink-0 cursor-pointer">A</button>
+                <input type="text" id="optInput0" placeholder="कठोपनिषद" required class="w-full bg-transparent border-none text-xs text-white outline-none">
+              </div>
+              <div class="opt-row-box flex items-center gap-2 p-1.5 rounded-xl bg-[#0E1420] border border-[#1E293B]" data-opt-idx="1">
+                <button type="button" class="opt-radio-pick w-7 h-7 rounded-lg bg-slate-800 text-slate-300 font-extrabold text-xs flex items-center justify-center shrink-0 cursor-pointer">B</button>
+                <input type="text" id="optInput1" placeholder="मुण्डकोपनिषद" required class="w-full bg-transparent border-none text-xs text-white outline-none">
+              </div>
+              <div class="opt-row-box flex items-center gap-2 p-1.5 rounded-xl bg-[#0E1420] border border-[#1E293B]" data-opt-idx="2">
+                <button type="button" class="opt-radio-pick w-7 h-7 rounded-lg bg-slate-800 text-slate-300 font-extrabold text-xs flex items-center justify-center shrink-0 cursor-pointer">C</button>
+                <input type="text" id="optInput2" placeholder="छांदोग्य उपनिषद" required class="w-full bg-transparent border-none text-xs text-white outline-none">
+              </div>
+              <div class="opt-row-box flex items-center gap-2 p-1.5 rounded-xl bg-[#0E1420] border border-[#1E293B]" data-opt-idx="3">
+                <button type="button" class="opt-radio-pick w-7 h-7 rounded-lg bg-slate-800 text-slate-300 font-extrabold text-xs flex items-center justify-center shrink-0 cursor-pointer">D</button>
+                <input type="text" id="optInput3" placeholder="केनोपनिषद" required class="w-full bg-transparent border-none text-xs text-white outline-none">
+              </div>
+            </div>
+            <input type="hidden" id="selectedCorrectIndex" value="0" />
+            <div class="text-[11px] text-emerald-400 font-semibold mt-1" id="correctAnswerHint">चयनित सही उत्तर: विकल्प A (उत्तर समय पर केवल यह हरा होगा)</div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] text-slate-300 font-bold mb-1">
+              स्पष्टीकरण / व्याख्या (वैकल्पिक — सही उत्तर हरा टिक होने के बाद नीचे दिखेगा)
+            </label>
+            <input type="text" id="inputExplanationText" placeholder="जैसे: अनुच्छेद 213 के तहत राज्यपाल विधानमंडल के सत्र में न होने पर अध्यादेश जारी कर सकता है।" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-emerald-400 rounded-xl px-3 py-2 text-xs text-white outline-none">
+          </div>
+
+          <!-- Per-question Voice Record & Audio Upload (from v13) -->
+          <div class="p-2.5 rounded-xl bg-[#0E1420] border border-[#1E293B] space-y-2 text-xs">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-300">🎙️ अपनी आवाज़ जोड़ें (वैकल्पिक)</span>
+              <span id="draftVoiceBadge" class="text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-slate-800 text-slate-400">Computer TTS</span>
+            </div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <button type="button" id="btnDraftRecStart" class="px-3 py-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/40 text-rose-300 text-xs font-bold cursor-pointer">
+                🎙️ Record Mic
+              </button>
+              <button type="button" id="btnDraftRecStop" class="hidden px-3 py-1.5 rounded-lg bg-rose-600 text-white text-xs font-bold animate-pulse cursor-pointer">
+                ⏹️ Stop Rec
+              </button>
+              <label class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold cursor-pointer">
+                📂 Upload Audio (MP3/WAV)
+                <input type="file" id="draftAudioFileInput" accept="audio/*" class="hidden">
+              </label>
+              <button type="button" id="btnDraftClearVoice" class="hidden px-2.5 py-1.5 rounded-lg bg-slate-800 text-rose-400 text-xs font-bold cursor-pointer">
+                🗑️ Clear
+              </button>
+            </div>
+            <audio id="draftAudioPlayer" controls class="hidden w-full h-8 mt-1.5"></audio>
+          </div>
+
+          <div class="flex items-center gap-2 pt-1">
+            <button type="submit" id="btnSaveQuestionMain" class="flex-1 py-2.5 rounded-xl bg-[#FACC15] hover:bg-yellow-300 text-[#0B0F17] font-extrabold text-xs sm:text-sm cursor-pointer shadow">
+              ✅ Save Question
+            </button>
+            <button type="button" id="btnCancelEditMain" class="hidden px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs cursor-pointer">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 2. REEL QUESTIONS MANAGER (LIST WITH REORDER & VOICE) -->
+      <section class="bg-[#111827] border border-[#1E293B] rounded-2xl p-4 sm:p-5 shadow-xl space-y-3">
+        <div class="flex items-center justify-between border-b border-[#1E293B] pb-2.5">
+          <div class="flex items-center gap-2">
+            <h2 class="text-xs sm:text-sm font-bold tracking-wider uppercase text-slate-100">Questions in Current Reel</h2>
+            <span class="text-xs font-mono font-bold text-[#22D3EE]" id="activeQNumberBadge">Q 1 / 0</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button type="button" id="btnExportJsonBackup" class="text-[10px] px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 cursor-pointer">JSON Save</button>
+            <label class="text-[10px] px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[#22D3EE] border border-slate-700 cursor-pointer">
+              Load<input type="file" id="inputJsonRestore" accept=".json" class="hidden">
+            </label>
+            <button type="button" id="btnClearAllQuestions" class="text-[10px] px-2 py-0.5 rounded bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-800 cursor-pointer">Clear All</button>
+          </div>
+        </div>
+
+        <div id="questionsScrollContainer" class="max-h-[280px] overflow-y-auto space-y-2 pr-1">
+          <!-- Dynamically populated questions list -->
+        </div>
+      </section>
+
+      <!-- 3. TOPIC & WATERMARK DROPDOWNS -->
+      <section class="bg-[#111827] border border-[#1E293B] rounded-2xl p-4 sm:p-5 shadow-xl space-y-3.5">
+        <h2 class="text-xs sm:text-sm font-bold tracking-wider uppercase text-slate-100 flex items-center gap-2">
+          <span>📌</span> Topic &amp; Watermark
+        </h2>
+
+        <!-- Topic Selector (6 Options: Current Affairs, UPPSC, UPSSSC, Mix GK, Mind Test, Other) -->
+        <div>
+          <label class="block text-[11px] text-slate-300 font-bold mb-1">Topic Preset (शीर्षक पट्टी):</label>
+          <select id="selectTopicPreset" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE] rounded-xl px-3 py-2 text-xs font-semibold text-white outline-none cursor-pointer">
+            <option value="Current Affairs" selected>1. Current Affairs</option>
+            <option value="UPPSC">2. UPPSC</option>
+            <option value="UPSSSC">3. UPSSSC</option>
+            <option value="Mix GK">4. Mix GK</option>
+            <option value="Mind Test">5. Mind Test</option>
+            <option value="__custom__">6. Other (Type Custom Topic)</option>
+          </select>
+          <input type="text" id="inputCustomTopic" placeholder="Type custom topic here..." maxlength="80" class="hidden w-full mt-2 bg-[#0E1420] border border-[#FACC15]/60 focus:border-[#FACC15] rounded-xl px-3 py-2 text-xs font-bold text-white outline-none">
+        </div>
+
+        <!-- Watermark / Channel Preset (Current Affairs & GK Quiz (Hindi), सामान्य ज्ञान और समसामयिकी, Other) -->
+        <div>
+          <label class="block text-[11px] text-slate-300 font-bold mb-1">Watermark / Channel Name (वॉटरमार्क):</label>
+          <select id="selectWatermarkPreset" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE] rounded-xl px-3 py-2 text-xs font-semibold text-white outline-none cursor-pointer">
+            <option value="Current Affairs & GK Quiz (Hindi)" selected>1. Current Affairs &amp; GK Quiz (Hindi)</option>
+            <option value="सामान्य ज्ञान और समसामयिकी">2. सामान्य ज्ञान और समसामयिकी</option>
+            <option value="__custom__">3. Other (Type Custom Name)</option>
+          </select>
+          <input type="text" id="inputCustomWatermark" placeholder="Type custom handle or channel name..." maxlength="60" class="hidden w-full mt-2 bg-[#0E1420] border border-[#FACC15]/60 focus:border-[#FACC15] rounded-xl px-3 py-2 text-xs font-bold text-white outline-none">
+        </div>
+
+        <!-- Topic Banner Visible Toggle -->
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#0E1420] border border-[#1E293B]">
+          <span class="text-xs font-semibold text-slate-300">Show Topic Banner on Screen (Layout A)</span>
+          <input type="checkbox" id="toggleShowTopicBanner" checked class="w-4 h-4 accent-[#22D3EE] rounded cursor-pointer">
+        </div>
+      </section>
+
+      <!-- 4. 6 LIGHT THEMES, FLOATING OPTIONS & SOUNDS -->
+      <section class="bg-[#111827] border border-[#1E293B] rounded-2xl p-4 sm:p-5 shadow-xl space-y-3.5">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xs sm:text-sm font-bold tracking-wider uppercase text-slate-100">Theme &amp; Options Animation</h2>
+          <span id="labelActiveTheme" class="text-[10px] px-2 py-0.5 rounded font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40">White &amp; Blue</span>
+        </div>
+
+        <!-- 6 Light Themes Buttons -->
+        <div class="grid grid-cols-3 sm:grid-cols-6 gap-1.5">
+          <button type="button" data-theme="white_blue" class="theme-card-btn py-2 px-1 rounded-xl bg-slate-900 border-2 border-white text-[10px] font-bold text-white flex flex-col items-center gap-1 cursor-pointer transition">
+            <span class="w-3.5 h-3.5 rounded-full bg-blue-600 border border-white"></span><span>W-Blue</span>
+          </button>
+          <button type="button" data-theme="white_orange" class="theme-card-btn py-2 px-1 rounded-xl bg-slate-900 border border-slate-700 text-[10px] font-bold text-slate-300 flex flex-col items-center gap-1 cursor-pointer transition">
+            <span class="w-3.5 h-3.5 rounded-full bg-orange-500 border border-white"></span><span>W-Orange</span>
+          </button>
+          <button type="button" data-theme="white_red" class="theme-card-btn py-2 px-1 rounded-xl bg-slate-900 border border-slate-700 text-[10px] font-bold text-slate-300 flex flex-col items-center gap-1 cursor-pointer transition">
+            <span class="w-3.5 h-3.5 rounded-full bg-rose-600 border border-white"></span><span>W-Red</span>
+          </button>
+          <button type="button" data-theme="white_purple" class="theme-card-btn py-2 px-1 rounded-xl bg-slate-900 border border-slate-700 text-[10px] font-bold text-slate-300 flex flex-col items-center gap-1 cursor-pointer transition">
+            <span class="w-3.5 h-3.5 rounded-full bg-purple-600 border border-white"></span><span>W-Purple</span>
+          </button>
+          <button type="button" data-theme="white_green" class="theme-card-btn py-2 px-1 rounded-xl bg-slate-900 border border-slate-700 text-[10px] font-bold text-slate-300 flex flex-col items-center gap-1 cursor-pointer transition">
+            <span class="w-3.5 h-3.5 rounded-full bg-emerald-600 border border-white"></span><span>W-Green</span>
+          </button>
+          <button type="button" data-theme="white_teal" class="theme-card-btn py-2 px-1 rounded-xl bg-slate-900 border border-slate-700 text-[10px] font-bold text-slate-300 flex flex-col items-center gap-1 cursor-pointer transition">
+            <span class="w-3.5 h-3.5 rounded-full bg-teal-600 border border-white"></span><span>W-Teal</span>
+          </button>
+        </div>
+
+        <!-- Floating vs Static Options Mode -->
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <button type="button" id="btnModeFloating" class="p-2.5 rounded-xl bg-[#0E1420] border-2 border-[#22D3EE] text-left transition cursor-pointer">
+            <div class="text-xs font-extrabold text-white">🌊 Floating Options</div>
+            <div class="text-[10px] text-slate-400">एक-एक कर टाइमर के आधे समय में जुड़ें</div>
+          </button>
+          <button type="button" id="btnModeStatic" class="p-2.5 rounded-xl bg-[#0E1420] border border-[#1E293B] text-left transition cursor-pointer">
+            <div class="text-xs font-extrabold text-slate-300">⚡ Static Options</div>
+            <div class="text-[10px] text-slate-400">चारों विकल्प तुरंत व स्थायी दिखें</div>
+          </button>
+        </div>
+
+        <!-- 4 Option Sounds (Sak-sak, Puk-puk, Tik-tik, Mute) -->
+        <div id="optionSoundPanel" class="p-2.5 rounded-xl bg-[#0E1420] border border-[#1E293B] space-y-1.5">
+          <div class="flex items-center justify-between text-[11px]">
+            <span class="font-bold text-slate-300">Option Entrance Sound:</span>
+            <span id="activeOptionSoundBadge" class="text-[#FACC15] font-bold text-[10px]">🏹 Sak-Sak (Arrow Whoosh)</span>
+          </div>
+          <div class="grid grid-cols-4 gap-1.5">
+            <button type="button" data-optsound="sak" class="optsound-btn py-1.5 rounded-lg bg-[#111827] border-2 border-[#FACC15] text-[10px] font-bold text-white cursor-pointer">🏹 सक-सक</button>
+            <button type="button" data-optsound="puk" class="optsound-btn py-1.5 rounded-lg bg-[#111827] border border-[#1E293B] text-[10px] font-bold text-slate-300 cursor-pointer">💧 पुक-पुक</button>
+            <button type="button" data-optsound="tik" class="optsound-btn py-1.5 rounded-lg bg-[#111827] border border-[#1E293B] text-[10px] font-bold text-slate-300 cursor-pointer">⚡ टिक-टिक</button>
+            <button type="button" data-optsound="mute" class="optsound-btn py-1.5 rounded-lg bg-[#111827] border border-[#1E293B] text-[10px] font-bold text-slate-300 cursor-pointer">🔇 म्यूट</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. TIMERS, HOOK CARD & OUTRO MESSAGE -->
+      <section class="bg-[#111827] border border-[#1E293B] rounded-2xl p-4 sm:p-5 shadow-xl space-y-3.5">
+        <div class="flex items-center justify-between gap-2 flex-wrap">
+          <h2 class="text-xs sm:text-sm font-bold tracking-wider uppercase text-slate-100">Timers &amp; Sequence</h2>
+          <div class="flex items-center gap-1.5">
+            <span id="estimatedVideoLenBadge" class="text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">Est. ~0s</span>
+            <span id="timerSummaryLabel" class="text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-[#FACC15]/15 text-[#FACC15] border border-[#FACC15]/30">3s Timer • 2.5s Ans</span>
+          </div>
+        </div>
+
+        <!-- 4 Working Timer Styles (Neon Ring, Laser, Pulse, Hourglass) -->
+        <div>
+          <label class="block text-[11px] text-slate-300 font-bold mb-1.5">Timer Style (Live &amp; Video Export):</label>
+          <div class="grid grid-cols-4 gap-1.5">
+            <button type="button" data-timerstyle="ring" class="tstyle-btn py-2 rounded-xl bg-[#0E1420] border-2 border-[#22D3EE] text-xs font-bold text-white cursor-pointer">⭕ Ring</button>
+            <button type="button" data-timerstyle="laser" class="tstyle-btn py-2 rounded-xl bg-[#0E1420] border border-[#1E293B] text-xs font-bold text-slate-300 cursor-pointer">⚡ Laser</button>
+            <button type="button" data-timerstyle="pulse" class="tstyle-btn py-2 rounded-xl bg-[#0E1420] border border-[#1E293B] text-xs font-bold text-slate-300 cursor-pointer">💓 Pulse</button>
+            <button type="button" data-timerstyle="hourglass" class="tstyle-btn py-2 rounded-xl bg-[#0E1420] border border-[#1E293B] text-xs font-bold text-slate-300 cursor-pointer">⏳ Glass</button>
+          </div>
+        </div>
+
+        <!-- Countdown Timer: 1s to 8s + 10s, 12s, 15s -->
+        <div>
+          <div class="flex items-center justify-between text-[11px] text-slate-300 font-bold mb-1">
+            <span>Countdown Timer (उल्टा टाइमर):</span>
+            <span id="activeCountdownSecBadge" class="text-[#22D3EE]">3s</span>
+          </div>
+          <div class="grid grid-cols-6 sm:grid-cols-11 gap-1">
+            <button type="button" data-sec="1" class="cd-pick-btn py-1.5 rounded-lg bg-[#0E1420] border border-[#1E293B] text-xs font-bold text-slate-300 cursor-pointer">1s</button>
+            <button type="button" data-sec="2" class="cd-pick-btn py-1.5 rounded-lg bg-[#0E1420] border border-[#1E293B] text-xs font-bold text-slate-300 cursor-pointer">2s</button>
+            <button type="button" data-sec="3" class="cd-pick-btn py-1.5 rounded-lg bg-[#0E1420] border-2 border-[#22D3EE] text-xs font-bold text-white cursor-pointer">3s</button>
+            <button type="button" data-sec="4" class="cd-pick-btn py-1.5 rounded-lg bg-[#0E1420] border border-[#1E293B] text-xs font-bold text-slate-300 cursor-pointer">4s</button>
+            <button type="button" data-sec="5" class="cd-pick-btn py-1.5 rounded-lg bg-[#0E1420] border border-[#1E293B] text-xs font-bold text-slate-300 cursor-pointer">5s</button>
+            <button type="button" data-sec="6" class="cd-pick-btn py-1.5 rounded-lg bg-[#0E1420] border border-[#1E293B] text-xs font-bold text-slate-300 cursor-pointer">6s</button>
+            <button type="button" data-sec="7" class="cd-pick-btn py-1.5 rounded-lg bg-[#0E1420] border border-[#1E293B] text-xs font-bold text-slate-300 cursor-pointer">7s</button>
+            <button type="button" data-sec="8" class="cd-pick-btn py-1.5 rounded-lg bg-[#0E1420] border border-[#1E293B] text-xs font-bold text-slate-300 cursor-pointer">8s</button>
+            <button type="button" data-sec="10" class="cd-pick-btn py-1.5 rounded-lg bg-[#0E1420] border border-[#1E293B] text-xs font-bold text-slate-300 cursor-pointer">10s</button>
+            <button type="button" data-sec="12" class="cd-pick-btn py-1.5 rounded-lg bg-[#0E1420] border border-[#1E293B] text-xs font-bold text-slate-300 cursor-pointer">12s</button>
+            <button type="button" data-sec="15" class="cd-pick-btn py-1.5 rounded-lg bg-[#0E1420] border border-[#1E293B] text-xs font-bold text-slate-300 cursor-pointer">15s</button>
+          </div>
+        </div>
+
+        <!-- Answer Hold Time: 1.5s, 2.5s, 3.5s, 4.5s -->
+        <div>
+          <div class="flex items-center justify-between text-[11px] text-slate-300 font-bold mb-1">
+            <span>Answer Hold Time (उत्तर रुकने का समय):</span>
+            <span id="activeRevealSecBadge" class="text-emerald-400">2.5s</span>
+          </div>
+          <div class="grid grid-cols-4 gap-2">
+            <button type="button" data-revsec="1.5" class="rev-pick-btn py-1.5 rounded-lg bg-[#0E1420] border border-[#1E293B] text-xs font-bold text-slate-300 cursor-pointer">1.5s</button>
+            <button type="button" data-revsec="2.5" class="rev-pick-btn py-1.5 rounded-lg bg-[#0E1420] border-2 border-emerald-500 text-xs font-bold text-white cursor-pointer">2.5s</button>
+            <button type="button" data-revsec="3.5" class="rev-pick-btn py-1.5 rounded-lg bg-[#0E1420] border border-[#1E293B] text-xs font-bold text-slate-300 cursor-pointer">3.5s</button>
+            <button type="button" data-revsec="4.5" class="rev-pick-btn py-1.5 rounded-lg bg-[#0E1420] border border-[#1E293B] text-xs font-bold text-slate-300 cursor-pointer">4.5s</button>
+          </div>
+        </div>
+
+        <!-- Hook Card Optional Setting -->
+        <div class="p-3 rounded-xl bg-[#0E1420] border border-[#1E293B] space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-300">⚡ 2-Second Scroll Stopper Hook (शुरुआती धमाकेदार हुक)</span>
+            <input type="checkbox" id="toggleHookCard" class="w-4 h-4 accent-[#22D3EE] rounded cursor-pointer" checked>
+          </div>
+          <input type="text" id="inputHookCardText" placeholder="जैसे: UPPSC के 5 महत्वपूर्ण सवाल — क्या आप 4 सही कर पाएंगे?" value="रुकिए! पहले इस सवाल का जवाब दीजिए!" class="hidden w-full bg-[#111827] border border-[#1E293B] focus:border-[#22D3EE] rounded-lg p-2 text-xs text-white outline-none">
+        </div>
+
+        <!-- Outro Slide Setting -->
+        <div class="p-3 rounded-xl bg-[#0E1420] border border-[#1E293B] space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-300">📢 Outro Slide (लाइक व फॉलो संदेश)</span>
+            <input type="checkbox" id="toggleOutroSlide" checked class="w-4 h-4 accent-[#22D3EE] rounded cursor-pointer">
+          </div>
+          <textarea id="inputOutroMessageText" rows="2" class="w-full bg-[#111827] border border-[#1E293B] focus:border-[#22D3EE] rounded-lg p-2 text-xs text-white outline-none leading-snug">रोज़ाना सामान्य ज्ञान और करंट अफेयर्स के लिए हमारे पेज को फॉलो, लाइक और शेयर जरूर करें!</textarea>
+          <div class="flex items-center justify-between text-[11px] text-slate-400">
+            <span>Outro Duration:</span>
+            <div class="flex gap-1.5">
+              <button type="button" data-outrodur="2" class="outro-dur-pick px-2 py-0.5 rounded bg-blue-600 text-white font-bold cursor-pointer">2s</button>
+              <button type="button" data-outrodur="3" class="outro-dur-pick px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-bold cursor-pointer">3s</button>
+              <button type="button" data-outrodur="5" class="outro-dur-pick px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-bold cursor-pointer">5s</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. VOICE SPEED, PITCH & ENGINE -->
+      <section class="bg-[#111827] border border-[#1E293B] rounded-2xl p-4 sm:p-5 shadow-xl space-y-3">
+        <h2 class="text-xs sm:text-sm font-bold tracking-wider uppercase text-slate-100 flex items-center justify-between">
+          <span>🗣️ Voice Pitch &amp; Speed Sliders</span>
+          <button type="button" id="btnTestVoiceSpeech" class="text-[11px] font-bold text-[#22D3EE] hover:underline cursor-pointer">🔊 Test Voice</button>
+        </h2>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="p-2.5 rounded-xl bg-[#0E1420] border border-[#1E293B]">
+            <div class="flex justify-between text-[11px] text-slate-300 font-bold mb-1.5">
+              <span>Voice Speed</span>
+              <span id="displayVoiceSpeed" class="text-[#22D3EE] font-mono">1.15×</span>
+            </div>
+            <input type="range" id="sliderVoiceSpeed" min="0.50" max="1.80" step="0.05" value="1.15" class="w-full">
+          </div>
+          <div class="p-2.5 rounded-xl bg-[#0E1420] border border-[#1E293B]">
+            <div class="flex justify-between text-[11px] text-slate-300 font-bold mb-1.5">
+              <span>Voice Pitch</span>
+              <span id="displayVoicePitch" class="text-[#FACC15] font-mono">1.00</span>
+            </div>
+            <input type="range" id="sliderVoicePitch" min="0.60" max="1.50" step="0.05" value="1.00" class="w-full">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div>
+            <label class="block text-[10px] text-slate-400 mb-1">TTS Voice Engine</label>
+            <select id="selectVoiceEngine" class="w-full bg-[#0E1420] border border-[#1E293B] rounded-lg px-2 py-1.5 text-xs text-white outline-none truncate">
+              <option value="auto">Auto Hindi (Recommended)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[10px] text-slate-400 mb-1">Voice Timing</label>
+            <select id="selectVoiceTiming" class="w-full bg-[#0E1420] border border-[#1E293B] rounded-lg px-2 py-1.5 text-xs text-white outline-none">
+              <option value="with_voice" selected>With Voice (Timer starts 3..2..1)</option>
+              <option value="after_voice">After Voice Finishes</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-1">
+          <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-300">
+            <input type="checkbox" id="toggleSoundEffects" checked class="w-4 h-4 accent-emerald-500 rounded cursor-pointer">
+            <span>Sound FX (Tick, Option Sound, Chime)</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-300">
+            <input type="checkbox" id="toggleCaptureMic" class="w-4 h-4 accent-rose-500 rounded cursor-pointer">
+            <span>Mic Capture in Video</span>
+          </label>
+        </div>
+      </section>
+    </div>
+
+    <!-- RIGHT COLUMN: 9:16 LIVE SMARTPHONE STAGE & EXPORT PANEL (6 cols) -->
+    <div class="lg:col-span-6 space-y-4">
+      <section class="bg-[#111827] border border-[#1E293B] rounded-2xl p-4 sm:p-5 shadow-2xl space-y-4">
+        
+        <!-- Preview Panel Header -->
+        <div class="flex items-center justify-between border-b border-[#1E293B] pb-3">
+          <div class="flex items-center gap-2 min-w-0">
+            <span id="stageStatusIndicatorDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_#10B981] shrink-0"></span>
+            <span id="stageStatusTitle" class="text-xs sm:text-sm font-bold text-white truncate">Live 9:16 Vertical Reel Stage</span>
+          </div>
+
+          <!-- Format Switcher: 9:16 vs 16:9 -->
+          <div class="flex items-center bg-[#0E1420] p-1 rounded-xl border border-[#1E293B]">
+            <button type="button" id="btnFmtPortrait" class="px-2.5 py-1 rounded-lg bg-blue-600 text-white font-extrabold text-[11px] cursor-pointer">📱 9:16</button>
+            <button type="button" id="btnFmtLandscape" class="px-2.5 py-1 rounded-lg text-slate-400 font-bold text-[11px] cursor-pointer">📺 16:9</button>
+          </div>
+        </div>
+
+        <!-- 9:16 VERTICAL SMARTPHONE LIVE STAGE (From v10!) -->
+        <div class="flex justify-center py-1">
+          <div id="reelSmartphoneMockup" class="reel-dot-bg w-[320px] sm:w-[350px] min-h-[610px] rounded-[32px] pt-3 pb-7 px-4 flex flex-col justify-between shadow-2xl transition-all duration-300 relative border-4 overflow-hidden" style="background-color: #F0F7FF; border-color: #1E40AF;">
+
+            <!-- OUTRO SLIDE OVERLAY -->
+            <div id="stageOutroOverlay" class="hidden absolute inset-0 z-30 flex flex-col items-center justify-center p-6 text-center bg-gradient-to-b from-blue-50 to-white">
+              <div class="w-16 h-16 rounded-full bg-amber-100 border-2 border-amber-400 flex items-center justify-center text-3xl mb-4 shadow-md">🔔</div>
+              <div id="outroWatermarkBadge" class="px-3 py-1 rounded-full text-[11px] font-extrabold bg-blue-100 text-blue-900 mb-3 truncate max-w-[260px]">Current Affairs &amp; GK Quiz (Hindi)</div>
+              <h3 id="stageOutroMessagePreview" class="text-base sm:text-lg font-black text-slate-900 leading-snug mb-5">रोज़ाना सामान्य ज्ञान और करंट अफेयर्स के लिए हमारे पेज को फॉलो, लाइक और शेयर जरूर करें!</h3>
+              <div class="flex items-center gap-2 mb-3">
+                <span class="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-bold shadow">👍 लाइक करें</span>
+                <span class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold shadow">📤 शेयर करें</span>
+              </div>
+              <span class="px-5 py-2 rounded-xl bg-rose-600 text-white text-xs font-extrabold shadow-lg">🔔 फॉलो / सब्सक्राइब करें</span>
+            </div>
+
+            <!-- 2-SECOND SCROLL-STOPPER HOOK PREVIEW -->
+            <div id="stageHookOverlay" class="hidden absolute inset-0 z-20 flex flex-col items-center justify-center p-5 text-center text-white" style="background:radial-gradient(circle at 50% 38%,#7c2d12 0%,#3b0764 42%,#020617 100%);">
+              <div class="text-[11px] font-black tracking-[.28em] text-amber-300 mb-5">MD REEL • CURRENT AFFAIR</div>
+              <div class="text-5xl font-black italic mb-3" style="text-shadow:0 0 22px #f97316">रुकिए!</div>
+              <div id="stageHookTextPreview" class="text-xl font-black leading-snug mb-4">पहले इस सवाल का जवाब दीजिए!</div>
+              <div class="rounded-2xl border border-amber-300/70 bg-white/10 px-4 py-3 text-sm font-bold shadow-xl">क्या आपको सही उत्तर पता है? 👀</div>
+              <div class="mt-6 text-[10px] font-extrabold tracking-widest text-amber-200">2 सेकंड • खुद को TEST कीजिए</div>
+            </div>
+
+            <!-- Reel Top Header -->
+            <div class="space-y-2">
+              <!-- Story-Style Top Progress Bar (Q1 | Q2 | Q3) -->
+              <div id="stageStoryProgressBar" class="flex items-center gap-1.5 w-full">
+                <div class="h-1.5 flex-1 rounded-full bg-blue-600"></div>
+                <div class="h-1.5 flex-1 rounded-full bg-slate-300/80"></div>
+                <div class="h-1.5 flex-1 rounded-full bg-slate-300/80"></div>
+              </div>
+
+              <!-- Watermark & Q counter -->
+              <div class="flex items-center justify-between border-b border-slate-200/80 pb-1.5">
+                <div class="flex items-center gap-1.5 min-w-0">
+                  <span id="stageThemeColorDot" class="w-2.5 h-2.5 rounded-full bg-blue-600 shrink-0"></span>
+                  <span id="stageWatermarkLabel" class="text-[11px] font-extrabold tracking-wide text-blue-900 truncate">
+                    Current Affairs &amp; GK Quiz (Hindi)
+                  </span>
+                </div>
+                <span id="stageReelBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 shrink-0">
+                  Q 1 / 3
+                </span>
+              </div>
+
+              <!-- Topic Banner & Compact Animated Timer -->
+              <div class="flex items-center justify-between gap-2">
+                <div id="stageTopicBannerBadge" class="flex-1 px-3 py-1.5 rounded-xl bg-blue-600 text-white text-xs font-extrabold text-center shadow-sm truncate">
+                  Current Affairs
+                </div>
+
+                <!-- Timer Styles Container (Ring, Laser, Pulse, Hourglass) -->
+                <div id="stageTimerContainer" class="shrink-0 flex items-center justify-center">
+                  <div id="timerViewRing" class="relative w-10 h-10 flex items-center justify-center">
+                    <svg class="w-10 h-10 -rotate-90" viewBox="0 0 36 36">
+                      <path class="text-slate-200" stroke-width="4" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                      <path id="stageCircleProgress" class="text-blue-600 transition-all duration-300" stroke-dasharray="100, 100" stroke-width="4" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                    </svg>
+                    <span id="stageCountdownNumRing" class="absolute text-sm font-black font-mono text-slate-900">3</span>
+                  </div>
+                  <div id="timerViewLaser" class="hidden px-2.5 py-1 rounded-xl bg-slate-900 text-cyan-300 font-mono font-black text-sm border border-cyan-400 shadow">
+                    ⚡ <span id="stageCountdownNumLaser">3</span>s
+                  </div>
+                  <div id="timerViewPulse" class="hidden w-10 h-10 rounded-full bg-rose-600 text-white font-mono font-black text-base flex items-center justify-center shadow-lg">
+                    <span id="stageCountdownNumPulse">3</span>
+                  </div>
+                  <div id="timerViewHourglass" class="hidden px-2.5 py-1 rounded-xl bg-amber-100 border border-amber-400 text-amber-900 font-mono font-black text-sm flex items-center gap-1">
+                    <span id="stageHourglassIcon" class="inline-block">⏳</span>
+                    <span id="stageCountdownNumGlass">3</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question Card & Options List -->
+            <div class="my-auto py-2">
+              <div id="stageQuestionCard" class="question-card-3d relative overflow-hidden rounded-2xl p-4 pt-5 border-2 transition-colors mb-3 bg-white border-blue-200">
+                <div id="stageCardTopStrip" class="absolute top-0 left-0 right-0 h-1.5 bg-blue-600"></div>
+                <div class="text-[10px] uppercase font-extrabold tracking-wider text-blue-700 mb-1 flex items-center justify-between">
+                  <span>✨ महत्वपूर्ण प्रश्न</span>
+                  <span id="stageSpeakingBadge" class="hidden text-[9px] px-1.5 py-0.5 rounded bg-blue-600 text-white animate-pulse">🔊 Speaking...</span>
+                </div>
+                <div id="stageQuestionText" class="text-[14px] sm:text-[15px] font-black text-slate-950 leading-snug">
+                  प्रश्न लोड हो रहा है...
+                </div>
+              </div>
+
+              <!-- 4 Options -->
+              <div id="stageOptionsContainer" class="space-y-2">
+                <div id="stageOpt0" class="stage-opt-row flex items-center gap-2.5 p-2.5 rounded-xl border bg-white border-slate-200 shadow-sm transition-all">
+                  <span class="opt-badge w-6 h-6 rounded-full flex items-center justify-center text-xs font-black bg-blue-100 text-blue-800 shrink-0">A</span>
+                  <span class="opt-label-text text-xs sm:text-sm font-bold text-slate-800 flex-1">Option A</span>
+                </div>
+                <div id="stageOpt1" class="stage-opt-row flex items-center gap-2.5 p-2.5 rounded-xl border bg-white border-slate-200 shadow-sm transition-all">
+                  <span class="opt-badge w-6 h-6 rounded-full flex items-center justify-center text-xs font-black bg-blue-100 text-blue-800 shrink-0">B</span>
+                  <span class="opt-label-text text-xs sm:text-sm font-bold text-slate-800 flex-1">Option B</span>
+                </div>
+                <div id="stageOpt2" class="stage-opt-row flex items-center gap-2.5 p-2.5 rounded-xl border bg-white border-slate-200 shadow-sm transition-all">
+                  <span class="opt-badge w-6 h-6 rounded-full flex items-center justify-center text-xs font-black bg-blue-100 text-blue-800 shrink-0">C</span>
+                  <span class="opt-label-text text-xs sm:text-sm font-bold text-slate-800 flex-1">Option C</span>
+                </div>
+                <div id="stageOpt3" class="stage-opt-row flex items-center gap-2.5 p-2.5 rounded-xl border bg-white border-slate-200 shadow-sm transition-all">
+                  <span class="opt-badge w-6 h-6 rounded-full flex items-center justify-center text-xs font-black bg-blue-100 text-blue-800 shrink-0">D</span>
+                  <span class="opt-label-text text-xs sm:text-sm font-bold text-slate-800 flex-1">Option D</span>
+                </div>
+              </div>
+
+              <!-- Explanation Card (shown right after correct answer turns green) -->
+              <div id="stageExplanationCard" class="hidden mt-2.5 p-2.5 rounded-xl bg-emerald-50 border-2 border-emerald-500 text-emerald-950 shadow-md transition-all">
+                <div class="text-[10px] font-black uppercase tracking-wider text-emerald-700 mb-0.5">💡 स्पष्टीकरण</div>
+                <div id="stageExplanationText" class="text-[11px] sm:text-xs font-bold leading-snug"></div>
+              </div>
+            </div>
+
+            <!-- Reel Bottom Bar -->
+            <div class="border-t border-slate-200 pt-2 space-y-1.5">
+              <div class="flex items-center justify-between text-[10px] font-bold text-slate-600">
+                <span id="stageBottomHintText">सही उत्तर कमेंट में बताएं 👇</span>
+                <span class="uppercase tracking-wider text-slate-400">Like • Share</span>
+              </div>
+              <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                <div id="stageBottomLaserBar" class="h-full bg-blue-600 w-full transition-all duration-300"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Master Playback Controls -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+          <button type="button" id="btnPlayCurrentQ" class="py-2.5 px-3 rounded-xl bg-[#FACC15] hover:bg-yellow-300 text-[#0B0F17] font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow cursor-pointer">
+            ▶ Play Q (Voice-Sync)
+          </button>
+          <button type="button" id="btnPlayAllQs" class="py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow cursor-pointer">
+            ⏩ Play All Qs
+          </button>
+          <button type="button" id="btnStopPlayback" class="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-rose-400 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 cursor-pointer">
+            ⏹ Stop
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button type="button" id="btnLaunchFullscreen" class="w-full py-2 px-3 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/40 text-indigo-300 font-bold text-xs flex items-center justify-center gap-2 cursor-pointer">
+            📺 Fullscreen Play (फोन स्क्रीन रिकॉर्डर हेतु)
+          </button>
+        </div>
+
+        <!-- Video Export & Gallery Save Card -->
+        <div class="p-3.5 rounded-xl bg-gradient-to-r from-emerald-950/70 via-slate-900 to-cyan-950/70 border border-emerald-500/40 space-y-2.5">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <div>
+              <div class="text-xs font-extrabold text-emerald-300">🎬 Export 9:16 Reel Video (MP4 / WebM)</div>
+              <div id="exportStatusDescription" class="text-[11px] text-slate-300">आवाज़, टाइमर, फ्लोटिंग ऑप्शंस व आउट्रो स्लाइड सहित वीडियो बनाएं</div>
+            </div>
+            <button type="button" id="btnExportVideoNow" class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#071014] font-black text-xs sm:text-sm cursor-pointer shadow-lg">
+              ⬇ Export Video
+            </button>
+          </div>
+
+          <div id="exportProgressBarContainer" class="hidden space-y-2 pt-1">
+            <div class="flex items-center justify-between text-[11px] font-mono gap-2">
+              <span id="exportProgressTextMsg" class="text-emerald-400">Recording...</span>
+              <div class="flex items-center gap-2 shrink-0">
+                <span id="exportPercentNum" class="text-white font-bold">0%</span>
+                <button type="button" id="btnStopVideoExport" class="px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-[10px] font-extrabold cursor-pointer">
+                  ⏹ रोकें (Stop)
+                </button>
+              </div>
+            </div>
+            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+              <div id="exportProgressBarFill" class="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 w-0 transition-all"></div>
+            </div>
+          </div>
+
+          <!-- Video Output & Gallery Controls -->
+          <div id="videoOutputBox" class="hidden pt-2 border-t border-slate-700 space-y-2">
+            <video id="outputVideoPlayer" controls playsinline class="w-full rounded-xl bg-black max-h-[320px]"></video>
+            <div class="flex gap-2">
+              <button type="button" id="btnSaveToGallery" class="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs cursor-pointer shadow">
+                💾 गैलरी में सेव करें (Save)
+              </button>
+              <button type="button" id="btnShareVideoFile" class="flex-1 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-extrabold text-xs cursor-pointer shadow">
+                📤 शेयर करें (Share)
+              </button>
+            </div>
+            <div id="gallerySaveHint" class="text-[10px] text-slate-400 leading-snug">
+              💡 Android APK में वीडियो सीधे फोन की गैलरी (Movies/MD_Reel_Current_Affair) में सेव होगी और Instagram पर 100% सही अपलोड होगी।
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Hidden Canvases for 30fps Video Generation & Fullscreen Play -->
+  <canvas id="hiddenExportCanvas" width="1080" height="1920" class="hidden"></canvas>
+  <div id="fullscreenOverlayModal" class="fs-overlay">
+    <div class="fs-controls" id="fullscreenControlsBar">
+      <button type="button" id="btnCloseFullscreen" class="px-4 py-2 rounded-xl bg-rose-600 text-white text-xs font-extrabold cursor-pointer">✕ Close Fullscreen</button>
+    </div>
+    <canvas id="fsCanvas" width="1080" height="1920"></canvas>
+  </div>
+
+  <!-- TOAST BANNER -->
+  <div id="appToastBanner" class="hidden fixed bottom-5 right-5 z-50 items-center gap-2.5 px-4 py-3 rounded-xl bg-[#111827] border border-[#22D3EE]/50 shadow-2xl text-xs sm:text-sm font-semibold text-white max-w-sm">
+    <span class="w-2 h-2 rounded-full bg-[#22D3EE] shrink-0"></span>
+    <span id="appToastMessage">Action completed!</span>
+  </div>
+
+  <!-- MODAL: BULK PASTE -->
+  <div id="bulkPasteModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#111827] border border-[#1E293B] rounded-2xl max-w-xl w-full p-5 shadow-2xl space-y-3.5">
+      <div class="flex items-center justify-between border-b border-[#1E293B] pb-2.5">
+        <h3 class="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#FACC15]"></span>
+          Bulk Paste Multiple Questions
+        </h3>
+        <button type="button" id="btnCloseBulkModal" class="p-1 text-slate-400 hover:text-white cursor-pointer">✕</button>
+      </div>
+      <p class="text-[11px] text-slate-400 leading-snug">
+        किसी भी सामान्य फॉर्मेट में पेस्ट करें—ऐप अपने-आप सजा देगा:<br>
+        <b>Q:</b> सवाल? #TAG &nbsp;|&nbsp; <b>A/B/C/D:</b> विकल्प &nbsp;|&nbsp; <b>Ans:</b> B &nbsp;|&nbsp; <b>Exp / स्पष्टीकरण:</b> व्याख्या (वैकल्पिक)
+      </p>
+      <textarea id="bulkPasteInputTextarea" rows="9" placeholder="Q: भारत के संविधान का जनक किसे कहा जाता है? #UPPSC2022
+A: महात्मा गांधी
+B: डॉ. भीमराव आंबेडकर
+C: पं. जवाहरलाल नेहरू
+D: सरदार पटेल
+Ans: B" class="w-full bg-[#0E1420] border border-[#1E293B] focus:border-[#22D3EE] rounded-xl p-3 text-xs text-white outline-none"></textarea>
+      <div class="flex justify-end gap-2 pt-1 border-t border-[#1E293B]">
+        <button type="button" id="btnCancelBulkModal" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold cursor-pointer">Cancel</button>
+        <button type="button" id="btnApplyBulkQuestions" class="px-5 py-2 rounded-xl bg-[#FACC15] hover:bg-yellow-300 text-[#0B0F17] text-xs font-black cursor-pointer">Add All Questions</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: IN-APP PDF AUTO-CONVERTER -->
+  <div id="pdfConverterModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#111827] border border-[#1E293B] rounded-2xl max-w-xl w-full p-5 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-[#1E293B] pb-2.5">
+        <h3 class="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+          PDF Auto-Converter (Zero Overlap)
+        </h3>
+        <button type="button" id="btnClosePdfModal" class="p-1 text-slate-400 hover:text-white cursor-pointer">✕</button>
+      </div>
+      <div class="p-6 rounded-xl bg-[#0E1420] border-2 border-dashed border-rose-500/40 text-center space-y-2 text-xs">
+        <div class="text-slate-200 font-bold">Select any Quiz / PYQ PDF File</div>
+        <p class="text-[11px] text-slate-400">सवाल, चारों विकल्प और उत्तर अपने-आप अलग होकर लोड हो जाएंगे।</p>
+        <label class="inline-block mt-2 px-5 py-2 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold cursor-pointer">
+          Choose PDF File <input type="file" id="inputPdfFile" accept=".pdf" class="hidden">
+        </label>
+      </div>
+      <div id="pdfProcessingStatusWrap" class="hidden p-3 rounded-xl bg-[#0E1420] border border-[#22D3EE]/30 space-y-1.5 text-xs">
+        <div class="flex justify-between"><span id="pdfStatusLabel" class="text-[#22D3EE]">Reading PDF...</span><span id="pdfPercentBadge">0%</span></div>
+        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden"><div id="pdfProgressBarFill" class="h-full bg-rose-500 w-0 transition-all"></div></div>
+      </div>
+      <div class="flex justify-end">
+        <button type="button" id="btnCancelPdfModal" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold cursor-pointer">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * =========================================================================
+     * MD REEL CURRENT AFFAIR v16 ULTIMATE HYBRID ENGINE
+     * Combining v10 Smartphone Visuals + v13 Rock-Solid Capacitor Audio & MP4
+     * =========================================================================
+     */
+    const STORAGE_KEY_QUESTIONS = 'md_quiz_hybrid_v16_questions';
+    const STORAGE_KEY_SETTINGS  = 'md_quiz_hybrid_v16_settings';
+    const VOICE_DB_NAME         = 'MDQuizReelVoices_v6';
+    const LETTERS               = ['A', 'B', 'C', 'D'];
+
+    // 6 Clean Light Color Themes (Soft Gradient + Clean High-Contrast Cards)
+    const THEMES = {
+      white_blue: {
+        name: 'White & Blue',
+        phoneBg: '#F0F7FF', gradTop: '#EFF6FF', gradBot: '#DBEAFE',
+        phoneBorder: '#1E40AF', accent: '#2563EB', cardBg: '#FFFFFF', cardBorder: '#93C5FD',
+        text: '#020617', optText: '#1E293B', watermark: '#1E3A8A'
+      },
+      white_orange: {
+        name: 'White & Orange',
+        phoneBg: '#FFF7ED', gradTop: '#FFFBEB', gradBot: '#FFEDD5',
+        phoneBorder: '#EA580C', accent: '#F97316', cardBg: '#FFFFFF', cardBorder: '#FDBA74',
+        text: '#020617', optText: '#1E293B', watermark: '#9A3412'
+      },
+      white_red: {
+        name: 'White & Red',
+        phoneBg: '#FEF2F2', gradTop: '#FFF1F2', gradBot: '#FEE2E2',
+        phoneBorder: '#DC2626', accent: '#EF4444', cardBg: '#FFFFFF', cardBorder: '#FCA5A5',
+        text: '#020617', optText: '#1E293B', watermark: '#9F1239'
+      },
+      white_purple: {
+        name: 'White & Purple',
+        phoneBg: '#FAF5FF', gradTop: '#FAF5FF', gradBot: '#EDE9FE',
+        phoneBorder: '#7C3AED', accent: '#9333EA', cardBg: '#FFFFFF', cardBorder: '#C4B5FD',
+        text: '#020617', optText: '#1E293B', watermark: '#581C87'
+      },
+      white_green: {
+        name: 'White & Green',
+        phoneBg: '#ECFDF5', gradTop: '#F0FDF4', gradBot: '#D1FAE5',
+        phoneBorder: '#059669', accent: '#10B981', cardBg: '#FFFFFF', cardBorder: '#6EE7B7',
+        text: '#020617', optText: '#1E293B', watermark: '#14532D'
+      },
+      white_teal: {
+        name: 'White & Teal',
+        phoneBg: '#F0FDFA', gradTop: '#F0FDFA', gradBot: '#CCFBF1',
+        phoneBorder: '#0F766E', accent: '#0D9488', cardBg: '#FFFFFF', cardBorder: '#5EEAD4',
+        text: '#020617', optText: '#1E293B', watermark: '#134E4A'
+      }
+    };
+
+    const DEFAULT_QUESTIONS = [
+      {
+        id: 'q_demo_1',
+        q: "भारत के संविधान के किस अनुच्छेद के अंतर्गत राज्यों के राज्यपाल को अध्यादेश जारी करने की शक्ति प्राप्त है? #UPPSC2022",
+        options: ["अनुच्छेद 123", "अनुच्छेद 213", "अनुच्छेद 243", "अनुच्छेद 356"],
+        correctIndex: 1,
+        explanation: "अनुच्छेद 213 के तहत राज्यपाल विधानमंडल के सत्र में न होने पर अध्यादेश जारी कर सकता है।"
+      },
+      {
+        id: 'q_demo_2',
+        q: "निम्नलिखित में से कौन-सी नदी उत्तर प्रदेश के सोनभद्र जिले से होकर नहीं बहती है? #UPPSC2023",
+        options: ["रिहंद", "कनहर", "सोन", "घाघरा"],
+        correctIndex: 3,
+        explanation: "घाघरा नदी सोनभद्र जिले से होकर नहीं बहती है।"
+      },
+      {
+        id: 'q_demo_3',
+        q: "'अभिनव भारत' नामक गुप्त क्रांतिकारी संगठन की स्थापना किसने की थी? #UPPSC2021",
+        options: ["भगत सिंह", "विनायक दामोदर सावरकर", "रासबिहारी बोस", "चंद्रशेखर आज़ाद"],
+        correctIndex: 1,
+        explanation: "विनायक दामोदर सावरकर ने अभिनव भारत संगठन की स्थापना की थी।"
+      },
+      {
+        id: 'q_demo_4',
+        q: "'रामसर कन्वेंशन' (Ramsar Convention) किसके संरक्षण से संबंधित है? #UPPSC2022",
+        options: ["आर्द्रभूमियाँ (Wetlands)", "ओजोन परत", "जैव विविधता", "प्रवाल भित्तियाँ"],
+        correctIndex: 0,
+        explanation: "रामसर कन्वेंशन आर्द्रभूमियों (Wetlands) के संरक्षण से संबंधित है।"
+      },
+      {
+        id: 'q_demo_5',
+        q: "भारत में 'अग्रणी बैंक योजना' (Lead Bank Scheme) किस वर्ष शुरू की गई थी? #UPPSC2024",
+        options: ["1965", "1969", "1975", "1980"],
+        correctIndex: 1,
+        explanation: "अग्रणी बैंक योजना वर्ष 1969 में शुरू की गई थी।"
+      }
+    ];
+
+    // Master Application State
+    const state = {
+      questions: [],
+      currentIndex: 0,
+      editingId: null,
+      videoFormat: 'portrait', // 'portrait' (9:16) or 'landscape' (16:9)
+      videoQuality: '1080',
+      theme: 'white_blue',
+      topicPreset: 'Current Affairs',
+      customTopic: '',
+      showTopicBanner: true,
+      watermarkPreset: 'Current Affairs & GK Quiz (Hindi)',
+      customWatermark: '',
+      optionsMode: 'floating', // 'floating' or 'static'
+      optionSound: 'sak',      // 'sak', 'puk', 'tik', 'mute'
+      timerStyle: 'ring',       // 'ring', 'laser', 'pulse', 'hourglass'
+      countdownSec: 3,         // 1 to 15s
+      revealSec: 2.5,          // 1.5 to 4.5s
+      voiceSpeed: 1.15,        // 0.50x to 1.80x
+      voicePitch: 1.00,        // 0.60 to 1.50
+      voiceEngine: 'auto',
+      voiceTiming: 'with_voice',
+      soundFxEnabled: true,
+      captureMic: false,
+      hookEnabled: true,
+      hookText: 'रुकिए! पहले इस सवाल का जवाब दीजिए!',
+      outroEnabled: true,
+      outroText: 'परीक्षा उपयोगी Current Affairs के लिए MD Reel Current Affair को Follow करें। Reel को Like और Share जरूर करें!',
+      outroDuration: 2,
+      // Playback runtime flags
+      isPlaying: false,
+      isRecording: false,
+      abortExport: false,
+      runSessionId: 0
+    };
+
+    let activeOptionTimers = [];
+    const voiceCache = new Map(); // qId -> { blob, url, duration }
+    let draftVoice = null;
+    let voiceMediaRec = null;
+    let voiceRecStream = null;
+
+    // DOM Elements Cache
+    let dom = {};
+    function queryDom() {
+      dom = {
+        // Form
+        formHeaderTitle: document.getElementById('formHeaderTitle'),
+        mainQuestionForm: document.getElementById('mainQuestionForm'),
+        inputQuestionText: document.getElementById('inputQuestionText'),
+        optInputs: [
+          document.getElementById('optInput0'),
+          document.getElementById('optInput1'),
+          document.getElementById('optInput2'),
+          document.getElementById('optInput3')
+        ],
+        selectedCorrectIndex: document.getElementById('selectedCorrectIndex'),
+        inputExplanationText: document.getElementById('inputExplanationText'),
+        correctAnswerHint: document.getElementById('correctAnswerHint'),
+        btnSaveQuestionMain: document.getElementById('btnSaveQuestionMain'),
+        btnCancelEditMain: document.getElementById('btnCancelEditMain'),
+        btnDraftRecStart: document.getElementById('btnDraftRecStart'),
+        btnDraftRecStop: document.getElementById('btnDraftRecStop'),
+        draftAudioFileInput: document.getElementById('draftAudioFileInput'),
+        btnDraftClearVoice: document.getElementById('btnDraftClearVoice'),
+        draftVoiceBadge: document.getElementById('draftVoiceBadge'),
+        draftAudioPlayer: document.getElementById('draftAudioPlayer'),
+
+        // Questions List
+        questionsCounterBadge: document.getElementById('questionsCounterBadge'),
+        activeQNumberBadge: document.getElementById('activeQNumberBadge'),
+        questionsScrollContainer: document.getElementById('questionsScrollContainer'),
+        btnExportJsonBackup: document.getElementById('btnExportJsonBackup'),
+        inputJsonRestore: document.getElementById('inputJsonRestore'),
+        btnClearAllQuestions: document.getElementById('btnClearAllQuestions'),
+
+        // Topic & Watermark
+        selectTopicPreset: document.getElementById('selectTopicPreset'),
+        inputCustomTopic: document.getElementById('inputCustomTopic'),
+        selectWatermarkPreset: document.getElementById('selectWatermarkPreset'),
+        inputCustomWatermark: document.getElementById('inputCustomWatermark'),
+        toggleShowTopicBanner: document.getElementById('toggleShowTopicBanner'),
+
+        // Design & Style
+        labelActiveTheme: document.getElementById('labelActiveTheme'),
+        themeCardButtons: document.querySelectorAll('.theme-card-btn'),
+        btnModeFloating: document.getElementById('btnModeFloating'),
+        btnModeStatic: document.getElementById('btnModeStatic'),
+        optionSoundPanel: document.getElementById('optionSoundPanel'),
+        activeOptionSoundBadge: document.getElementById('activeOptionSoundBadge'),
+        optsoundButtons: document.querySelectorAll('.optsound-btn'),
+
+        // Timers & Sequence
+        timerSummaryLabel: document.getElementById('timerSummaryLabel'),
+        tstyleButtons: document.querySelectorAll('.tstyle-btn'),
+        activeCountdownSecBadge: document.getElementById('activeCountdownSecBadge'),
+        cdPickButtons: document.querySelectorAll('.cd-pick-btn'),
+        activeRevealSecBadge: document.getElementById('activeRevealSecBadge'),
+        revPickButtons: document.querySelectorAll('.rev-pick-btn'),
+        toggleHookCard: document.getElementById('toggleHookCard'),
+        inputHookCardText: document.getElementById('inputHookCardText'),
+        toggleOutroSlide: document.getElementById('toggleOutroSlide'),
+        inputOutroMessageText: document.getElementById('inputOutroMessageText'),
+        outroDurButtons: document.querySelectorAll('.outro-dur-pick'),
+
+        // Voice Controls
+        displayVoiceSpeed: document.getElementById('displayVoiceSpeed'),
+        sliderVoiceSpeed: document.getElementById('sliderVoiceSpeed'),
+        displayVoicePitch: document.getElementById('displayVoicePitch'),
+        sliderVoicePitch: document.getElementById('sliderVoicePitch'),
+        selectVoiceEngine: document.getElementById('selectVoiceEngine'),
+        selectVoiceTiming: document.getElementById('selectVoiceTiming'),
+        btnTestVoiceSpeech: document.getElementById('btnTestVoiceSpeech'),
+        toggleSoundEffects: document.getElementById('toggleSoundEffects'),
+        toggleCaptureMic: document.getElementById('toggleCaptureMic'),
+
+        // Stage Live Mockup & Preview
+        stageStatusIndicatorDot: document.getElementById('stageStatusIndicatorDot'),
+        stageStatusTitle: document.getElementById('stageStatusTitle'),
+        btnFmtPortrait: document.getElementById('btnFmtPortrait'),
+        btnFmtLandscape: document.getElementById('btnFmtLandscape'),
+        reelSmartphoneMockup: document.getElementById('reelSmartphoneMockup'),
+        stageOutroOverlay: document.getElementById('stageOutroOverlay'),
+        outroWatermarkBadge: document.getElementById('outroWatermarkBadge'),
+        stageOutroMessagePreview: document.getElementById('stageOutroMessagePreview'),
+        stageHookOverlay: document.getElementById('stageHookOverlay'),
+        stageHookTextPreview: document.getElementById('stageHookTextPreview'),
+        stageStoryProgressBar: document.getElementById('stageStoryProgressBar'),
+        stageThemeColorDot: document.getElementById('stageThemeColorDot'),
+        stageWatermarkLabel: document.getElementById('stageWatermarkLabel'),
+        stageReelBadge: document.getElementById('stageReelBadge'),
+        stageTopicBannerBadge: document.getElementById('stageTopicBannerBadge'),
+        stageTimerContainer: document.getElementById('stageTimerContainer'),
+        timerViewRing: document.getElementById('timerViewRing'),
+        timerViewLaser: document.getElementById('timerViewLaser'),
+        timerViewPulse: document.getElementById('timerViewPulse'),
+        timerViewHourglass: document.getElementById('timerViewHourglass'),
+        stageCircleProgress: document.getElementById('stageCircleProgress'),
+        stageCountdownNumRing: document.getElementById('stageCountdownNumRing'),
+        stageCountdownNumLaser: document.getElementById('stageCountdownNumLaser'),
+        stageCountdownNumPulse: document.getElementById('stageCountdownNumPulse'),
+        stageCountdownNumGlass: document.getElementById('stageCountdownNumGlass'),
+        stageHourglassIcon: document.getElementById('stageHourglassIcon'),
+        stageQuestionCard: document.getElementById('stageQuestionCard'),
+        stageCardTopStrip: document.getElementById('stageCardTopStrip'),
+        stageSpeakingBadge: document.getElementById('stageSpeakingBadge'),
+        stageQuestionText: document.getElementById('stageQuestionText'),
+        stageOptRows: [
+          document.getElementById('stageOpt0'),
+          document.getElementById('stageOpt1'),
+          document.getElementById('stageOpt2'),
+          document.getElementById('stageOpt3')
+        ],
+        stageBottomHintText: document.getElementById('stageBottomHintText'),
+        stageExplanationCard: document.getElementById('stageExplanationCard'),
+        stageExplanationText: document.getElementById('stageExplanationText'),
+        stageBottomLaserBar: document.getElementById('stageBottomLaserBar'),
+
+        // Playback & Export Buttons
+        btnPlayCurrentQ: document.getElementById('btnPlayCurrentQ'),
+        btnPlayAllQs: document.getElementById('btnPlayAllQs'),
+        btnStopPlayback: document.getElementById('btnStopPlayback'),
+        btnLaunchFullscreen: document.getElementById('btnLaunchFullscreen'),
+        btnExportVideoNow: document.getElementById('btnExportVideoNow'),
+        btnStopVideoExport: document.getElementById('btnStopVideoExport'),
+        estimatedVideoLenBadge: document.getElementById('estimatedVideoLenBadge'),
+        exportProgressBarContainer: document.getElementById('exportProgressBarContainer'),
+        exportProgressTextMsg: document.getElementById('exportProgressTextMsg'),
+        exportPercentNum: document.getElementById('exportPercentNum'),
+        exportProgressBarFill: document.getElementById('exportProgressBarFill'),
+        videoOutputBox: document.getElementById('videoOutputBox'),
+        outputVideoPlayer: document.getElementById('outputVideoPlayer'),
+        btnSaveToGallery: document.getElementById('btnSaveToGallery'),
+        btnShareVideoFile: document.getElementById('btnShareVideoFile'),
+        gallerySaveHint: document.getElementById('gallerySaveHint'),
+
+        // Fullscreen Modal & Canvases
+        hiddenExportCanvas: document.getElementById('hiddenExportCanvas'),
+        fullscreenOverlayModal: document.getElementById('fullscreenOverlayModal'),
+        fullscreenControlsBar: document.getElementById('fullscreenControlsBar'),
+        btnCloseFullscreen: document.getElementById('btnCloseFullscreen'),
+        fsCanvas: document.getElementById('fsCanvas'),
+
+        // Header Actions & Modals
+        btnLoadDemoHeader: document.getElementById('btnLoadDemoHeader'),
+        btnOpenBulkModal: document.getElementById('btnOpenBulkModal'),
+        btnOpenPdfModal: document.getElementById('btnOpenPdfModal'),
+        bulkPasteModal: document.getElementById('bulkPasteModal'),
+        bulkPasteInputTextarea: document.getElementById('bulkPasteInputTextarea'),
+        btnCloseBulkModal: document.getElementById('btnCloseBulkModal'),
+        btnCancelBulkModal: document.getElementById('btnCancelBulkModal'),
+        btnApplyBulkQuestions: document.getElementById('btnApplyBulkQuestions'),
+
+        pdfConverterModal: document.getElementById('pdfConverterModal'),
+        inputPdfFile: document.getElementById('inputPdfFile'),
+        pdfProcessingStatusWrap: document.getElementById('pdfProcessingStatusWrap'),
+        pdfStatusLabel: document.getElementById('pdfStatusLabel'),
+        pdfPercentBadge: document.getElementById('pdfPercentBadge'),
+        pdfProgressBarFill: document.getElementById('pdfProgressBarFill'),
+        btnClosePdfModal: document.getElementById('btnClosePdfModal'),
+        btnCancelPdfModal: document.getElementById('btnCancelPdfModal'),
+
+        appToastBanner: document.getElementById('appToastBanner'),
+        appToastMessage: document.getElementById('appToastMessage')
+      };
+    }
+
+    // ==========================================
+    // NOTIFICATION TOAST
+    // ==========================================
+    function showToast(msg) {
+      if (!dom.appToastBanner) return;
+      dom.appToastMessage.textContent = msg;
+      dom.appToastBanner.classList.remove('hidden');
+      dom.appToastBanner.classList.add('flex');
+      clearTimeout(window._appToastTimer);
+      window._appToastTimer = setTimeout(() => {
+        dom.appToastBanner.classList.add('hidden');
+        dom.appToastBanner.classList.remove('flex');
+      }, 2800);
+    }
+
+    // ==========================================
+    // TEXT HELPER & #TAG STRIPPER
+    // ==========================================
+    // Strips everything from '#' onwards so speech NEVER reads '#UPPSC2022'
+    function stripHashTagForSpeech(text) {
+      const raw = String(text || '');
+      const hashIdx = raw.indexOf('#');
+      return hashIdx >= 0 ? raw.slice(0, hashIdx) : raw;
+    }
+
+    function cleanTtsText(text) {
+      return stripHashTagForSpeech(text)
+        .replace(/[🔔📲👍👇⏳🙏✓✕🎙️🔊🤖📺🎥⚡📋📝➕✅✏️🗑️👁️📂🔇]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    // Renders the #tag on screen as a stylish badge
+    function formatQuestionHtml(rawText) {
+      if (!rawText) return '--';
+      if (!rawText.includes('#')) return escapeHtml(rawText);
+      const parts = rawText.split('#');
+      const main = escapeHtml(parts[0].trim());
+      const tag = escapeHtml('#' + parts.slice(1).join('#').trim());
+      return `${main} <span class="inline-block ml-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 shadow-sm">${tag}</span>`;
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function getActiveTopicText() {
+      if (state.topicPreset === '__custom__') {
+        return state.customTopic.trim() || 'Custom Topic';
+      }
+      return state.topicPreset;
+    }
+
+    function getActiveWatermarkText() {
+      if (state.watermarkPreset === '__custom__') {
+        return state.customWatermark.trim() || 'Custom Channel';
+      }
+      return state.watermarkPreset;
+    }
+
+    // ==========================================
+    // WEB AUDIO SOUND SYNTHESIZER (Pure Client)
+    // ==========================================
+    class SoundFXStudio {
+      constructor() {
+        this.ctx = null;
+        this.dest = null;
+      }
+      async init() {
+        if (!this.ctx) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AC();
+          this.dest = this.ctx.createMediaStreamDestination();
+          try {
+            const carrier = this.ctx.createOscillator();
+            const carrierGain = this.ctx.createGain();
+            carrierGain.gain.value = 0.00002;
+            carrier.connect(carrierGain);
+            carrierGain.connect(this.dest);
+            carrier.start();
+          } catch (_) {}
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          try { await this.ctx.resume(); } catch (_) {}
+        }
+        return this.ctx;
+      }
+      connect(node) {
+        node.connect(this.ctx.destination);
+        if (this.dest) node.connect(this.dest);
+      }
+      playTick(isFinal = false) {
+        if (!state.soundFxEnabled) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = isFinal ? 'triangle' : 'sine';
+        osc.frequency.setValueAtTime(isFinal ? 1080 : 820, now);
+        osc.frequency.exponentialRampToValueAtTime(360, now + 0.08);
+        gain.gain.setValueAtTime(isFinal ? 0.28 : 0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+        osc.connect(gain); this.connect(gain);
+        osc.start(now); osc.stop(now + 0.095);
+      }
+      playOptionSound() {
+        if (!state.soundFxEnabled || state.optionsMode === 'static') return;
+        const sType = state.optionSound || 'sak';
+        if (sType === 'mute') return;
+        this.init();
+        const now = this.ctx.currentTime;
+
+        if (sType === 'sak') {
+          // Arrow Whoosh "सक!" filtered noise sweep
+          const dur = 0.15;
+          const buf = this.ctx.createBuffer(1, Math.floor(this.ctx.sampleRate * dur), this.ctx.sampleRate);
+          const data = buf.getChannelData(0);
+          for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+          const noise = this.ctx.createBufferSource();
+          noise.buffer = buf;
+
+          const filter = this.ctx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.Q.setValueAtTime(2.6, now);
+          filter.frequency.setValueAtTime(480, now);
+          filter.frequency.exponentialRampToValueAtTime(3600, now + 0.065);
+          filter.frequency.exponentialRampToValueAtTime(920, now + dur);
+
+          const gain = this.ctx.createGain();
+          gain.gain.setValueAtTime(0.001, now);
+          gain.gain.linearRampToValueAtTime(0.38, now + 0.035);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+          noise.connect(filter); filter.connect(gain); this.connect(gain);
+          noise.start(now); noise.stop(now + dur);
+        } else if (sType === 'puk') {
+          // Soft Pop "पुक!"
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(280, now);
+          osc.frequency.exponentialRampToValueAtTime(680, now + 0.075);
+          gain.gain.setValueAtTime(0.24, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.085);
+          osc.connect(gain); this.connect(gain);
+          osc.start(now); osc.stop(now + 0.09);
+        } else if (sType === 'tik') {
+          // Click "टिक!"
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(1400, now);
+          gain.gain.setValueAtTime(0.14, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+          osc.connect(gain); this.connect(gain);
+          osc.start(now); osc.stop(now + 0.04);
+        }
+      }
+      playChime() {
+        if (!state.soundFxEnabled) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          const t = now + idx * 0.065;
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, t);
+          gain.gain.setValueAtTime(0.001, t);
+          gain.gain.linearRampToValueAtTime(0.20, t + 0.015);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.36);
+          osc.connect(gain); this.connect(gain);
+          osc.start(t); osc.stop(t + 0.38);
+        });
+      }
+      async playAudioBuffer(arrayBuf, rate = 1.0, onStart = null) {
+        await this.init();
+        if (!this.ctx) throw new Error('WebAudio engine उपलब्ध नहीं है।');
+        const decoded = await this.ctx.decodeAudioData(arrayBuf.slice(0));
+        const playbackRate = Math.max(0.6, Math.min(1.8, Number(rate) || 1));
+        const actualDuration = decoded.duration / playbackRate;
+        return new Promise((resolve, reject) => {
+          try {
+            const src = this.ctx.createBufferSource();
+            src.buffer = decoded;
+            src.playbackRate.value = playbackRate;
+            this.connect(src);
+            src.onended = () => resolve(actualDuration);
+            src.onerror = (err) => reject(err || new Error('Audio playback failed'));
+            src.start(this.ctx.currentTime + 0.015);
+            // Duration is passed at the exact moment the captured audio begins.
+            if (typeof onStart === 'function') onStart(actualDuration);
+          } catch (err) {
+            reject(err);
+          }
+        });
+      }
+    }
+    const soundEngine = new SoundFXStudio();
+
+    // ==========================================
+    // CAPACITOR & BROWSER TTS ENGINE
+    // ==========================================
+    class SpeechStudio {
+      constructor() {
+        this.synth = window.speechSynthesis || null;
+        this.voices = [];
+        this.activeAudio = null;
+        if (this.synth) {
+          this.loadVoices();
+          this.synth.onvoiceschanged = () => this.loadVoices();
+        }
+      }
+      getNativePlugin() {
+        try {
+          const cap = window.Capacitor;
+          if (cap && cap.isNativePlatform && cap.isNativePlatform() && cap.Plugins && cap.Plugins.NativeTts) {
+            return cap.Plugins.NativeTts;
+          }
+        } catch (_) {}
+        return null;
+      }
+      async ensureOfflineHindiReady() {
+        const plugin = this.getNativePlugin();
+        if (!plugin) {
+          throw new Error('इस APK में Native Hindi TTS प्लगइन नहीं मिला। GitHub Actions से नया APK बनाइए।');
+        }
+        if (typeof plugin.synthesizeToBase64 !== 'function' || typeof plugin.getVoices !== 'function') {
+          throw new Error('Native TTS का नया संस्करण APK में उपलब्ध नहीं है। पूरा नया APK दोबारा बनाइए।');
+        }
+        const result = await plugin.getVoices();
+        const voices = result && Array.isArray(result.voices) ? result.voices : [];
+        const localHindi = voices.filter(v => v && v.local === true && String(v.lang || '').toLowerCase().startsWith('hi'));
+        if (!localHindi.length) {
+          throw new Error('फोन में हिंदी की Offline आवाज़ इंस्टॉल नहीं है। Android Settings → Text-to-Speech → भाषा/Voice data में Hindi डाउनलोड करें।');
+        }
+        return plugin;
+      }
+      loadVoices() {
+        if (!this.synth) return;
+        this.voices = this.synth.getVoices() || [];
+        if (!dom.selectVoiceEngine) return;
+        const current = dom.selectVoiceEngine.value;
+        dom.selectVoiceEngine.innerHTML = `<option value="auto">Auto Hindi (Best Available)</option>`;
+        this.voices.forEach(v => {
+          const opt = document.createElement('option');
+          opt.value = v.voiceURI;
+          opt.textContent = `${v.name} (${v.lang})`;
+          dom.selectVoiceEngine.appendChild(opt);
+        });
+        if (current) dom.selectVoiceEngine.value = current;
+      }
+      setUI(active, text = '') {
+        if (dom.stageSpeakingBadge) {
+          dom.stageSpeakingBadge.classList.toggle('hidden', !active);
+        }
+      }
+      async speak(text, onStart = null) {
+        const clean = cleanTtsText(text);
+        if (!clean) return;
+        const wasSpeaking = Boolean(this.synth && (this.synth.speaking || this.synth.pending));
+        this.stop();
+        if (wasSpeaking) {
+          await new Promise(r => setTimeout(r, 50));
+        }
+        this.setUI(true, clean);
+
+        const nativeTts = this.getNativePlugin();
+        if (nativeTts) {
+          try {
+            if (typeof onStart === 'function') onStart();
+            await nativeTts.speak({
+              text: clean,
+              rate: Number(state.voiceSpeed) || 1.15,
+              pitch: Number(state.voicePitch) || 1.00
+            });
+            this.setUI(false);
+            return;
+          } catch (err) {
+            console.warn('NativeTts fallback to browser:', err);
+          }
+        }
+
+        return new Promise((resolve) => {
+          if (!this.synth) { this.setUI(false); return resolve(); }
+          if (!this.voices || !this.voices.length) {
+            try { this.voices = this.synth.getVoices() || []; } catch (_) {}
+          }
+          const utter = new SpeechSynthesisUtterance(clean);
+          utter.lang = 'hi-IN';
+          utter.rate = Number(state.voiceSpeed) || 1.15;
+          utter.pitch = Number(state.voicePitch) || 1.00;
+
+          if (state.voiceEngine && state.voiceEngine !== 'auto') {
+            const chosen = this.voices.find(v => v.voiceURI === state.voiceEngine);
+            if (chosen) utter.voice = chosen;
+          } else {
+            const hiVoice = this.voices.find(v => v.lang.toLowerCase().includes('hi')) || this.voices[0];
+            if (hiVoice) utter.voice = hiVoice;
+          }
+
+          let settled = false;
+          const finish = () => {
+            if (settled) return;
+            settled = true;
+            this.setUI(false);
+            resolve();
+          };
+
+          utter.onstart = () => { if (typeof onStart === 'function') onStart(); };
+          utter.onend = utter.onerror = finish;
+          try {
+            if (this.synth.paused && typeof this.synth.resume === 'function') {
+              this.synth.resume();
+            }
+            this.synth.speak(utter);
+          } catch (_) {
+            finish();
+          }
+        });
+      }
+      splitTextForTts(text, maxLen = 160) {
+        const clean = String(text || '').replace(/\s+/g, ' ').trim();
+        if (!clean) return [];
+        if (clean.length <= maxLen) return [clean];
+        const parts = clean.split(/(?<=[।.?!,])/);
+        const chunks = [];
+        let cur = '';
+        for (const part of parts) {
+          const p = part.trim();
+          if (!p) continue;
+          if ((cur + ' ' + p).trim().length <= maxLen) {
+            cur = (cur + ' ' + p).trim();
+          } else {
+            if (cur) chunks.push(cur);
+            cur = p.slice(0, maxLen);
+          }
+        }
+        if (cur) chunks.push(cur);
+        return chunks.length ? chunks : [clean.slice(0, maxLen)];
+      }
+
+      base64ToArrayBuffer(b64) {
+        const binStr = atob(b64);
+        const len = binStr.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binStr.charCodeAt(i);
+        }
+        return bytes.buffer;
+      }
+
+      // Export path is intentionally OFFLINE ONLY. Android TTS is synthesized to WAV,
+      // decoded by WebAudio, and routed to the MediaRecorder audio destination.
+      async speakToVideoStream(text, onStart = null) {
+        const clean = cleanTtsText(text);
+        if (!clean) return 0;
+        this.setUI(true, clean);
+        let didSignalStart = false;
+        const signalStart = (duration) => {
+          if (didSignalStart) return;
+          didSignalStart = true;
+          if (typeof onStart === 'function') onStart(duration);
+        };
+        try {
+          const nativeTts = await this.ensureOfflineHindiReady();
+          const chunks = this.splitTextForTts(clean, 150);
+          let totalDuration = 0;
+          for (const chunk of chunks) {
+            const res = await nativeTts.synthesizeToBase64({
+              text: chunk,
+              rate: Number(state.voiceSpeed) || 1.0,
+              voiceName: ''
+            });
+            if (!res || !res.base64) throw new Error('Android TTS से WAV ऑडियो नहीं मिला।');
+            const bytes = this.base64ToArrayBuffer(res.base64);
+            if (!bytes || bytes.byteLength < 44) throw new Error('बनी हुई WAV फाइल खाली या खराब है।');
+            // Native synthesis already applies speech rate; do not apply it a second time.
+            const duration = await soundEngine.playAudioBuffer(bytes, 1.0, signalStart);
+            totalDuration += Number(duration) || 0;
+          }
+          this.setUI(false);
+          return totalDuration;
+        } catch (err) {
+          this.setUI(false);
+          console.error('Offline export TTS error:', err);
+          throw new Error(err && err.message ? err.message : 'ऑफलाइन हिंदी आवाज़ तैयार नहीं हो सकी।');
+        }
+      }
+      stop() {
+        const nativeTts = this.getNativePlugin();
+        if (nativeTts) {
+          try { nativeTts.stop().catch(() => {}); } catch (_) {}
+        }
+        if (this.synth) {
+          try { this.synth.cancel(); } catch (_) {}
+        }
+        this.setUI(false);
+      }
+    }
+    const speechStudio = new SpeechStudio();
+
+    // ==========================================
+    // UI RESET & FLOATING ANIMATION
+    // ==========================================
+    function clearOptionAnimTimers() {
+      activeOptionTimers.forEach(id => clearTimeout(id));
+      activeOptionTimers = [];
+    }
+
+    function resetOptionsToNeutral() {
+      clearOptionAnimTimers();
+      if (dom.stageExplanationCard) dom.stageExplanationCard.classList.add('hidden');
+      if (dom.stageExplanationText) dom.stageExplanationText.textContent = '';
+      const q = state.questions[state.currentIndex];
+      const optionsContainer = dom.stageOptRows[0] ? dom.stageOptRows[0].parentElement : null;
+      if (optionsContainer) {
+        optionsContainer.style.display = '';
+        optionsContainer.style.flexDirection = '';
+        optionsContainer.style.gap = '';
+      }
+      dom.stageOptRows.forEach((row, idx) => {
+        row.style.opacity = '';
+        row.style.display = '';
+        row.style.order = '';
+        row.className = 'stage-opt-row flex items-center gap-2.5 p-2.5 rounded-xl border bg-white border-slate-200 shadow-sm transition-all';
+        const badge = row.querySelector('.opt-badge');
+        badge.className = 'opt-badge w-6 h-6 rounded-full flex items-center justify-center text-xs font-black bg-blue-100 text-blue-800 shrink-0';
+        badge.textContent = LETTERS[idx];
+        const lbl = row.querySelector('.opt-label-text');
+        lbl.textContent = q ? (q.options[idx] || `Option ${LETTERS[idx]}`) : `Option ${LETTERS[idx]}`;
+      });
+    }
+
+    function triggerFloatingOptionsEntrance() {
+      resetOptionsToNeutral();
+      if (state.optionsMode === 'static') return;
+
+      // Hide all 4 options first
+      dom.stageOptRows.forEach(row => row.classList.add('opt-pre-float'));
+      void dom.stageOptRows[0].offsetHeight; // Reflow
+
+      // Float options one-by-one in half the countdown timer
+      const timerTotal = Number(state.countdownSec) || 3;
+      const windowMs = Math.max(700, Math.min(2200, (timerTotal * 0.5) * 1000));
+      const staggerMs = Math.round(windowMs / 4);
+
+      dom.stageOptRows.forEach((row, idx) => {
+        const t1 = setTimeout(() => {
+          row.classList.remove('opt-pre-float');
+          void row.offsetWidth;
+          row.classList.add('opt-float-in');
+          soundEngine.playOptionSound();
+          const t2 = setTimeout(() => row.classList.remove('opt-float-in'), 400);
+          activeOptionTimers.push(t2);
+        }, 120 + idx * staggerMs);
+        activeOptionTimers.push(t1);
+      });
+    }
+
+    function highlightCorrectAnswerOnStage() {
+      clearOptionAnimTimers();
+      const q = state.questions[state.currentIndex];
+      if (!q) return;
+
+      const optionsContainer = dom.stageOptRows[0] ? dom.stageOptRows[0].parentElement : null;
+      if (optionsContainer) {
+        optionsContainer.style.display = 'flex';
+        optionsContainer.style.flexDirection = 'column';
+        optionsContainer.style.gap = '8px';
+      }
+      dom.stageOptRows.forEach((row, idx) => {
+        row.style.opacity = '';
+        row.style.display = idx === q.correctIndex ? 'flex' : 'none';
+        row.style.order = '0';
+        const badge = row.querySelector('.opt-badge');
+        if (idx === q.correctIndex) {
+          row.className = 'stage-opt-row opt-correct-glow flex items-center gap-2.5 p-2.5 rounded-xl border-2 bg-emerald-50 border-emerald-500 transition-all';
+          badge.className = 'opt-badge w-7 h-7 rounded-full flex items-center justify-center text-xs font-black bg-emerald-600 text-white shrink-0 shadow';
+          badge.textContent = '✓';
+        } else {
+          row.className = 'stage-opt-row flex items-center gap-2.5 p-2.5 rounded-xl border bg-white/70 border-slate-200 opacity-50 transition-all';
+          badge.className = 'opt-badge w-6 h-6 rounded-full flex items-center justify-center text-xs font-black bg-slate-200 text-slate-500 shrink-0';
+          badge.textContent = LETTERS[idx];
+        }
+      });
+
+      const expText = (q.explanation || '').trim();
+      if (expText && dom.stageExplanationCard && dom.stageExplanationText) {
+        dom.stageExplanationText.textContent = expText;
+        dom.stageExplanationCard.classList.remove('hidden');
+      }
+    }
+
+    function setStageTimerDisplay(val, total) {
+      dom.stageCountdownNumRing.textContent = val;
+      dom.stageCountdownNumLaser.textContent = val;
+      dom.stageCountdownNumPulse.textContent = val;
+      dom.stageCountdownNumGlass.textContent = val;
+
+      const pct = (typeof val === 'number' && total > 0) ? Math.round((val / total) * 100) : 100;
+      dom.stageCircleProgress.setAttribute('stroke-dasharray', `${pct}, 100`);
+      dom.stageBottomLaserBar.style.width = `${pct}%`;
+
+      // Last 2-sec Red Alert
+      const isRedAlert = (typeof val === 'number' && val > 0 && val <= 2 && state.isPlaying);
+      const t = THEMES[state.theme] || THEMES.white_blue;
+      const activeColor = isRedAlert ? '#EF4444' : t.accent;
+
+      dom.stageCircleProgress.style.color = activeColor;
+      dom.stageBottomLaserBar.style.backgroundColor = activeColor;
+      dom.stageCountdownNumRing.style.color = isRedAlert ? '#DC2626' : '#0F172A';
+      dom.stageTimerContainer.classList.toggle('timer-red-alert', isRedAlert);
+
+      if (state.timerStyle === 'pulse' && typeof val === 'number') {
+        dom.timerViewPulse.classList.remove('heartbeat-active');
+        void dom.timerViewPulse.offsetWidth;
+        dom.timerViewPulse.classList.add('heartbeat-active');
+      }
+      if (state.timerStyle === 'hourglass' && typeof val === 'number') {
+        dom.stageHourglassIcon.classList.remove('hourglass-spin');
+        void dom.stageHourglassIcon.offsetWidth;
+        dom.stageHourglassIcon.classList.add('hourglass-spin');
+      }
+    }
+
+    function resetTimerVisuals() {
+      setStageTimerDisplay(state.countdownSec, state.countdownSec);
+      dom.stageBottomHintText.textContent = 'सही उत्तर कमेंट में बताएं 👇';
+    }
+
+    // ==========================================
+    // THEME & STYLES APPLIER
+    // ==========================================
+    function applyColorTheme(themeKey) {
+      state.theme = themeKey;
+      const t = THEMES[themeKey] || THEMES.white_blue;
+      dom.labelActiveTheme.textContent = t.name;
+
+      // Mockup styling
+      dom.reelSmartphoneMockup.style.backgroundImage = `radial-gradient(rgba(15, 23, 42, 0.065) 1.3px, transparent 1.3px), linear-gradient(160deg, ${t.gradTop} 0%, ${t.gradBot} 100%)`;
+      dom.reelSmartphoneMockup.style.borderColor = t.phoneBorder;
+      dom.stageQuestionCard.style.backgroundColor = t.cardBg;
+      dom.stageQuestionCard.style.borderColor = t.cardBorder;
+      dom.stageCardTopStrip.style.backgroundColor = t.accent;
+      dom.stageThemeColorDot.style.backgroundColor = t.accent;
+      dom.stageTopicBannerBadge.style.backgroundColor = t.accent;
+      dom.stageCircleProgress.style.color = t.accent;
+      dom.stageBottomLaserBar.style.backgroundColor = t.accent;
+
+      dom.themeCardButtons.forEach(btn => {
+        const active = btn.dataset.theme === themeKey;
+        btn.className = `theme-card-btn py-2 px-1 rounded-xl bg-slate-900 text-[10px] font-bold flex flex-col items-center gap-1 cursor-pointer transition ${active ? 'border-2 border-white text-white shadow-md' : 'border border-slate-700 text-slate-300'}`;
+      });
+      saveSettings();
+    }
+
+    function applyTimerStyle(styleKey) {
+      state.timerStyle = styleKey;
+      dom.timerViewRing.classList.toggle('hidden', styleKey !== 'ring');
+      dom.timerViewLaser.classList.toggle('hidden', styleKey !== 'laser');
+      dom.timerViewPulse.classList.toggle('hidden', styleKey !== 'pulse');
+      dom.timerViewHourglass.classList.toggle('hidden', styleKey !== 'hourglass');
+
+      dom.tstyleButtons.forEach(btn => {
+        const active = btn.dataset.timerstyle === styleKey;
+        btn.className = `tstyle-btn py-2 rounded-xl bg-[#0E1420] text-xs font-bold cursor-pointer ${active ? 'border-2 border-[#22D3EE] text-white' : 'border border-[#1E293B] text-slate-300'}`;
+      });
+      saveSettings();
+    }
+
+    // ==========================================
+    // UI REFRESH
+    // ==========================================
+    function refreshAllUI() {
+      // Topic & Watermark inputs
+      dom.selectTopicPreset.value = state.topicPreset;
+      dom.inputCustomTopic.classList.toggle('hidden', state.topicPreset !== '__custom__');
+      dom.inputCustomTopic.value = state.customTopic;
+      dom.stageTopicBannerBadge.textContent = getActiveTopicText();
+      dom.stageTopicBannerBadge.classList.toggle('hidden', !state.showTopicBanner);
+      dom.toggleShowTopicBanner.checked = state.showTopicBanner;
+
+      dom.selectWatermarkPreset.value = state.watermarkPreset;
+      dom.inputCustomWatermark.classList.toggle('hidden', state.watermarkPreset !== '__custom__');
+      dom.inputCustomWatermark.value = state.customWatermark;
+      const wmText = getActiveWatermarkText();
+      dom.stageWatermarkLabel.textContent = wmText;
+      dom.outroWatermarkBadge.textContent = wmText;
+
+      // Options Mode & Sound
+      const isFloating = state.optionsMode === 'floating';
+      dom.btnModeFloating.className = `p-2.5 rounded-xl bg-[#0E1420] text-left transition cursor-pointer ${isFloating ? 'border-2 border-[#22D3EE]' : 'border border-[#1E293B]'}`;
+      dom.btnModeStatic.className = `p-2.5 rounded-xl bg-[#0E1420] text-left transition cursor-pointer ${!isFloating ? 'border-2 border-[#22D3EE]' : 'border border-[#1E293B]'}`;
+      const sfxNames = { sak: '🏹 Sak-Sak (Arrow)', puk: '💧 Puk-Puk (Pop)', tik: '⚡ Tik-Tik (Click)', mute: '🔇 Mute (Off)' };
+      dom.activeOptionSoundBadge.textContent = isFloating ? (sfxNames[state.optionSound] || sfxNames.sak) : '🔇 Disabled in Static Mode';
+      dom.optionSoundPanel.classList.toggle('opacity-50', !isFloating);
+      dom.optionSoundPanel.classList.toggle('pointer-events-none', !isFloating);
+      dom.optsoundButtons.forEach(btn => {
+        const act = btn.dataset.optsound === state.optionSound;
+        btn.className = `optsound-btn py-1.5 rounded-lg bg-[#111827] text-[10px] font-bold cursor-pointer ${act ? 'border-2 border-[#FACC15] text-white' : 'border border-[#1E293B] text-slate-300'}`;
+      });
+
+      // Timers & Reveal
+      dom.timerSummaryLabel.textContent = `${state.countdownSec}s Timer • ${state.revealSec}s Ans`;
+      dom.activeCountdownSecBadge.textContent = `${state.countdownSec}s`;
+      dom.cdPickButtons.forEach(b => {
+        const act = parseInt(b.dataset.sec, 10) === state.countdownSec;
+        b.className = `cd-pick-btn py-1.5 rounded-lg bg-[#0E1420] text-xs font-bold cursor-pointer ${act ? 'border-2 border-[#22D3EE] text-white' : 'border border-[#1E293B] text-slate-300'}`;
+      });
+      dom.activeRevealSecBadge.textContent = `${state.revealSec}s`;
+      dom.revPickButtons.forEach(b => {
+        const act = parseFloat(b.dataset.revsec) === state.revealSec;
+        b.className = `rev-pick-btn py-1.5 rounded-lg bg-[#0E1420] text-xs font-bold cursor-pointer ${act ? 'border-2 border-emerald-500 text-white' : 'border border-[#1E293B] text-slate-300'}`;
+      });
+
+      // Hook Card & Outro
+      dom.toggleHookCard.checked = state.hookEnabled;
+      dom.inputHookCardText.classList.toggle('hidden', !state.hookEnabled);
+      dom.inputHookCardText.value = state.hookText;
+      dom.stageHookTextPreview.textContent = state.hookText;
+
+      dom.toggleOutroSlide.checked = state.outroEnabled;
+      dom.inputOutroMessageText.value = state.outroText;
+      dom.stageOutroMessagePreview.textContent = state.outroText || 'हमारे पेज को फॉलो करें!';
+      dom.outroDurButtons.forEach(b => {
+        const act = parseInt(b.dataset.outrodur, 10) === state.outroDuration;
+        b.className = `outro-dur-pick px-2 py-0.5 rounded font-bold cursor-pointer ${act ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-300'}`;
+      });
+
+      // Sliders & Voice
+      dom.sliderVoiceSpeed.value = String(state.voiceSpeed);
+      dom.displayVoiceSpeed.textContent = `${Number(state.voiceSpeed).toFixed(2)}×`;
+      dom.sliderVoicePitch.value = String(state.voicePitch);
+      dom.displayVoicePitch.textContent = Number(state.voicePitch).toFixed(2);
+      dom.selectVoiceTiming.value = state.voiceTiming;
+      dom.toggleSoundEffects.checked = state.soundFxEnabled;
+      dom.toggleCaptureMic.checked = state.captureMic;
+
+      // Badges
+      dom.questionsCounterBadge.textContent = `Total: ${state.questions.length} Qs`;
+      dom.activeQNumberBadge.textContent = state.questions.length ? `Q ${state.currentIndex + 1} / ${state.questions.length}` : '0 Qs';
+      dom.stageReelBadge.textContent = state.questions.length ? `Q ${state.currentIndex + 1} / ${state.questions.length}` : '0 Qs';
+
+      if (dom.estimatedVideoLenBadge) {
+        const cd = Number(state.countdownSec) || 3;
+        const rev = Number(state.revealSec) || 2.5;
+        let estTotal = 0;
+        if (state.hookEnabled && (state.hookText || '').trim()) estTotal += 2.5;
+        state.questions.forEach((qItem) => {
+          const spSec = getQuestionAudioDurationSec(qItem);
+          const lead = state.voiceTiming === 'after_voice' ? spSec : Math.max(0, spSec - cd);
+          const ansSp = Math.max(0.9, cleanTtsText((qItem.options && qItem.options[qItem.correctIndex]) || '').length / (12.2 * (Number(state.voiceSpeed) || 1.15)));
+          estTotal += lead + cd + Math.max(rev, ansSp + 0.35);
+        });
+        if (state.questions.length && state.outroEnabled && (state.outroText || '').trim()) {
+          estTotal += Number(state.outroDuration) || 2;
+        }
+        const roundedSec = Math.round(estTotal);
+        dom.estimatedVideoLenBadge.textContent = `Est. ~${roundedSec}s`;
+      }
+
+      // Top Story Progress Bar Segments
+      dom.stageStoryProgressBar.innerHTML = '';
+      const totalSegs = Math.max(1, state.questions.length);
+      const t = THEMES[state.theme] || THEMES.white_blue;
+      for (let i = 0; i < totalSegs; i++) {
+        const seg = document.createElement('div');
+        seg.className = 'h-1.5 flex-1 rounded-full transition-all duration-300';
+        seg.style.backgroundColor = (i <= state.currentIndex) ? t.accent : 'rgba(148, 163, 184, 0.40)';
+        dom.stageStoryProgressBar.appendChild(seg);
+      }
+
+      // Render Questions List
+      renderQuestionsListUi();
+
+      // Active Question on Stage
+      const activeQ = state.questions[state.currentIndex];
+      resetOptionsToNeutral();
+      if (activeQ) {
+        dom.stageQuestionText.innerHTML = formatQuestionHtml(activeQ.q);
+        dom.stageOptRows.forEach((row, idx) => {
+          row.querySelector('.opt-label-text').textContent = activeQ.options[idx] || `Option ${LETTERS[idx]}`;
+        });
+      } else {
+        dom.stageQuestionText.textContent = 'कृपया प्रश्न जोड़ें (Add Question)...';
+      }
+      resetTimerVisuals();
+    }
+
+    function renderQuestionsListUi() {
+      dom.questionsScrollContainer.innerHTML = '';
+      if (!state.questions.length) {
+        dom.questionsScrollContainer.innerHTML = `<div class="p-3 rounded-xl bg-[#0E1420] border border-dashed border-slate-700 text-xs text-slate-400 text-center">अभी कोई प्रश्न नहीं है। ऊपर प्रश्न जोड़ें या "Demo" दबाएं।</div>`;
+        return;
+      }
+
+      state.questions.forEach((q, idx) => {
+        const isSel = idx === state.currentIndex;
+        const item = document.createElement('div');
+        item.className = `flex items-center justify-between gap-2 p-2 rounded-xl border transition cursor-pointer ${isSel ? 'bg-[#162033] border-[#22D3EE]' : 'bg-[#0E1420] border-[#1E293B] hover:border-slate-600'}`;
+        item.innerHTML = `
+          <div class="text-xs text-slate-200 line-clamp-1 flex-1">
+            <span class="text-[#FACC15] font-bold mr-1">Q${idx + 1}.</span>${formatQuestionHtml(q.q)}
+          </div>
+          <div class="flex items-center gap-1 shrink-0">
+            <button type="button" class="btn-edit-q p-1 rounded bg-slate-800 hover:bg-blue-600/30 text-blue-300 text-[11px]" title="Edit">✏️</button>
+            <button type="button" class="btn-up-q p-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px]" ${idx === 0 ? 'disabled' : ''} title="Move Up">⬆️</button>
+            <button type="button" class="btn-down-q p-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px]" ${idx === state.questions.length - 1 ? 'disabled' : ''} title="Move Down">⬇️</button>
+            <button type="button" class="btn-del-q p-1 rounded bg-slate-800 hover:bg-rose-600/30 text-rose-400 text-[11px]" title="Delete">🗑️</button>
+          </div>
+        `;
+
+        item.addEventListener('click', (e) => {
+          if (e.target.closest('button')) return;
+          speechStudio.stop();
+          state.currentIndex = idx;
+          refreshAllUI();
+        });
+
+        item.querySelector('.btn-edit-q').addEventListener('click', () => openEditQuestionForm(q.id));
+        item.querySelector('.btn-up-q').addEventListener('click', () => {
+          if (idx > 0) {
+            [state.questions[idx - 1], state.questions[idx]] = [state.questions[idx], state.questions[idx - 1]];
+            state.currentIndex = idx - 1;
+            saveQuestions(); refreshAllUI();
+          }
+        });
+        item.querySelector('.btn-down-q').addEventListener('click', () => {
+          if (idx < state.questions.length - 1) {
+            [state.questions[idx], state.questions[idx + 1]] = [state.questions[idx + 1], state.questions[idx]];
+            state.currentIndex = idx + 1;
+            saveQuestions(); refreshAllUI();
+          }
+        });
+        item.querySelector('.btn-del-q').addEventListener('click', () => {
+          state.questions.splice(idx, 1);
+          if (state.currentIndex >= state.questions.length) state.currentIndex = Math.max(0, state.questions.length - 1);
+          saveQuestions(); refreshAllUI();
+          showToast('प्रश्न हटा दिया गया।');
+        });
+
+        dom.questionsScrollContainer.appendChild(item);
+      });
+    }
+
+    // ==========================================
+    // MANUAL FORM ACTIONS
+    // ==========================================
+    function setManualFormCorrectIndex(idx) {
+      dom.selectedCorrectIndex.value = String(idx);
+      document.querySelectorAll('.opt-row-box').forEach((box, i) => {
+        const btn = box.querySelector('.opt-radio-pick');
+        if (i === idx) {
+          btn.className = 'opt-radio-pick w-7 h-7 rounded-lg bg-emerald-600 text-white font-black text-xs flex items-center justify-center shrink-0 cursor-pointer shadow';
+          btn.textContent = '✓';
+        } else {
+          btn.className = 'opt-radio-pick w-7 h-7 rounded-lg bg-slate-800 text-slate-300 font-extrabold text-xs flex items-center justify-center shrink-0 cursor-pointer';
+          btn.textContent = LETTERS[i];
+        }
+      });
+      dom.correctAnswerHint.textContent = `चयनित सही उत्तर: विकल्प ${LETTERS[idx]} (उत्तर समय पर केवल यह हरा होगा)`;
+    }
+
+    function openEditQuestionForm(qId) {
+      const q = state.questions.find(x => x.id === qId);
+      if (!q) return;
+      state.editingId = qId;
+      dom.formHeaderTitle.textContent = 'Edit Question';
+      dom.inputQuestionText.value = q.q;
+      dom.optInputs.forEach((inp, i) => { inp.value = q.options[i] || ''; });
+      if (dom.inputExplanationText) dom.inputExplanationText.value = q.explanation || '';
+      setManualFormCorrectIndex(q.correctIndex);
+      dom.btnSaveQuestionMain.textContent = '💾 Update Question';
+      dom.btnCancelEditMain.classList.remove('hidden');
+      dom.inputQuestionText.focus();
+    }
+
+    function resetManualForm() {
+      state.editingId = null;
+      dom.formHeaderTitle.textContent = 'Add / Edit Question';
+      dom.mainQuestionForm.reset();
+      setManualFormCorrectIndex(0);
+      dom.btnSaveQuestionMain.textContent = '✅ Save Question';
+      dom.btnCancelEditMain.classList.add('hidden');
+    }
+
+    // ==========================================
+    // SMART SYNC LIVE PLAYBACK ENGINE
+    // ==========================================
+    function getQuestionAudioDurationSec(q) {
+      if (!q) return 0;
+      const clean = cleanTtsText(q.q || q.question || '');
+      if (!clean) return 0;
+      const rate = Number(state.voiceSpeed) || 1.15;
+      // Devanagari speech: ~12.2 characters per second at 1.0x rate + natural pause
+      return Math.max(1.2, (clean.length / (12.2 * rate)) + 0.35);
+    }
+
+        async function playCurrentQuestionLive(forceNextCallback = null) {
+      const q = state.questions[state.currentIndex];
+      if (!q) return showToast('कृपया पहले प्रश्न जोड़ें!');
+
+      state.isPlaying = true;
+      const session = ++state.runSessionId;
+      dom.stageHookOverlay.classList.add('hidden');
+      dom.stageOutroOverlay.classList.add('hidden');
+      dom.stageStatusTitle.textContent = `Playing Q ${state.currentIndex + 1}...`;
+
+      // 1. Float options in smoothly with Sak-sak arrow whoosh
+      triggerFloatingOptionsEntrance();
+
+      // 2. Speak question text IMMEDIATELY (TTS strictly ignores #tag!)
+      const spokenQText = stripHashTagForSpeech(q.q || q.question || '');
+      const cd = Number(state.countdownSec) || 3;
+      const estSpeechSec = getQuestionAudioDurationSec(q);
+
+      // Smart Timing Calculation:
+      // If question speaking takes 5s and timer is 3s, delaySec = 2s.
+      // For first 2s, timer stays at 3s while question is spoken, then ticks 3 -> 2 -> 1 -> 0.
+      const delaySec = state.voiceTiming === 'after_voice' 
+        ? estSpeechSec 
+        : Math.max(0, estSpeechSec - cd);
+
+      if (delaySec > 0.1 && state.voiceTiming !== 'after_voice') {
+        dom.stageBottomHintText.textContent = `लंबा प्रश्न: बोलने के ${delaySec.toFixed(1)}s बाद टाइमर चलेगा... ⏳`;
+      } else {
+        dom.stageBottomHintText.textContent = 'सही उत्तर कमेंट में बताएं 👇';
+      }
+
+      setStageTimerDisplay(cd, cd);
+      let signalSpeechStarted;
+      const speechStarted = new Promise(resolve => { signalSpeechStarted = resolve; });
+      let speechStartSignalled = false;
+      const markSpeechStarted = () => {
+        if (speechStartSignalled) return;
+        speechStartSignalled = true;
+        signalSpeechStarted();
+      };
+      const questionSpeechPromise = speechStudio.speak(spokenQText, markSpeechStarted);
+      // Some Android TTS engines do not emit an onStart callback; fail safe after a short grace period.
+      const speechFinishedFallback = questionSpeechPromise.then(() => { markSpeechStarted(); });
+      const timerPromise = (async () => {
+        setStageTimerDisplay(cd, cd);
+        await Promise.race([speechStarted, speechFinishedFallback]);
+        if (delaySec > 0) {
+          await new Promise(r => setTimeout(r, Math.round(delaySec * 1000)));
+        }
+        if (!state.isPlaying || session !== state.runSessionId) return;
+
+        dom.stageBottomHintText.textContent = 'जल्दी सोचें और कमेंट करें! ⏱️';
+        for (let s = cd; s >= 1; s--) {
+          if (!state.isPlaying || session !== state.runSessionId) return;
+          setStageTimerDisplay(s, cd);
+          soundEngine.playTick(s <= 2);
+          await new Promise(r => setTimeout(r, 1000));
+        }
+        if (!state.isPlaying || session !== state.runSessionId) return;
+        setStageTimerDisplay(0, cd);
+        soundEngine.playTick(true);
+      })();
+
+      await Promise.all([questionSpeechPromise, timerPromise]);
+      if (!state.isPlaying || session !== state.runSessionId) return;
+
+      // 3. Reveal correct answer with green glow pop & chime
+      highlightCorrectAnswerOnStage();
+      soundEngine.playChime();
+      dom.stageStatusTitle.textContent = 'Speaking Answer...';
+
+      // 4. Speak ONLY the correct answer text without "सही उत्तर है" (e.g. "मिजोरम")
+      const correctTextOnly = q.options[q.correctIndex] || '';
+      await speechStudio.speak(correctTextOnly);
+      if (!state.isPlaying || session !== state.runSessionId) return;
+
+      // Hold on screen for revealSec
+      await new Promise(r => setTimeout(r, (Number(state.revealSec) || 2.5) * 1000));
+      if (!state.isPlaying || session !== state.runSessionId) return;
+
+      if (forceNextCallback) {
+        forceNextCallback();
+      } else {
+        stopAllPlayback();
+        showToast('प्रश्न समाप्त!');
+      }
+    }
+
+    async function playAllQuestionsLive() {
+      if (!state.questions.length) return showToast('कोई प्रश्न नहीं है!');
+      state.isPlaying = true;
+      const session = ++state.runSessionId;
+
+      // 1. Optional Hook Card at start (2.5 seconds)
+      if (state.hookEnabled && state.hookText.trim()) {
+        dom.stageHookOverlay.classList.remove('hidden');
+        dom.stageHookTextPreview.textContent = state.hookText;
+        await speechStudio.speak(state.hookText);
+        await new Promise(r => setTimeout(r, 1500));
+        dom.stageHookOverlay.classList.add('hidden');
+      }
+
+      // 2. Play all questions sequentially
+      for (let i = 0; i < state.questions.length; i++) {
+        if (!state.isPlaying || session !== state.runSessionId) break;
+        state.currentIndex = i;
+        refreshAllUI();
+        await new Promise((resolve) => {
+          playCurrentQuestionLive(resolve);
+        });
+      }
+
+      // 3. Optional Outro Slide at end
+      if (state.isPlaying && session === state.runSessionId && state.outroEnabled) {
+        dom.stageOutroOverlay.classList.remove('hidden');
+        dom.stageOutroMessagePreview.textContent = state.outroText;
+        await speechStudio.speak(state.outroText);
+        await new Promise(r => setTimeout(r, (Number(state.outroDuration) || 2) * 1000));
+        dom.stageOutroOverlay.classList.add('hidden');
+      }
+
+      if (state.isPlaying && session === state.runSessionId) {
+        stopAllPlayback();
+        showToast('पूरी रील समाप्त!');
+      }
+    }
+
+    function stopAllPlayback() {
+      state.isPlaying = false;
+      state.runSessionId++;
+      clearOptionAnimTimers();
+      speechStudio.stop();
+      dom.stageHookOverlay.classList.add('hidden');
+      dom.stageOutroOverlay.classList.add('hidden');
+      dom.stageStatusTitle.textContent = 'Live 9:16 Vertical Reel Stage';
+      resetOptionsToNeutral();
+      resetTimerVisuals();
+    }
+
+    // ==========================================
+    // HIGH-RES CANVAS FRAME RENDERER (9:16 & 16:9)
+    // ==========================================
+    function drawReelCanvasFrame(ctx, frameOpts) {
+      const isLand = state.videoFormat === 'landscape';
+      const W = (ctx && ctx.canvas && ctx.canvas.width) ? ctx.canvas.width : (isLand ? 1920 : 1080);
+      const H = (ctx && ctx.canvas && ctx.canvas.height) ? ctx.canvas.height : (isLand ? 1080 : 1920);
+      const S = isLand ? (W / 1920) : (W / 1080);
+      const t = THEMES[state.theme] || THEMES.white_blue;
+
+      // 1. Background Gradient
+      const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+      bgGrad.addColorStop(0, t.gradTop);
+      bgGrad.addColorStop(1, t.gradBot);
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Subtle Dot Pattern Overlay
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.055)';
+      for (let dx = 28 * S; dx < W; dx += 36 * S) {
+        for (let dy = 28 * S; dy < H; dy += 36 * S) {
+          ctx.beginPath();
+          ctx.arc(dx, dy, 2.4 * S, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // Outer border frame
+      ctx.strokeStyle = t.phoneBorder;
+      ctx.lineWidth = 14 * S;
+      ctx.strokeRect(7 * S, 7 * S, W - 14 * S, H - 14 * S);
+
+      // 2-SECOND SCROLL-STOPPER HOOK FRAME: bold contrast, motion, curiosity + first-question teaser
+      if (frameOpts.isHook) {
+        const phase = (performance.now() % 1100) / 1100;
+        const pulse = 1 + Math.sin(phase * Math.PI * 2) * 0.045;
+        const firstQ = (state.questions[0]?.q || state.questions[0]?.question || 'आज का महत्वपूर्ण सवाल').replace(/#[^\s]+/g, '').trim();
+        const cardW = W - 112 * S, cardH = 1160 * S;
+        const cx = (W - cardW) / 2, cy = (H - cardH) / 2;
+        const bg = ctx.createLinearGradient(0, 0, W, H);
+        bg.addColorStop(0, '#020617'); bg.addColorStop(0.48, '#4c1d95'); bg.addColorStop(1, '#7c2d12');
+        ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+        // Animated radial glow and speed streaks
+        ctx.save();
+        const glow = ctx.createRadialGradient(W/2, H*0.36, 20*S, W/2, H*0.36, 650*S);
+        glow.addColorStop(0, 'rgba(249,115,22,0.48)'); glow.addColorStop(1, 'rgba(2,6,23,0)');
+        ctx.fillStyle = glow; ctx.fillRect(0,0,W,H);
+        ctx.translate(W/2,H/2); ctx.rotate(-0.18);
+        for(let k=0;k<9;k++){ctx.fillStyle=`rgba(251,191,36,${0.05 + ((k%3)*0.025)})`;ctx.fillRect(-W,(-760+k*190)*S,W*2,18*S);}
+        ctx.restore();
+        ctx.save(); ctx.translate(W/2, H*0.30); ctx.scale(pulse,pulse);
+        ctx.strokeStyle='rgba(251,191,36,0.85)'; ctx.lineWidth=8*S; ctx.beginPath(); ctx.arc(0,0,190*S,-Math.PI/2,-Math.PI/2+Math.PI*2*phase); ctx.stroke();
+        ctx.restore();
+        ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillStyle='#FDE68A'; ctx.font=`900 ${30*S}px sans-serif`;
+        ctx.fillText('MD REEL • CURRENT AFFAIR',W/2,H*0.105);
+        ctx.save(); ctx.translate(W/2,H*0.285); ctx.scale(pulse,pulse);
+        ctx.shadowColor='#FB923C'; ctx.shadowBlur=42*S; ctx.fillStyle='#FFFFFF';
+        ctx.font=`900 ${154*S}px "Noto Sans Devanagari", sans-serif`; ctx.fillText('रुकिए!',0,0); ctx.restore();
+        ctx.fillStyle='#FDE68A'; ctx.font=`900 ${48*S}px "Noto Sans Devanagari", sans-serif`;
+        wrapCanvasText(ctx, state.hookText || 'पहले इस सवाल का जवाब दीजिए!', W/2, H*0.405, W-150*S, 62*S, true);
+        // Reveal the actual first question as a curiosity teaser
+        const qY=H*0.60, qW=W-150*S, qH=350*S, qX=(W-qW)/2;
+        ctx.save(); ctx.shadowColor='rgba(0,0,0,.55)'; ctx.shadowBlur=34*S;
+        const qGrad=ctx.createLinearGradient(qX,qY,qX+qW,qY+qH); qGrad.addColorStop(0,'#fff7ed'); qGrad.addColorStop(1,'#ffedd5');
+        ctx.fillStyle=qGrad; ctx.beginPath(); ctx.roundRect(qX,qY,qW,qH,34*S); ctx.fill(); ctx.restore();
+        ctx.strokeStyle='#FDBA74'; ctx.lineWidth=5*S; ctx.beginPath(); ctx.roundRect(qX,qY,qW,qH,34*S); ctx.stroke();
+        ctx.fillStyle='#9A3412'; ctx.font=`900 ${32*S}px "Noto Sans Devanagari", sans-serif`; ctx.fillText('🔥 आज का सवाल',W/2,qY+58*S);
+        ctx.fillStyle='#111827'; ctx.font=`900 ${43*S}px "Noto Sans Devanagari", sans-serif`;
+        wrapCanvasText(ctx, firstQ, W/2, qY+145*S, qW-72*S, 56*S, true);
+        ctx.fillStyle='#FDE68A'; ctx.font=`900 ${34*S}px "Noto Sans Devanagari", sans-serif`;
+        ctx.fillText('जवाब सोचिए… फिर देखिए सही है या नहीं!',W/2,H*0.86);
+        ctx.fillStyle='rgba(255,255,255,.78)'; ctx.font=`bold ${23*S}px sans-serif`; ctx.fillText('SWIPE मत कीजिए • PLAY करें',W/2,H*0.94);
+        const introP = Math.max(0, Math.min(1, Number(frameOpts.transitionProgress ?? 1)));
+        if (introP < 1) { ctx.save(); ctx.globalAlpha = (1-introP)*0.55; ctx.fillStyle='#FFFFFF'; ctx.fillRect(0,0,W,H); ctx.restore(); }
+        return;
+      }
+
+      // OUTRO FRAME
+      if (frameOpts.isOutro) {
+        const cardW = W - 140 * S, cardH = 880 * S;
+        const cx = (W - cardW) / 2, cy = (H - cardH) / 2;
+        ctx.save();
+        ctx.shadowColor = 'rgba(15, 23, 42, 0.20)';
+        ctx.shadowBlur = 36 * S;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath(); ctx.roundRect(cx, cy, cardW, cardH, 38 * S); ctx.fill();
+        ctx.restore();
+        ctx.strokeStyle = t.cardBorder; ctx.lineWidth = 5 * S;
+        ctx.beginPath(); ctx.roundRect(cx, cy, cardW, cardH, 38 * S); ctx.stroke();
+
+        ctx.fillStyle = '#FEF3C7';
+        ctx.beginPath(); ctx.arc(W / 2, cy + 120 * S, 64 * S, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = '#F59E0B'; ctx.lineWidth = 4 * S; ctx.stroke();
+        ctx.font = `${64 * S}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('🔔', W / 2, cy + 126 * S);
+
+        ctx.fillStyle = '#020617';
+        ctx.font = `bold ${50 * S}px "Noto Sans Devanagari", sans-serif`;
+        wrapCanvasText(ctx, state.outroText, W / 2, cy + 280 * S, cardW - 120 * S, 70 * S, true);
+        ctx.fillStyle = t.watermark; ctx.font = `900 ${28 * S}px sans-serif`;
+        ctx.fillText('MD REEL CURRENT AFFAIR', W / 2, cy + 460 * S);
+
+        // Buttons
+        const btnY = cy + 560 * S;
+        ctx.fillStyle = '#2563EB';
+        ctx.beginPath(); ctx.roundRect(cx + 80 * S, btnY, 340 * S, 80 * S, 20 * S); ctx.fill();
+        ctx.fillStyle = '#FFFFFF'; ctx.font = `bold ${32 * S}px "Noto Sans Devanagari", sans-serif`;
+        ctx.fillText('👍 लाइक करें', cx + 250 * S, btnY + 44 * S);
+
+        ctx.fillStyle = '#059669';
+        ctx.beginPath(); ctx.roundRect(cx + 460 * S, btnY, 340 * S, 80 * S, 20 * S); ctx.fill();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillText('📤 शेयर करें', cx + 630 * S, btnY + 44 * S);
+
+        ctx.fillStyle = '#E11D48';
+        ctx.beginPath(); ctx.roundRect(cx + 120 * S, btnY + 110 * S, cardW - 240 * S, 92 * S, 24 * S); ctx.fill();
+        ctx.fillStyle = '#FFFFFF'; ctx.font = `bold ${38 * S}px "Noto Sans Devanagari", sans-serif`;
+        ctx.fillText('🔔 फॉलो / सब्सक्राइब करें', W / 2, btnY + 160 * S);
+        const outroP = Math.max(0, Math.min(1, Number(frameOpts.transitionProgress ?? 1)));
+        if (outroP < 1) { ctx.save(); ctx.globalAlpha = (1 - outroP) * 0.72; ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+        return;
+      }
+
+      // STANDARD QUESTION FRAME
+      const SAFE_L = 60 * S;
+      const SAFE_R = isLand ? 60 * S : 120 * S; // Instagram Reels right-side safe zone
+      const CONTENT_W = W - SAFE_L - SAFE_R;
+
+      // 1. Top Story-Style Segmented Progress Bar
+      const totalSegs = Math.max(1, frameOpts.totalQ || 1);
+      const segGap = 12 * S;
+      const segW = (W - 120 * S - segGap * (totalSegs - 1)) / totalSegs;
+      for (let s = 0; s < totalSegs; s++) {
+        ctx.fillStyle = s <= frameOpts.qIdx ? t.accent : 'rgba(148, 163, 184, 0.45)';
+        ctx.beginPath();
+        ctx.roundRect(60 * S + s * (segW + segGap), 50 * S, segW, 12 * S, 6 * S);
+        ctx.fill();
+      }
+
+      // 2. Header Watermark & Q counter
+      ctx.fillStyle = t.watermark;
+      ctx.font = `bold ${32 * S}px "Noto Sans Devanagari", sans-serif`;
+      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.fillText(getActiveWatermarkText().slice(0, 36), SAFE_L, 120 * S);
+
+      ctx.textAlign = 'right';
+      ctx.fillText(`Q ${frameOpts.qIdx + 1} / ${frameOpts.totalQ}`, W - 60 * S, 120 * S);
+      ctx.textAlign = 'left';
+
+      // 3. Topic Banner & Countdown Timer
+      const bannerW = CONTENT_W - 140 * S;
+      if (state.showTopicBanner) {
+        ctx.save();
+        ctx.shadowColor = 'rgba(15, 23, 42, 0.16)';
+        ctx.shadowBlur = 14 * S;
+        ctx.fillStyle = t.accent;
+        ctx.beginPath(); ctx.roundRect(SAFE_L, 160 * S, bannerW, 80 * S, 22 * S); ctx.fill();
+        ctx.restore();
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = `bold ${34 * S}px "Noto Sans Devanagari", sans-serif`;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(getActiveTopicText().slice(0, 28), SAFE_L + bannerW / 2, 202 * S);
+        ctx.textAlign = 'left';
+      }
+
+      // Compact Countdown Timer
+      const isRedAlert = (!frameOpts.reveal && frameOpts.remSec > 0 && frameOpts.remSec <= 2);
+      const timerColor = isRedAlert ? '#EF4444' : t.accent;
+      const tx = SAFE_L + CONTENT_W - 55 * S;
+      const ty = 200 * S;
+      const ratio = frameOpts.totalSec > 0 ? Math.max(0, frameOpts.remSec / frameOpts.totalSec) : 1;
+
+      ctx.save();
+      ctx.beginPath(); ctx.arc(tx, ty, 48 * S, 0, Math.PI * 2);
+      ctx.fillStyle = '#FFFFFF'; ctx.fill();
+      ctx.lineWidth = 10 * S; ctx.strokeStyle = '#E2E8F0'; ctx.stroke();
+      ctx.beginPath(); ctx.arc(tx, ty, 48 * S, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * ratio);
+      ctx.strokeStyle = timerColor; ctx.stroke();
+      ctx.fillStyle = isRedAlert ? '#DC2626' : '#0F172A';
+      ctx.font = `bold ${42 * S}px "Poppins", sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(String(frameOpts.remSec), tx, ty + 2 * S);
+      ctx.restore();
+
+      // 4. Elevated 3D Question Card with Top Bright Accent Strip
+      const qBoxY = 280 * S;
+      const qBoxH = 360 * S;
+      ctx.save();
+      ctx.shadowColor = 'rgba(15, 23, 42, 0.16)';
+      ctx.shadowBlur = 32 * S;
+      ctx.shadowOffsetY = 12 * S;
+      ctx.fillStyle = t.cardBg;
+      ctx.beginPath(); ctx.roundRect(SAFE_L, qBoxY, CONTENT_W, qBoxH, 32 * S); ctx.fill();
+      ctx.restore();
+
+      ctx.strokeStyle = t.cardBorder; ctx.lineWidth = 5 * S;
+      ctx.beginPath(); ctx.roundRect(SAFE_L, qBoxY, CONTENT_W, qBoxH, 32 * S); ctx.stroke();
+
+      // Top color strip
+      ctx.save();
+      ctx.beginPath(); ctx.roundRect(SAFE_L, qBoxY, CONTENT_W, qBoxH, 32 * S); ctx.clip();
+      ctx.fillStyle = t.accent;
+      ctx.fillRect(SAFE_L, qBoxY, CONTENT_W, 14 * S);
+      ctx.restore();
+
+      ctx.fillStyle = t.accent;
+      ctx.font = `bold ${24 * S}px "Noto Sans Devanagari", sans-serif`;
+      ctx.fillText('✨ महत्वपूर्ण प्रश्न', SAFE_L + 34 * S, qBoxY + 54 * S);
+
+      // Question text (#tag is drawn on canvas, but ignored by voice!)
+      ctx.fillStyle = '#020617';
+      ctx.font = `bold ${50 * S}px "Noto Sans Devanagari", sans-serif`;
+      wrapCanvasText(ctx, frameOpts.q.q, SAFE_L + 34 * S, qBoxY + 120 * S, CONTENT_W - 68 * S, 66 * S);
+
+      // 5. Options (Floating / Static entrance + Green Glow pop on correct answer)
+      const optTopY = 680 * S;
+      const optH = 162 * S;
+      const optGap = 22 * S;
+      const optProg = frameOpts.optProgress || [1, 1, 1, 1];
+
+      frameOpts.q.options.forEach((optTxt, idx) => {
+        // During reveal, remove all distractors instead of shrinking/dimming them.
+        if (frameOpts.reveal && !isLand && idx !== frameOpts.q.correctIndex) return;
+        const p = optProg[idx] !== undefined ? optProg[idx] : 1;
+        if (p <= 0.01) return;
+
+        // Smooth ease-out-back curve
+        const c1 = 1.70158, c3 = c1 + 1;
+        const eased = 1 + c3 * Math.pow(p - 1, 3) + c1 * Math.pow(p - 1, 2);
+        const yOffset = (1 - eased) * 160 * S;
+        const oy = (frameOpts.reveal && !isLand)
+          ? (optTopY + yOffset)
+          : (optTopY + idx * (optH + optGap) + yOffset);
+
+        const isCorrect = frameOpts.reveal && idx === frameOpts.q.correctIndex;
+        const isDim = frameOpts.reveal && idx !== frameOpts.q.correctIndex;
+
+        ctx.save();
+        ctx.globalAlpha = isDim ? 0.38 : Math.min(1, p * 1.4);
+        if (isCorrect) {
+          const pop = Math.max(0, Math.min(1, Number(frameOpts.revealProgress) || 0));
+          const scale = 1 + 0.075 * Math.sin(pop * Math.PI / 2);
+          ctx.translate(SAFE_L + CONTENT_W / 2, oy + optH / 2);
+          ctx.scale(scale, scale);
+          ctx.translate(-(SAFE_L + CONTENT_W / 2), -(oy + optH / 2));
+        }
+
+        if (isCorrect) {
+          ctx.shadowColor = 'rgba(16, 185, 129, 0.55)';
+          ctx.shadowBlur = 32 * S;
+          ctx.fillStyle = '#ECFDF5';
+        } else {
+          ctx.shadowColor = 'rgba(15, 23, 42, 0.08)';
+          ctx.shadowBlur = 12 * S;
+          ctx.fillStyle = '#FFFFFF';
+        }
+
+        ctx.beginPath(); ctx.roundRect(SAFE_L, oy, CONTENT_W, optH, 28 * S); ctx.fill();
+        ctx.strokeStyle = isCorrect ? '#10B981' : '#CBD5E1';
+        ctx.lineWidth = isCorrect ? 6 * S : 3 * S;
+        ctx.stroke();
+
+        // Badge
+        ctx.fillStyle = isCorrect ? '#059669' : t.accent;
+        ctx.beginPath(); ctx.arc(SAFE_L + 64 * S, oy + optH / 2, 34 * S, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = `bold ${34 * S}px "Poppins", sans-serif`;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(isCorrect ? '✓' : LETTERS[idx], SAFE_L + 64 * S, oy + optH / 2 + 2 * S);
+        ctx.textAlign = 'left';
+
+        // Option Text
+        ctx.fillStyle = isCorrect ? '#064E3B' : '#1E293B';
+        ctx.font = `bold ${42 * S}px "Noto Sans Devanagari", sans-serif`;
+        ctx.textBaseline = 'middle';
+        wrapCanvasText(ctx, String(optTxt || ''), SAFE_L + 124 * S, oy + optH / 2 - 22 * S, CONTENT_W - 220 * S, 46 * S);
+        if (isCorrect) {
+          ctx.textAlign = 'right'; ctx.fillStyle = '#047857';
+          ctx.font = `900 ${24 * S}px "Noto Sans Devanagari", sans-serif`;
+          ctx.fillText('सही उत्तर', SAFE_L + CONTENT_W - 24 * S, oy + optH / 2);
+        }
+        ctx.restore();
+      });
+
+      // 5b. Explanation Card when correct answer is revealed
+      const expStr = (frameOpts.reveal && frameOpts.q && frameOpts.q.explanation) ? String(frameOpts.q.explanation).trim() : '';
+      if (expStr) {
+        const expY = isLand ? (optTopY + 2 * (optH + optGap) + 12 * S) : (845 * S);
+        const expH = isLand ? (160 * S) : (310 * S);
+        ctx.save();
+        ctx.fillStyle = '#ECFDF5';
+        ctx.beginPath(); ctx.roundRect(SAFE_L, expY, CONTENT_W, expH, 24 * S); ctx.fill();
+        ctx.strokeStyle = '#10B981'; ctx.lineWidth = 4 * S; ctx.stroke();
+        ctx.fillStyle = '#047857';
+        ctx.font = `bold ${24 * S}px "Noto Sans Devanagari", sans-serif`;
+        ctx.fillText('💡 स्पष्टीकरण', SAFE_L + 28 * S, expY + 38 * S);
+        ctx.fillStyle = '#064E3B';
+        const expFont = (isLand ? 25 : 29) * S;
+        ctx.font = `bold ${expFont}px "Noto Sans Devanagari", sans-serif`;
+        if (!isLand) {
+          const maxW = CONTENT_W - 56 * S;
+          const words = expStr.split(/\s+/);
+          let line = '', lines = [];
+          for (const word of words) {
+            const test = line ? `${line} ${word}` : word;
+            if (ctx.measureText(test).width > maxW && line) {
+              lines.push(line);
+              line = word;
+            } else line = test;
+          }
+          if (line) lines.push(line);
+          const maxLines = 5;
+          const shown = lines.slice(0, maxLines);
+          if (lines.length > maxLines) shown[maxLines - 1] = shown[maxLines - 1].replace(/[.,;:!?।]*$/, '') + '…';
+          shown.forEach((ln, li) => ctx.fillText(ln, SAFE_L + 28 * S, expY + 86 * S + li * 39 * S));
+        } else {
+          wrapCanvasText(ctx, expStr, SAFE_L + 28 * S, expY + 86 * S, CONTENT_W - 56 * S, 44 * S);
+        }
+        ctx.restore();
+      }
+
+      // 6. Bottom Safe Area CTA & Progress Bar
+      const footerY = H - 180 * S;
+      ctx.fillStyle = '#334155';
+      ctx.font = `bold ${30 * S}px "Noto Sans Devanagari", sans-serif`;
+      ctx.fillText('सही उत्तर कमेंट में बताएं 👇', SAFE_L, footerY);
+
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.35)';
+      ctx.beginPath(); ctx.roundRect(SAFE_L, footerY + 28 * S, CONTENT_W, 16 * S, 8 * S); ctx.fill();
+      ctx.fillStyle = timerColor;
+      ctx.beginPath(); ctx.roundRect(SAFE_L, footerY + 28 * S, Math.max(16 * S, CONTENT_W * ratio), 16 * S, 8 * S); ctx.fill();
+
+      // Soft fade-in between question scenes; progress reaches 1 in ~0.5 sec.
+      const sceneProgress = Math.max(0, Math.min(1, Number(frameOpts.transitionProgress ?? 1)));
+      if (sceneProgress < 1) {
+        ctx.save(); ctx.globalAlpha = (1 - sceneProgress) * 0.72;
+        ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, W, H); ctx.restore();
+      }
+    }
+
+    function wrapCanvasText(ctx, text, x, y, maxW, lineH, center = false) {
+      const words = String(text || '').split(' ');
+      let line = '';
+      let cy = y;
+      for (let n = 0; n < words.length; n++) {
+        const test = line + words[n] + ' ';
+        if (ctx.measureText(test).width > maxW && n > 0) {
+          if (center) ctx.fillText(line.trim(), x, cy);
+          else ctx.fillText(line.trim(), x, cy);
+          line = words[n] + ' ';
+          cy += lineH;
+        } else {
+          line = test;
+        }
+      }
+      if (line.trim()) {
+        if (center) ctx.fillText(line.trim(), x, cy);
+        else ctx.fillText(line.trim(), x, cy);
+      }
+    }
+
+    // ==========================================
+    // VIDEO EXPORT ENGINE (Capacitor + Browser)
+    // ==========================================
+    async function runVideoExportProcess() {
+      if (!state.questions.length) return showToast('कृपया पहले प्रश्न जोड़ें!');
+      if (state.isRecording) return;
+
+      stopAllPlayback();
+      state.abortExport = false;
+      try {
+        dom.exportProgressTextMsg.textContent = 'ऑफलाइन हिंदी आवाज़ जाँची जा रही है...';
+        await speechStudio.ensureOfflineHindiReady();
+      } catch (ttsErr) {
+        showToast(ttsErr && ttsErr.message ? ttsErr.message : 'ऑफलाइन हिंदी आवाज़ उपलब्ध नहीं है।');
+        return;
+      }
+      await soundEngine.init();
+
+      const canvas = dom.hiddenExportCanvas;
+      const ctx = canvas.getContext('2d');
+      const isLand = state.videoFormat === 'landscape';
+      const isMobileDevice = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
+      canvas.width = isMobileDevice ? (isLand ? 1280 : 720) : (isLand ? 1920 : 1080);
+      canvas.height = isMobileDevice ? (isLand ? 720 : 1280) : (isLand ? 1080 : 1920);
+
+      const fps = isMobileDevice ? 20 : 25;
+      const videoStream = canvas.captureStream(fps);
+      let micStreamRef = null;
+      if (state.captureMic && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        try {
+          micStreamRef = await navigator.mediaDevices.getUserMedia({ audio: true });
+          if (soundEngine.ctx && soundEngine.dest) {
+            const micSrc = soundEngine.ctx.createMediaStreamSource(micStreamRef);
+            const micGain = soundEngine.ctx.createGain();
+            micGain.gain.value = 1.0;
+            micSrc.connect(micGain);
+            micGain.connect(soundEngine.dest);
+          }
+        } catch (micErr) {
+          console.warn('Mic capture skipped:', micErr);
+        }
+      }
+      const tracks = [...videoStream.getVideoTracks()];
+      if (soundEngine.dest) tracks.push(...soundEngine.dest.stream.getAudioTracks());
+      const combinedStream = new MediaStream(tracks);
+
+      const mime = MediaRecorder.isTypeSupported('video/mp4;codecs=avc1,mp4a.40.2') ? 'video/mp4' :
+                   (MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus') ? 'video/webm' : 'video/webm');
+
+      const recorder = new MediaRecorder(combinedStream, {
+        mimeType: mime,
+        videoBitsPerSecond: isLand ? 4500000 : 3500000,
+        audioBitsPerSecond: 128000
+      });
+
+      const chunks = [];
+      recorder.ondataavailable = (e) => { if (e.data.size > 0) chunks.push(e.data); };
+
+      state.isRecording = true;
+      dom.btnExportVideoNow.disabled = true;
+      dom.exportProgressBarContainer.classList.remove('hidden');
+      dom.videoOutputBox.classList.add('hidden');
+
+      let currentFrameData = {
+        isHook: false, isOutro: false,
+        q: state.questions[0], qIdx: 0, totalQ: state.questions.length,
+        remSec: state.countdownSec, totalSec: state.countdownSec,
+        optProgress: [1, 1, 1, 1], reveal: false
+      };
+
+      // Draw initial frame immediately before recorder starts so frame 0 / thumbnail is never black
+      drawReelCanvasFrame(ctx, currentFrameData);
+
+      // Render loop
+      const renderTimer = setInterval(() => {
+        drawReelCanvasFrame(ctx, currentFrameData);
+      }, 40);
+
+      recorder.start(100);
+      drawReelCanvasFrame(ctx, currentFrameData);
+      const recorderStopped = new Promise(resolve => {
+        recorder.addEventListener('stop', resolve, { once: true });
+      });
+      const wait = (ms) => new Promise(r => setTimeout(r, ms));
+      let exportFailed = false;
+
+      try {
+        // 1. Hook Frame
+        if (state.hookEnabled && state.hookText.trim()) {
+          dom.exportProgressTextMsg.textContent = 'Recording 2-second scroll-stopper hook...';
+          currentFrameData.isHook = true;
+          currentFrameData.transitionProgress = 0;
+          const introStart = performance.now();
+          const introAnimP = (async () => { while (performance.now() - introStart < 520) { currentFrameData.transitionProgress = Math.min(1, (performance.now() - introStart) / 520); await wait(25); } currentFrameData.transitionProgress = 1; })();
+          const speechP = speechStudio.speakToVideoStream('रुकिए! जवाब दीजिए!');
+          const holdP = wait(2100);
+          await Promise.all([speechP, holdP, introAnimP]);
+          currentFrameData.isHook = false;
+        }
+
+        // 2. Questions loop
+        const cd = Number(state.countdownSec) || 3;
+        for (let i = 0; i < state.questions.length; i++) {
+          if (state.abortExport) break;
+          const q = state.questions[i];
+          const pct = Math.round(((i + 1) / state.questions.length) * 85);
+          dom.exportPercentNum.textContent = `${pct}%`;
+          dom.exportProgressBarFill.style.width = `${pct}%`;
+          dom.exportProgressTextMsg.textContent = `Recording Q${i + 1} / ${state.questions.length}...`;
+
+          const estSpeechSec = getQuestionAudioDurationSec(q);
+          const delaySec = state.voiceTiming === 'after_voice' 
+            ? estSpeechSec 
+            : Math.max(0, estSpeechSec - cd);
+
+          currentFrameData = {
+            isHook: false, isOutro: false,
+            q, qIdx: i, totalQ: state.questions.length,
+            remSec: cd, totalSec: cd,
+            optProgress: state.optionsMode === 'floating' ? [0, 0, 0, 0] : [1, 1, 1, 1],
+            reveal: false, revealProgress: 0, transitionProgress: 0
+          };
+          const sceneStart = performance.now();
+          const sceneAnimP = (async () => { while (performance.now() - sceneStart < 520) { currentFrameData.transitionProgress = Math.min(1, (performance.now() - sceneStart) / 520); await wait(25); } currentFrameData.transitionProgress = 1; })();
+
+          // Question speech (strictly ignores #tag)
+          let signalExportSpeechStarted;
+          const exportSpeechStarted = new Promise(resolve => { signalExportSpeechStarted = resolve; });
+          let exportSpeechStartSignalled = false;
+          let actualSpeechDuration = estSpeechSec;
+          const markExportSpeechStarted = (duration) => {
+            if (Number.isFinite(Number(duration)) && Number(duration) > 0) actualSpeechDuration = Number(duration);
+            if (exportSpeechStartSignalled) return;
+            exportSpeechStartSignalled = true;
+            signalExportSpeechStarted();
+          };
+          const qSpeechP = speechStudio.speakToVideoStream(q.q, markExportSpeechStarted);
+          // The countdown is anchored to the real decoded audio duration, not a character estimate.
+
+          // Options floating animation in video (floats in one-by-one with sound)
+          const optAnimP = (async () => {
+            if (state.optionsMode === 'floating') {
+              const windowMs = Math.max(700, Math.min(2200, (cd * 0.5) * 1000));
+              const staggerMs = Math.round(windowMs / 4);
+              const slideDurMs = 360;
+              const startT = performance.now();
+              const played = [false, false, false, false];
+              const totalMs = 120 + staggerMs * 3 + slideDurMs;
+
+              while (performance.now() - startT < totalMs) {
+                const elap = performance.now() - startT;
+                const prog = [0, 0, 0, 0];
+                for (let k = 0; k < 4; k++) {
+                  const local = elap - (120 + k * staggerMs);
+                  if (local >= 0) {
+                    if (!played[k]) { played[k] = true; soundEngine.playOptionSound(); }
+                    prog[k] = Math.min(1, local / slideDurMs);
+                  }
+                }
+                currentFrameData.optProgress = prog;
+                await wait(25);
+              }
+              currentFrameData.optProgress = [1, 1, 1, 1];
+            }
+          })();
+
+          // Smart Countdown Timer: If question is longer than timer, stays at 3s during extra speaking time, then ticks down!
+          const timerP = (async () => {
+            currentFrameData.remSec = cd;
+            await exportSpeechStarted;
+            const syncedDelaySec = state.voiceTiming === 'after_voice'
+              ? actualSpeechDuration
+              : Math.max(0, actualSpeechDuration - cd);
+            if (syncedDelaySec > 0) {
+              await wait(Math.round(syncedDelaySec * 1000));
+            }
+            for (let s = cd; s >= 1; s--) {
+              if (state.abortExport) break;
+              currentFrameData.remSec = s;
+              soundEngine.playTick(s <= 2);
+              await wait(1000);
+            }
+            currentFrameData.remSec = 0;
+            soundEngine.playTick(true);
+            await wait(200);
+          })();
+
+          await Promise.all([qSpeechP, optAnimP, timerP, sceneAnimP]);
+          if (state.abortExport) break;
+
+          // Reveal Correct Answer (Speaks ONLY correct option text)
+          currentFrameData.optProgress = [1, 1, 1, 1];
+          currentFrameData.reveal = true;
+          currentFrameData.revealProgress = 0;
+          soundEngine.playChime();
+
+          const ansSpeechP = speechStudio.speakToVideoStream(q.options[q.correctIndex] || '');
+          const ansHoldMs = (Number(state.revealSec) || 2.5) * 1000;
+          const ansHoldP = (async () => {
+            const popStart = performance.now();
+            while (performance.now() - popStart < 520) {
+              currentFrameData.revealProgress = Math.min(1, (performance.now() - popStart) / 520);
+              await wait(25);
+            }
+            currentFrameData.revealProgress = 1;
+            await wait(Math.max(0, ansHoldMs - 520));
+          })();
+          await Promise.all([ansSpeechP, ansHoldP]);
+        }
+
+        // 3. Outro Slide
+        if (!state.abortExport && state.outroEnabled && state.outroText.trim()) {
+          dom.exportProgressTextMsg.textContent = 'Recording Outro Slide...';
+          currentFrameData = { isHook: false, isOutro: true, transitionProgress: 0 };
+          const outroStart = performance.now();
+          const outroAnimP = (async () => { while (performance.now() - outroStart < 520) { currentFrameData.transitionProgress = Math.min(1, (performance.now() - outroStart) / 520); await wait(25); } currentFrameData.transitionProgress = 1; })();
+          const outroSpeechP = speechStudio.speakToVideoStream(state.outroText);
+          const outroHoldP = wait((Number(state.outroDuration) || 2) * 1000);
+          await Promise.all([outroSpeechP, outroHoldP, outroAnimP]);
+        }
+      } catch (exportErr) {
+        exportFailed = true;
+        state.abortExport = true;
+        console.error('Video export failed:', exportErr);
+        showToast(exportErr && exportErr.message ? exportErr.message : 'वीडियो एक्सपोर्ट में त्रुटि आई।');
+      } finally {
+        clearInterval(renderTimer);
+        if (micStreamRef) {
+          micStreamRef.getTracks().forEach(t => { try { t.stop(); } catch (_) {} });
+        }
+        try {
+          if (recorder.state !== 'inactive') recorder.stop();
+        } catch (stopErr) {
+          console.warn('Recorder stop warning:', stopErr);
+        }
+        await recorderStopped;
+        state.isRecording = false;
+        dom.btnExportVideoNow.disabled = false;
+      }
+
+      // Final video blob
+      if (exportFailed) {
+        dom.exportProgressBarContainer.classList.add('hidden');
+        showToast('वीडियो की आवाज़ तैयार नहीं हुई। फोन में Hindi Offline Voice और नया APK जाँचें।');
+        return;
+      }
+      if (state.abortExport) {
+        dom.exportProgressBarContainer.classList.add('hidden');
+        showToast('वीडियो बनाना रोक दिया गया।');
+        return;
+      }
+      if (!chunks.length) {
+        dom.exportProgressBarContainer.classList.add('hidden');
+        showToast('कोई वीडियो डेटा रिकॉर्ड नहीं हो सका।');
+        return;
+      }
+      const isActualMp4 = mime.includes('mp4');
+      const blob = new Blob(chunks, { type: isActualMp4 ? 'video/mp4' : 'video/webm' });
+      const videoUrl = URL.createObjectURL(blob);
+      dom.outputVideoPlayer.src = videoUrl;
+      dom.videoOutputBox.classList.remove('hidden');
+      dom.exportProgressBarContainer.classList.add('hidden');
+      showToast('🎉 वीडियो तैयार हो गया!');
+
+      // Save handlers
+      dom.btnSaveToGallery.onclick = () => saveVideoToDevice(blob, isActualMp4);
+      dom.btnShareVideoFile.onclick = () => shareVideoFileDirectly(blob, isActualMp4);
+    }
+
+    // Capacitor Native Gallery Saver or Browser Download
+    function blobToBase64Async(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const res = String(reader.result || '');
+          const idx = res.indexOf(',');
+          resolve(idx >= 0 ? res.slice(idx + 1) : res);
+        };
+        reader.onerror = () => reject(reader.error || new Error('FileReader error'));
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    async function saveVideoToDevice(blob, isMp4) {
+      const ext = isMp4 ? 'mp4' : 'webm';
+      const fileName = `Quiz_Reel_${Date.now()}.${ext}`;
+      try {
+        const cap = window.Capacitor;
+        if (cap && cap.isNativePlatform && cap.isNativePlatform()) {
+          const vf = cap.Plugins && cap.Plugins.VideoFixer;
+          const fs = cap.Plugins && cap.Plugins.Filesystem;
+          const b64 = await blobToBase64Async(blob);
+
+          if (vf && vf.remuxAndSaveToGallery && fs) {
+            const tempName = `temp_${fileName}`;
+            await fs.writeFile({ path: tempName, data: b64, directory: 'CACHE' });
+            const remuxRes = await vf.remuxAndSaveToGallery({
+              inputPath: tempName,
+              fileName,
+              mimeType: blob.type || (isMp4 ? 'video/mp4' : 'video/webm'),
+              saveToGallery: true
+            });
+            if (remuxRes && remuxRes.gallerySaved) {
+              showToast('✅ वीडियो साउंड सहित गैलरी में सेव हो गया!');
+              return;
+            }
+          }
+
+          if (fs) {
+            await fs.writeFile({
+              path: `MD_Reel_Current_Affair/${fileName}`,
+              data: b64,
+              directory: 'DOCUMENTS',
+              recursive: true
+            });
+            showToast(`✅ वीडियो Documents/MD_Reel_Current_Affair में सेव हो गया!`);
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('Capacitor native save fallback:', err);
+      }
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        try { document.body.removeChild(a); } catch (_) {}
+        try { URL.revokeObjectURL(url); } catch (_) {}
+      }, 5000);
+      showToast(`📥 डाउनलोड शुरू: ${fileName}`);
+    }
+
+    async function shareVideoFileDirectly(blob, isMp4) {
+      const fileName = `Quiz_Reel_${Date.now()}.${isMp4 ? 'mp4' : 'webm'}`;
+      const file = new File([blob], fileName, { type: blob.type });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], title: fileName });
+          return;
+        } catch (_) {}
+      }
+      saveVideoToDevice(blob, isMp4);
+    }
+
+    // ==========================================
+    // PERSISTENCE (LocalStorage)
+    // ==========================================
+    function saveQuestions() {
+      try { localStorage.setItem(STORAGE_KEY_QUESTIONS, JSON.stringify(state.questions)); } catch (_) {}
+    }
+    function saveSettings() {
+      try {
+        const savedSettings = {
+          videoFormat: state.videoFormat,
+          videoQuality: state.videoQuality,
+          theme: state.theme,
+          topicPreset: state.topicPreset,
+          customTopic: state.customTopic,
+          showTopicBanner: state.showTopicBanner,
+          watermarkPreset: state.watermarkPreset,
+          customWatermark: state.customWatermark,
+          optionsMode: state.optionsMode,
+          optionSound: state.optionSound,
+          timerStyle: state.timerStyle,
+          countdownSec: state.countdownSec,
+          revealSec: state.revealSec,
+          voiceSpeed: state.voiceSpeed,
+          voicePitch: state.voicePitch,
+          voiceTiming: state.voiceTiming,
+          soundFxEnabled: state.soundFxEnabled,
+          hookEnabled: state.hookEnabled,
+          hookText: state.hookText,
+          outroEnabled: state.outroEnabled,
+          outroText: state.outroText,
+          outroDuration: state.outroDuration
+        };
+        localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(savedSettings));
+      } catch (_) {}
+    }
+
+    function loadSavedData() {
+      try {
+        const qRaw = localStorage.getItem(STORAGE_KEY_QUESTIONS);
+        if (qRaw) {
+          const parsed = JSON.parse(qRaw);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            state.questions = parsed.map(item => ({
+              ...item,
+              q: (item.q || item.question || '').trim()
+            })).filter(item => item.q);
+          }
+        }
+      } catch (_) {}
+      if (!state.questions.length) {
+        state.questions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
+      }
+
+      try {
+        const sRaw = localStorage.getItem(STORAGE_KEY_SETTINGS);
+        if (sRaw) {
+          const parsedS = JSON.parse(sRaw);
+          Object.assign(state, parsedS);
+        }
+      } catch (_) {}
+    }
+
+    // ==========================================
+    // IN-APP PDF AUTO-CONVERTER
+    // ==========================================
+    async function processUploadedPdf(file) {
+      if (!file || !window.pdfjsLib) return;
+      dom.pdfProcessingStatusWrap.classList.remove('hidden');
+      try {
+        const pdf = await pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
+        const lines = [];
+        for (let p = 1; p <= pdf.numPages; p++) {
+          dom.pdfStatusLabel.textContent = `Reading Page ${p} / ${pdf.numPages}...`;
+          const pct = Math.round((p / pdf.numPages) * 90);
+          dom.pdfPercentBadge.textContent = `${pct}%`;
+          dom.pdfProgressBarFill.style.width = `${pct}%`;
+
+          const page = await pdf.getPage(p);
+          const tc = await page.getTextContent();
+          const items = tc.items.map(it => ({ str: it.str, x: it.transform[4], y: it.transform[5] })).sort((a, b) => b.y - a.y || a.x - b.x);
+          let ly = null, lt = '';
+          items.forEach(it => {
+            if (ly === null || Math.abs(it.y - ly) > 4) { if (lt.trim()) lines.push(lt.trim()); ly = it.y; lt = it.str; }
+            else lt += (lt.endsWith(' ') ? '' : ' ') + it.str;
+          });
+          if (lt.trim()) lines.push(lt.trim());
+        }
+
+        const qs = [];
+        let cur = null;
+        lines.forEach(l => {
+          if (/^(\d+[\.\)]|Q\d+[\.\:]?|प्र[\.\:\s]*\d+)/i.test(l)) {
+            if (cur && cur.options.length >= 2) { while (cur.options.length < 4) cur.options.push('विकल्प'); qs.push(cur); }
+            cur = { id: `q_pdf_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`, q: l.replace(/^(\d+[\.\)]|Q\d+[\.\:]?|प्र[\.\:\s]*\d+)\s*/i, ''), options: [], correctIndex: 0 };
+          } else if (cur && /^[\(\[]?([A-D1-4])[\)\]\.\:]\s*(.*)$/i.test(l)) {
+            cur.options.push(l.replace(/^[\(\[]?[A-D1-4][\)\]\.\:]\s*/i, ''));
+          } else if (cur && /(?:Ans|Answer|उत्तर)[\:\s]*[\(\[]?([A-D1-4])/i.test(l)) {
+            const ch = l.match(/(?:Ans|Answer|उत्तर)[\:\s]*[\(\[]?([A-D1-4])/i)[1].toUpperCase();
+            cur.correctIndex = Math.max(0, ['A', 'B', 'C', 'D'].indexOf(ch));
+          }
+        });
+        if (cur && cur.options.length >= 2) { while (cur.options.length < 4) cur.options.push('विकल्प'); qs.push(cur); }
+
+        if (qs.length) {
+          state.questions = qs;
+          state.currentIndex = 0;
+          saveQuestions(); refreshAllUI();
+          dom.pdfConverterModal.classList.add('hidden'); dom.pdfConverterModal.style.display = 'none';
+          showToast(`PDF से ${qs.length} प्रश्न लोड हो गए!`);
+        } else {
+          showToast('PDF में मानक MCQ प्रश्न नहीं मिले।');
+        }
+      } catch (err) {
+        showToast('PDF पढ़ने में त्रुटि हुई।');
+      } finally {
+        dom.pdfProcessingStatusWrap.classList.add('hidden');
+      }
+    }
+
+    // ==========================================
+    // BIND ALL INTERACTIONS
+    // ==========================================
+    function bindAllEvents() {
+      // 1. Manual Form Submit
+      dom.mainQuestionForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = dom.inputQuestionText.value.trim();
+        const opts = dom.optInputs.map(inp => inp.value.trim());
+        const ans = parseInt(dom.selectedCorrectIndex.value, 10) || 0;
+        const exp = dom.inputExplanationText ? dom.inputExplanationText.value.trim() : '';
+        if (!text || opts.some(o => !o)) return showToast('कृपया प्रश्न और चारों विकल्प भरें!');
+
+        if (state.editingId) {
+          const q = state.questions.find(x => x.id === state.editingId);
+          if (q) { q.q = text; q.options = opts; q.correctIndex = ans; q.explanation = exp; }
+          showToast('प्रश्न अपडेट हो गया!');
+        } else {
+          const newQ = { id: `q_${Date.now()}`, q: text, options: opts, correctIndex: ans, explanation: exp };
+          state.questions.push(newQ);
+          state.currentIndex = state.questions.length - 1;
+          showToast('नया प्रश्न जुड़ गया!');
+        }
+        saveQuestions();
+        resetManualForm();
+        refreshAllUI();
+      });
+
+      dom.btnCancelEditMain.addEventListener('click', resetManualForm);
+
+      // Correct radio buttons
+      document.querySelectorAll('.opt-radio-pick').forEach((btn, idx) => {
+        btn.addEventListener('click', () => setManualFormCorrectIndex(idx));
+      });
+
+      // Topic Preset
+      dom.selectTopicPreset.addEventListener('change', (e) => {
+        state.topicPreset = e.target.value;
+        saveSettings(); refreshAllUI();
+      });
+      dom.inputCustomTopic.addEventListener('input', (e) => {
+        state.customTopic = e.target.value;
+        saveSettings(); refreshAllUI();
+      });
+
+      // Watermark Preset
+      dom.selectWatermarkPreset.addEventListener('change', (e) => {
+        state.watermarkPreset = e.target.value;
+        saveSettings(); refreshAllUI();
+      });
+      dom.inputCustomWatermark.addEventListener('input', (e) => {
+        state.customWatermark = e.target.value;
+        saveSettings(); refreshAllUI();
+      });
+
+      dom.toggleShowTopicBanner.addEventListener('change', (e) => {
+        state.showTopicBanner = e.target.checked;
+        saveSettings(); refreshAllUI();
+      });
+
+      // Themes
+      dom.themeCardButtons.forEach(btn => {
+        btn.addEventListener('click', () => applyColorTheme(btn.dataset.theme));
+      });
+
+      // Options Mode (Floating vs Static)
+      dom.btnModeFloating.addEventListener('click', () => {
+        state.optionsMode = 'floating';
+        saveSettings(); refreshAllUI();
+        triggerFloatingOptionsEntrance();
+        showToast('Floating Options Enabled');
+      });
+      dom.btnModeStatic.addEventListener('click', () => {
+        state.optionsMode = 'static';
+        saveSettings(); refreshAllUI();
+        resetOptionsToNeutral();
+        showToast('Static Options Enabled (Sound Muted)');
+      });
+
+      // Option Sounds
+      dom.optsoundButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.optionSound = btn.dataset.optsound;
+          saveSettings(); refreshAllUI();
+          soundEngine.playOptionSound();
+        });
+      });
+
+      // Timer Styles
+      dom.tstyleButtons.forEach(btn => {
+        btn.addEventListener('click', () => applyTimerStyle(btn.dataset.timerstyle));
+      });
+
+      // Countdown Picks
+      dom.cdPickButtons.forEach(b => {
+        b.addEventListener('click', () => {
+          state.countdownSec = parseInt(b.dataset.sec, 10);
+          saveSettings(); refreshAllUI();
+        });
+      });
+
+      // Reveal Picks
+      dom.revPickButtons.forEach(b => {
+        b.addEventListener('click', () => {
+          state.revealSec = parseFloat(b.dataset.revsec);
+          saveSettings(); refreshAllUI();
+        });
+      });
+
+      // Hook Card
+      dom.toggleHookCard.addEventListener('change', (e) => {
+        state.hookEnabled = e.target.checked;
+        saveSettings(); refreshAllUI();
+      });
+      dom.inputHookCardText.addEventListener('input', (e) => {
+        state.hookText = e.target.value;
+        saveSettings(); refreshAllUI();
+      });
+
+      // Outro
+      dom.toggleOutroSlide.addEventListener('change', (e) => {
+        state.outroEnabled = e.target.checked;
+        saveSettings(); refreshAllUI();
+      });
+      dom.inputOutroMessageText.addEventListener('input', (e) => {
+        state.outroText = e.target.value;
+        saveSettings(); refreshAllUI();
+      });
+      dom.outroDurButtons.forEach(b => {
+        b.addEventListener('click', () => {
+          state.outroDuration = parseInt(b.dataset.outrodur, 10);
+          saveSettings(); refreshAllUI();
+        });
+      });
+
+      // Voice Sliders
+      dom.sliderVoiceSpeed.addEventListener('input', (e) => {
+        state.voiceSpeed = parseFloat(e.target.value);
+        dom.displayVoiceSpeed.textContent = `${state.voiceSpeed.toFixed(2)}×`;
+        saveSettings();
+      });
+      dom.sliderVoicePitch.addEventListener('input', (e) => {
+        state.voicePitch = parseFloat(e.target.value);
+        dom.displayVoicePitch.textContent = state.voicePitch.toFixed(2);
+        saveSettings();
+      });
+      dom.selectVoiceEngine.addEventListener('change', (e) => {
+        state.voiceEngine = e.target.value;
+        saveSettings();
+      });
+      dom.selectVoiceTiming.addEventListener('change', (e) => {
+        state.voiceTiming = e.target.value;
+        saveSettings();
+      });
+      dom.btnTestVoiceSpeech.addEventListener('click', () => {
+        speechStudio.speak('नमस्ते! यह क्विज़ रील के लिए हिंदी आवाज़ का टेस्ट है।');
+      });
+      dom.toggleSoundEffects.addEventListener('change', (e) => {
+        state.soundFxEnabled = e.target.checked;
+        saveSettings();
+      });
+      dom.toggleCaptureMic.addEventListener('change', (e) => {
+        state.captureMic = e.target.checked;
+        saveSettings();
+      });
+
+      // Format Switcher (Portrait 9:16 vs Landscape 16:9)
+      dom.btnFmtPortrait.addEventListener('click', () => {
+        state.videoFormat = 'portrait';
+        dom.btnFmtPortrait.className = 'px-2.5 py-1 rounded-lg bg-blue-600 text-white font-extrabold text-[11px] cursor-pointer';
+        dom.btnFmtLandscape.className = 'px-2.5 py-1 rounded-lg text-slate-400 font-bold text-[11px] cursor-pointer';
+        dom.fsCanvas.className = '';
+        saveSettings(); refreshAllUI();
+        showToast('📱 Reels 9:16 Portrait Mode Selected');
+      });
+      dom.btnFmtLandscape.addEventListener('click', () => {
+        state.videoFormat = 'landscape';
+        dom.btnFmtLandscape.className = 'px-2.5 py-1 rounded-lg bg-blue-600 text-white font-extrabold text-[11px] cursor-pointer';
+        dom.btnFmtPortrait.className = 'px-2.5 py-1 rounded-lg text-slate-400 font-bold text-[11px] cursor-pointer';
+        dom.fsCanvas.className = 'landscape-mode';
+        saveSettings(); refreshAllUI();
+        showToast('📺 YouTube 16:9 Landscape Mode Selected');
+      });
+
+      // Playback Controls
+      dom.btnPlayCurrentQ.addEventListener('click', () => playCurrentQuestionLive());
+      dom.btnPlayAllQs.addEventListener('click', () => playAllQuestionsLive());
+      dom.btnStopPlayback.addEventListener('click', () => {
+        stopAllPlayback();
+        showToast('Playback Stopped');
+      });
+
+      // Fullscreen Mode
+      dom.btnLaunchFullscreen.addEventListener('click', () => {
+        dom.fullscreenOverlayModal.classList.add('open');
+        const fsCtx = dom.fsCanvas.getContext('2d');
+        const isLand = state.videoFormat === 'landscape';
+        dom.fsCanvas.width = isLand ? 1920 : 1080;
+        dom.fsCanvas.height = isLand ? 1080 : 1920;
+        drawReelCanvasFrame(fsCtx, {
+          isHook: false, isOutro: false,
+          q: state.questions[state.currentIndex] || DEFAULT_QUESTIONS[0],
+          qIdx: state.currentIndex, totalQ: state.questions.length,
+          remSec: state.countdownSec, totalSec: state.countdownSec,
+          optProgress: [1, 1, 1, 1], reveal: false
+        });
+      });
+      dom.btnCloseFullscreen.addEventListener('click', () => dom.fullscreenOverlayModal.classList.remove('open'));
+
+      // Export Video & Stop Export
+      dom.btnExportVideoNow.addEventListener('click', runVideoExportProcess);
+      if (dom.btnStopVideoExport) {
+        dom.btnStopVideoExport.addEventListener('click', () => {
+          state.abortExport = true;
+          speechStudio.stop();
+          showToast('वीडियो जनरेट करना रोका जा रहा है...');
+        });
+      }
+
+      // Header Actions & Modals
+      dom.btnLoadDemoHeader.addEventListener('click', () => {
+        state.questions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
+        state.currentIndex = 0;
+        saveQuestions(); refreshAllUI();
+        showToast('5 Demo Questions Loaded!');
+      });
+
+      dom.btnOpenBulkModal.addEventListener('click', () => { dom.bulkPasteModal.classList.remove('hidden'); dom.bulkPasteModal.style.display = 'flex'; if (dom.bulkPasteInputTextarea) dom.bulkPasteInputTextarea.focus(); });
+      dom.btnCloseBulkModal.addEventListener('click', () => { dom.bulkPasteModal.classList.add('hidden'); dom.bulkPasteModal.style.display = 'none'; dom.bulkPasteModal.style.display = 'none'; });
+      dom.btnCancelBulkModal.addEventListener('click', () => { dom.bulkPasteModal.classList.add('hidden'); dom.bulkPasteModal.style.display = 'none'; dom.bulkPasteModal.style.display = 'none'; });
+
+      dom.btnApplyBulkQuestions.addEventListener('click', () => {
+        const raw = dom.bulkPasteInputTextarea.value.trim();
+        if (!raw) return showToast('कृपया प्रश्न पेस्ट करें!');
+
+        // Normalize inline/pipe formats into lines and split blocks by blank line or new question number/Q:
+        const normalized = raw
+          .replace(/\r\n/g, '\n')
+          .replace(/\s*\|\s*/g, '\n')
+          .replace(/(?:^|\n)(?=(?:Q\d*[\:\.\)]|प्रश्न\s*\d*[\:\.\)]|\d+[\.\)]\s))/gi, '\n\n');
+
+        const blocks = normalized.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+        const imported = [];
+
+        blocks.forEach((blk) => {
+          const lines = blk.split('\n').map(l => l.replace(/^[\*•\-–—]+\s*/, '').trim()).filter(Boolean);
+          if (!lines.length) return;
+
+          let qText = '';
+          const opts = ['', '', '', ''];
+          let ansIdx = 0;
+          let expText = '';
+
+          lines.forEach((l) => {
+            if (/^(?:Exp|Explanation|स्पष्टीकरण|व्याख्या|नोट)[\:\.\-–]?\s*(.+)/i.test(l)) {
+              expText = l.replace(/^(?:Exp|Explanation|स्पष्टीकरण|व्याख्या|नोट)[\:\.\-–]?\s*/i, '').trim();
+            } else if (/(?:Ans(?:wer)?|Correct|सही\s*उत्तर|उत्तर)[\:\.\-–=]?\s*\(?([A-Da-dक-घ1-4])\)?/i.test(l) && l.length < 40) {
+              const tok = l.match(/(?:Ans(?:wer)?|Correct|सही\s*उत्तर|उत्तर)[\:\.\-–=]?\s*\(?([A-Da-dक-घ1-4])\)?/i)[1].toUpperCase();
+              const map = { 'A': 0, 'क': 0, '1': 0, 'B': 1, 'ख': 1, '2': 1, 'C': 2, 'ग': 2, '3': 2, 'D': 3, 'घ': 3, '4': 3 };
+              if (map[tok] !== undefined) ansIdx = map[tok];
+            } else if (/^\(?([A-Da-dक-घ1-4])\)?[\)\.\:\-]\s*(.+)/.test(l)) {
+              const m = l.match(/^\(?([A-Da-dक-घ1-4])\)?[\)\.\:\-]\s*(.+)/);
+              const map = { 'A': 0, 'क': 0, '1': 0, 'B': 1, 'ख': 1, '2': 1, 'C': 2, 'ग': 2, '3': 2, 'D': 3, 'घ': 3, '4': 3 };
+              const idx = map[m[1].toUpperCase()];
+              if (idx !== undefined) opts[idx] = m[2].trim();
+            } else {
+              const cleanedQ = l.replace(/^(?:Q\d*|Question|प्रश्न\s*\d*|\d+)[\)\.\:\-]?\s*/i, '').trim();
+              qText = qText ? `${qText} ${cleanedQ}` : cleanedQ;
+            }
+          });
+
+          const filledOpts = opts.filter(Boolean);
+          if (qText && filledOpts.length >= 2) {
+            imported.push({
+              id: `q_bulk_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+              q: qText.replace(/\s+/g, ' ').trim(),
+              options: [
+                opts[0] || 'विकल्प A',
+                opts[1] || 'विकल्प B',
+                opts[2] || 'विकल्प C',
+                opts[3] || 'विकल्प D'
+              ],
+              correctIndex: ansIdx,
+              explanation: expText
+            });
+          }
+        });
+
+        if (imported.length) {
+          state.questions.push(...imported);
+          state.currentIndex = Math.max(0, state.questions.length - imported.length);
+          saveQuestions();
+          refreshAllUI();
+          dom.bulkPasteInputTextarea.value = '';
+          dom.bulkPasteModal.classList.add('hidden'); dom.bulkPasteModal.style.display = 'none';
+          showToast(`⚡ ${imported.length} प्रश्न सुंदर तरीके से जुड़ गए!`);
+        } else {
+          showToast('प्रश्न पार्स नहीं हो सके—कृपया सवाल व विकल्प चेक करें।');
+        }
+      });
+
+      // PDF Modal
+      dom.btnOpenPdfModal.addEventListener('click', () => { dom.pdfConverterModal.classList.remove('hidden'); dom.pdfConverterModal.style.display = 'flex'; });
+      dom.btnClosePdfModal.addEventListener('click', () => { dom.pdfConverterModal.classList.add('hidden'); dom.pdfConverterModal.style.display = 'none'; dom.pdfConverterModal.style.display = 'none'; });
+      dom.btnCancelPdfModal.addEventListener('click', () => { dom.pdfConverterModal.classList.add('hidden'); dom.pdfConverterModal.style.display = 'none'; dom.pdfConverterModal.style.display = 'none'; });
+      dom.inputPdfFile.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) processUploadedPdf(e.target.files[0]);
+      });
+
+      // JSON Backup & Restore
+      dom.btnExportJsonBackup.addEventListener('click', () => {
+        const payload = JSON.stringify({ questions: state.questions, settings: state }, null, 2);
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([payload], { type: 'application/json' }));
+        a.download = `MD_Reel_Current_Affair_Backup_${Date.now()}.json`;
+        a.click();
+        showToast('JSON Backup Downloaded');
+      });
+
+      dom.inputJsonRestore.addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          try {
+            const data = JSON.parse(ev.target.result);
+            if (Array.isArray(data.questions)) state.questions = data.questions;
+            if (data.settings) Object.assign(state, data.settings);
+            saveQuestions(); saveSettings(); refreshAllUI();
+            showToast('JSON Backup Restored Successfully!');
+          } catch (_) { showToast('Invalid JSON file!'); }
+        };
+        reader.readAsText(file);
+      });
+
+      dom.btnClearAllQuestions.addEventListener('click', () => {
+        if (confirm('क्या आप सभी प्रश्न हटाना चाहते हैं?')) {
+          state.questions = [];
+          state.currentIndex = 0;
+          saveQuestions(); refreshAllUI();
+          showToast('सभी प्रश्न हटा दिए गए।');
+        }
+      });
+    }
+
+    // ==========================================
+    // INITIALIZATION
+    // ==========================================
+    document.addEventListener('click', (e) => {
+      const bulkTrigger = e.target.closest('#btnOpenBulkModal');
+      if (bulkTrigger && dom.bulkPasteModal) {
+        dom.bulkPasteModal.classList.remove('hidden');
+        dom.bulkPasteModal.style.display = 'flex';
+      }
+      const pdfTrigger = e.target.closest('#btnOpenPdfModal');
+      if (pdfTrigger && dom.pdfConverterModal) {
+        dom.pdfConverterModal.classList.remove('hidden');
+        dom.pdfConverterModal.style.display = 'flex';
+      }
+    });
+
+    function bootHybridApp() {
+      if (window._mdHybridBooted) return;
+      window._mdHybridBooted = true;
+      queryDom();
+      loadSavedData();
+      bindAllEvents();
+      applyColorTheme(state.theme);
+      applyTimerStyle(state.timerStyle);
+      refreshAllUI();
+    }
+
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', bootHybridApp);
+    } else {
+      bootHybridApp();
+    }
+  </script>
+</body>
+</html>

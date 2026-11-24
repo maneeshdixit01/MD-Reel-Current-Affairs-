@@ -1,0 +1,17 @@
+{
+  "name": "md-reel-current-affair",
+  "version": "13.1.0",
+  "description": "MD Reel Maker v13 (Layout A Persistent Topic Banner + Compact Timer + Smart Voice-Sync + 9:16/16:9 + Standard MP4 Gallery Remuxer)",
+  "scripts": {
+    "build": "node -e \"const fs=require('fs'); fs.mkdirSync('www',{recursive:true}); ['index.html','manifest.webmanifest'].forEach(f=>fs.copyFileSync(f,'www/'+f));\""
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/filesystem": "^6.0.1",
+    "@capacitor/share": "^6.0.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.0"
+  }
+}
